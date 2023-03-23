@@ -1,0 +1,10 @@
+*.o
+*~
+myteams_cli
+myteams_server
+.vscode
+tmp
+*.txt
+myteams.zip
+coding-style-reports.log
+ccs
