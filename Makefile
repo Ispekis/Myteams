@@ -9,8 +9,11 @@ SERVER_PATH	=	src/server
 
 CLIENT_PATH	=	src/client
 
-SERVER_SRC	=	$(SERVER_PATH)/main.c	\
-				$(SERVER_PATH)/error_handler.c
+SERVER_SRC	=	$(SERVER_PATH)/main.c			\
+				$(SERVER_PATH)/error_handler.c	\
+				$(SERVER_PATH)/server.c			\
+				$(SERVER_PATH)/init.c			\
+				$(SERVER_PATH)/client_management.c
 
 CLIENT_SRC	=	$(CLIENT_PATH)/main.c	\
 				$(CLIENT_PATH)/error_handler.c
