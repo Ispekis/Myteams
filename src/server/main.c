@@ -5,9 +5,7 @@
 ** main
 */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
+#include "server.h"
 
 void show_usage(char *binary, int fd)
 {
@@ -22,5 +20,7 @@ int main(int argc, char **argv)
         show_usage(argv[0], STDOUT_FILENO);
         return 0;
     }
+    if (error_handling(argc, argv) == 1)
+        return 84;
     return 0;
 }
