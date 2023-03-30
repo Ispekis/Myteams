@@ -24,5 +24,7 @@ int main(int argc, char **argv)
     }
     if (error_handling(argc, argv) == 1)
         return 84;
+    if (run_client(argv[1], atoi(argv[2])) == 1)
+        return 84;
     return 0;
 }
