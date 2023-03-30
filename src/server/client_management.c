@@ -47,7 +47,7 @@ void read_from_client(server_t *server, int index)
         server->addrs.clients[index].fd != server->addrs.socket_fd) {
             bytes = read(server->addrs.clients[index].fd, buffer, 1024);
             do_remove_client(bytes, &server->addrs.clients[index]);
-            // get_cli_events(server, removing_line_break(buffer), index);
+            get_cli_events(server, removing_line_break(buffer), index);
             memset(buffer, '\0', sizeof(buffer));
         }
     }

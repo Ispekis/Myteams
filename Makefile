@@ -15,6 +15,7 @@ SERVER_SRC	=	$(SERVER_PATH)/main.c							\
 				$(SERVER_PATH)/init.c							\
 				$(SERVER_PATH)/client_management.c				\
 				$(SERVER_PATH)/cli_management.c					\
+				$(SERVER_PATH)/utils.c					\
 				$(SERVER_PATH)/commands/authentification_cmd.c	\
 				$(SERVER_PATH)/commands/communication_cmd.c		\
 				$(SERVER_PATH)/commands/informational_cmd.c		\

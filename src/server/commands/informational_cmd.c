@@ -9,12 +9,7 @@
 
 int show_help(server_t *server, char **params, int index)
 {
-    printf("help");
-    // if (!server->addrs.connections[index].is_logged) {
-    //     reply_format(server->addrs.connections[index].fd, CODE_530);
-    //     return 0;
-    // }
-    // reply_format(server->addrs.connections[index].fd, CODE_214);
+    printf("help\n");
     return 0;
 }
 

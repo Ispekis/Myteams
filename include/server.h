@@ -23,6 +23,10 @@
     #define TOTAL_CMD 15
     #define MAX_CONNECTIONS 100
 
+static const char *CMD_LIB[] = {"help", "login", "logout", "users", "user",
+"send", "messages", "subscribe", "subscribed", "unsubscribe", "use", "create",
+"list", "info", NULL};
+
     enum cmd_e {
         HELP,
         LOGIN,
@@ -72,6 +76,10 @@ int run_server(int port);
 int init_server(server_t *server, int port);
 void accept_client_to_server(sock_addrs_t *addrs);
 void read_from_client(server_t *server, int index);
+int get_cmd_pos(char *str);
+int get_cli_events(server_t *server, char* input, int index);
+char *removing_line_break(char *str);
+int str_to_array(char ***array, char *str, char *sep);
 
 // Commands
 
