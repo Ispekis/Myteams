@@ -9,11 +9,21 @@ SERVER_PATH	=	src/server
 
 CLIENT_PATH	=	src/client
 
-SERVER_SRC	=	$(SERVER_PATH)/main.c			\
-				$(SERVER_PATH)/error_handler.c	\
-				$(SERVER_PATH)/server.c			\
-				$(SERVER_PATH)/init.c			\
-				$(SERVER_PATH)/client_management.c
+SERVER_SRC	=	$(SERVER_PATH)/main.c							\
+				$(SERVER_PATH)/error_handler.c					\
+				$(SERVER_PATH)/server.c							\
+				$(SERVER_PATH)/init.c							\
+				$(SERVER_PATH)/client_management.c				\
+				$(SERVER_PATH)/cli_management.c					\
+				$(SERVER_PATH)/commands/authentification_cmd.c	\
+				$(SERVER_PATH)/commands/communication_cmd.c		\
+				$(SERVER_PATH)/commands/informational_cmd.c		\
+				$(SERVER_PATH)/commands/miscellaneous_cmd.c		\
+				$(SERVER_PATH)/commands/subscription_cmd.c		\
+				$(SERVER_PATH)/commands/use_cmd.c				\
+				$(SERVER_PATH)/commands/create_cmd.c			\
+				$(SERVER_PATH)/commands/list_cmd.c				\
+				$(SERVER_PATH)/commands/info_cmd.c
 
 CLIENT_SRC	=	$(CLIENT_PATH)/main.c	\
 				$(CLIENT_PATH)/error_handler.c
