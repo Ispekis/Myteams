@@ -14,7 +14,7 @@ int user_login(server_t *server, char **param, int index)
 
 int user_logout(server_t *server, char **param, int index)
 {
-    // reply_format(server->addrs.connections[index].fd, CODE_221);
+    // reply_format(server->addrs.clients[index].fd, C214);
     // close(server->addrs.connections[index].fd);
     // server->addrs.connections[index].fd = -1;
     // server->addrs.connections[index].data_fd = -1;

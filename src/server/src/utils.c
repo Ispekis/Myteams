@@ -55,3 +55,8 @@ int str_to_array(char ***array, char *str, char *sep)
     (*array)[index] = NULL;
     return len;
 }
+
+void reply_format(int fd, code_t code)
+{
+    dprintf(fd, "%i %s\n", code.code, code.msg);
+}

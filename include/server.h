@@ -27,49 +27,56 @@ static const char *CMD_LIB[] = {"help", "login", "logout", "users", "user",
 "send", "messages", "subscribe", "subscribed", "unsubscribe", "use", "create",
 "list", "info", NULL};
 
-    enum cmd_e {
-        HELP,
-        LOGIN,
-        LOGOUT,
-        USERS,
-        USER,
-        SEND,
-        MESSAGES,
-        SUBSCRIBE,
-        SUBSCRIBED,
-        UNSUBSCRIBE,
-        USE,
-        CREATE,
-        LIST,
-        INFO
-    };
+enum cmd_e {
+    HELP,
+    LOGIN,
+    LOGOUT,
+    USERS,
+    USER,
+    SEND,
+    MESSAGES,
+    SUBSCRIBE,
+    SUBSCRIBED,
+    UNSUBSCRIBE,
+    USE,
+    CREATE,
+    LIST,
+    INFO
+};
 
-    typedef struct client_s {
-        int fd;
-        bool is_logged;
-        bool is_anonyme;
-        int ambivalence;
-        struct sockaddr_in data_socket;
-        struct sockaddr_in data_client;
-        int data_fd;
-        char *pathname;
-    } client_t;
+typedef struct client_s {
+    int fd;
+    bool is_logged;
+    bool is_anonyme;
+    int ambivalence;
+    struct sockaddr_in data_socket;
+    struct sockaddr_in data_client;
+    int data_fd;
+    char *pathname;
+} client_t;
 
-    typedef struct sock_addrs {
-        struct sockaddr_in server;
-        struct timeval timeout;
-        int socket_fd;
-        int name;
-        int status;
-        char *pathname;
-        fd_set rfds;
-        client_t clients[MAX_CONNECTIONS];
-    } sock_addrs_t;
+typedef struct sock_addrs {
+    struct sockaddr_in server;
+    struct timeval timeout;
+    int socket_fd;
+    int name;
+    int status;
+    char *pathname;
+    fd_set rfds;
+    client_t clients[MAX_CONNECTIONS];
+} sock_addrs_t;
 
-    typedef struct server {
-        sock_addrs_t addrs;
-        int (*cmd[TOTAL_CMD])(struct server* server, char** param, int index);
-    } server_t;
+typedef struct server {
+    sock_addrs_t addrs;
+    int (*cmd[TOTAL_CMD])(struct server* server, char** param, int index);
+} server_t;
+
+typedef struct codes_s {
+    int code;
+    char *msg;
+} code_t;
+
+static const code_t C214 = {214, "Help message"};
 
 int error_handling(int ac, char **av);
 int run_server(int port);
@@ -80,6 +87,7 @@ int get_cmd_pos(char *str);
 int get_cli_events(server_t *server, char* input, int index);
 char *removing_line_break(char *str);
 int str_to_array(char ***array, char *str, char *sep);
+void reply_format(int fd, code_t code);
 
 // Commands
 

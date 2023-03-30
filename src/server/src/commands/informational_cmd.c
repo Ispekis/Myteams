@@ -9,7 +9,7 @@
 
 int show_help(server_t *server, char **params, int index)
 {
-    printf("help\n");
+    reply_format(server->addrs.clients[index].fd, C214);
     return 0;
 }
 

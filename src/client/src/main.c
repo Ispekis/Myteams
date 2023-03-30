@@ -5,7 +5,6 @@
 ** main
 */
 
-
 #include "client.h"
 
 void show_usage(char *binary, int fd)
