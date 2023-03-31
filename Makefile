@@ -9,9 +9,11 @@ SERVER_PATH	=	src/server
 
 CLIENT_PATH	=	src/client
 
-SERVER_SRC	=	$(SERVER_PATH)/main.c
+SERVER_SRC	=	$(SERVER_PATH)/main.c	\
+				$(SERVER_PATH)/error_handler.c
 
-CLIENT_SRC	=	$(CLIENT_PATH)/main.c
+CLIENT_SRC	=	$(CLIENT_PATH)/main.c	\
+				$(CLIENT_PATH)/error_handler.c
 
 TEST_FILES	=	tests/test_project.c
 
