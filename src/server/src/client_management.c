@@ -42,12 +42,13 @@ void read_from_client(server_t *server, int index)
 {
     char buffer[1024];
     size_t bytes = 0;
+
     if (FD_ISSET(server->addrs.clients[index].fd, &server->addrs.rfds)) {
         if (server->addrs.clients[index].fd >= 0 &&
         server->addrs.clients[index].fd != server->addrs.socket_fd) {
             bytes = read(server->addrs.clients[index].fd, buffer, 1024);
+            printf("%s\n", buffer);
             do_remove_client(bytes, &server->addrs.clients[index]);
-            get_cli_events(server, removing_line_break(buffer), index);
             memset(buffer, '\0', sizeof(buffer));
         }
     }

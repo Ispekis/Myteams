@@ -83,29 +83,8 @@ int run_server(int port);
 int init_server(server_t *server, int port);
 void accept_client_to_server(sock_addrs_t *addrs);
 void read_from_client(server_t *server, int index);
-int get_cmd_pos(char *str);
-int get_cli_events(server_t *server, char* input, int index);
 char *removing_line_break(char *str);
 int str_to_array(char ***array, char *str, char *sep);
 void reply_format(int fd, code_t code);
-
-// Commands
-
-int show_help(server_t *server, char **params, int index);
-
-int user_login(server_t *server, char **param, int index);
-int user_logout(server_t *server, char **param, int index);
-
-int send_message(server_t *server, char **param, int index);
-int list_messages(server_t *server, char **param, int index);
-
-int get_users(server_t *server, char **params, int index);
-int get_user(server_t *server, char **params, int index);
-
-int do_nothing(server_t *server, char **param, int index);
-
-int subscribe_client(server_t *server, char **param, int index);
-int list_subscribed(server_t *server, char **param, int index);
-int unsubscribe_client(server_t *server, char **param, int index);
 
 #endif /* !SERVER_H_ */

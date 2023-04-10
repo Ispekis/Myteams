@@ -9,7 +9,9 @@
 
 int show_help(client_t *client, char **params)
 {
-    // reply_format(client->addrs.clients[index].fd, C214);
+    printf("Available commands :\n");
+    printf("help login logout users send messages subscribe\n");
+    printf("subscribed unsubscribe use create list info\n");
     return 0;
 }
 

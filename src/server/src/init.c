@@ -34,28 +34,9 @@ static int create_socket_server(sock_addrs_t *addrs, int port)
     return 0;
 }
 
-static void init_commands(server_t *server)
-{
-    server->cmd[HELP] = show_help;
-    server->cmd[LOGIN] = user_login;
-    server->cmd[LOGOUT] = user_logout;
-    server->cmd[USERS] = get_users;
-    server->cmd[USER] = get_user;
-    server->cmd[SEND] = send_message;
-    server->cmd[MESSAGES] = list_messages;
-    server->cmd[SUBSCRIBE] = subscribe_client;
-    server->cmd[SUBSCRIBED] = list_subscribed;
-    server->cmd[UNSUBSCRIBE] = unsubscribe_client;
-    // server->cmd[USE] = ;
-    // server->cmd[CREATE] = ;
-    // server->cmd[LIST] = ;
-    // server->cmd[INFO] = ;
-}
-
 int init_server(server_t *server, int port)
 {
     if (create_socket_server(&server->addrs, port) == 1)
        return 1;
-    init_commands(server);
     return 0;
 }

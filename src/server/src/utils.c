@@ -17,16 +17,6 @@ char *removing_line_break(char *str)
     return str;
 }
 
-int get_cmd_pos(char *str)
-{
-    for (int i = 0; CMD_LIB[i] != NULL; i++) {
-        if (strcmp(str, CMD_LIB[i]) == 0) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 static int get_array_length(char *str, char *sep)
 {
     char *strToken = strtok(str, sep);

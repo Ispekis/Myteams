@@ -10,17 +10,7 @@ SRC	=	src/main.c							\
 		src/server.c							\
 		src/init.c							\
 		src/client_management.c				\
-		src/cli_management.c					\
 		src/utils.c							\
-		src/commands/authentification_cmd.c	\
-		src/commands/communication_cmd.c		\
-		src/commands/informational_cmd.c		\
-		src/commands/miscellaneous_cmd.c		\
-		src/commands/subscription_cmd.c		\
-		src/commands/use_cmd.c				\
-		src/commands/create_cmd.c			\
-		src/commands/list_cmd.c				\
-		src/commands/info_cmd.c
 
 NAME	=	myteams_server
 
