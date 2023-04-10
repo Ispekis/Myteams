@@ -37,6 +37,6 @@ static int create_socket_server(sock_addrs_t *addrs, int port)
 int init_server(server_t *server, int port)
 {
     if (create_socket_server(&server->addrs, port) == 1)
-       return 1;
+        return 1;
     return 0;
 }

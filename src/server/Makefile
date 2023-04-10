@@ -5,6 +5,8 @@
 ## Makefile
 ##
 
+PATH_TO_ROOT	=	../..
+
 SRC	=	src/main.c							\
 		src/error_handler.c					\
 		src/server.c							\
@@ -22,7 +24,7 @@ all:	$(NAME)
 
 $(NAME):	$(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(CPPFLAGS)
-	mv $(NAME) ../..
+	mv $(NAME) $(PATH_TO_ROOT)
 
 clean:
 	$(RM) $(OBJ)
@@ -30,7 +32,7 @@ clean:
 	$(RM) *.gcda
 
 fclean:	clean
-	$(RM) $(NAME)
+	$(RM) $(PATH_TO_ROOT)/$(NAME)
 
 re:	fclean all
 

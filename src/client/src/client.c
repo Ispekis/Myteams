@@ -23,8 +23,9 @@ int run_client(char *ip, int port)
         return 1;
     while (true) {
         re_setfds(&client);
-        if (select(FD_SETSIZE, &client.addrs.rfds, &client.addrs.wfds, &client.addrs.efds, NULL) < 0)
-           return 1;
+        if (select(FD_SETSIZE, &client.addrs.rfds, &client.addrs.wfds,
+        &client.addrs.efds, NULL) < 0)
+            return 1;
         read_client_cli(&client);
     }
     return 0;
