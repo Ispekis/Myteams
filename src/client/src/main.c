@@ -5,7 +5,6 @@
 ** main
 */
 
-
 #include "client.h"
 
 void show_usage(char *binary, int fd)
@@ -24,6 +23,8 @@ int main(int argc, char **argv)
         return 0;
     }
     if (error_handling(argc, argv) == 1)
+        return 84;
+    if (run_client(argv[1], atoi(argv[2])) == 1)
         return 84;
     return 0;
 }
