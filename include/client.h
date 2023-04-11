@@ -20,6 +20,7 @@
     #include <sys/select.h>
     #include <stdbool.h>
     #include <stdlib.h>
+    #include <dlfcn.h>
     #define TOTAL_CMD 15
     #define MAX_CONNECTIONS 100
 
@@ -58,6 +59,7 @@ typedef struct sock_addrs {
 typedef struct client {
     sock_addrs_t addrs;
     int (*cmd[TOTAL_CMD])(struct client* client, char** param);
+    void *handle;
 } client_t;
 
 int error_handling(int ac, char **av);

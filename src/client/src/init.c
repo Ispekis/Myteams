@@ -46,5 +46,8 @@ int init_client(client_t *client, char *ip, int port)
     if (create_socket_client(&client->addrs, ip, port) == 1)
         return 1;
     init_commands(client);
+    client->handle = dlopen("libs/myteams/libmyteams.so", RTLD_LAZY);
+    if (!client->handle)
+        return 1;
     return 0;
 }
