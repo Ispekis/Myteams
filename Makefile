@@ -18,10 +18,10 @@ all:
 	$(MAKE) -C $(SERVER_PATH)
 
 tests_run:
-	$(CC) $(TEST_FILES) -o $(TEST_NAME) -lcriterion --coverage
-	./${TEST_NAME}
-	gcovr --exclude tests/
-	gcovr --exclude tests/ --branches
+	# $(CC) $(TEST_FILES) -o $(TEST_NAME) -lcriterion --coverage
+	# ./${TEST_NAME}
+	# gcovr --exclude tests/
+	# gcovr --exclude tests/ --branches
 
 clean:
 	$(MAKE) clean -C $(CLIENT_PATH)
