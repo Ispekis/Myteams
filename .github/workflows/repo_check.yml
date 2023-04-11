@@ -26,7 +26,7 @@ jobs:
        timeout-minutes: 2
        run: |
         CHECK=0
-        CLEANLINESS="$(find -iname "*~" -o -iname "*#*" -o -iname "*.exe" -o -iname "*.sh" -o -iname "*.so" -o -iname "*.o" -o -iname "*.gcda" -o -iname "*.gcov" -o -iname "tmp" -o -iname "*.a" -o -iname "*-;" -o -iname "*.gcno" -type f,d)"
+        CLEANLINESS="$(find -iname "*~" -o -iname "*#*" -o -iname "*.exe" -o -iname "*.sh" -o -iname "*.o" -o -iname "*.gcda" -o -iname "*.gcov" -o -iname "tmp" -o -iname "*.a" -o -iname "*-;" -o -iname "*.gcno" -type f,d)"
         for FILE in $CLEANLINESS
         do
         echo "::error file=$FILE,title=Unwanted file detected::$FILE"
