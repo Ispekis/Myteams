@@ -28,6 +28,10 @@ static int listen_events(server_t *server)
     return 0;
 }
 
+static void destructor(server_t *server)
+{
+}
+
 int run_server(int port)
 {
     server_t server;
@@ -40,5 +44,6 @@ int run_server(int port)
             return 1;
         listen_events(&server);
     }
+    destructor(&server);
     return 0;
 }

@@ -7,12 +7,12 @@
 
 PATH_TO_ROOT	=	../..
 
-SRC	=	src/main.c							\
-		src/error_handler.c					\
-		src/server.c							\
-		src/init.c							\
-		src/client_management.c				\
-		src/utils.c							\
+SRC	=	src/main.c					\
+		src/error_handler.c			\
+		src/server.c				\
+		src/init.c					\
+		src/client_management.c		\
+		src/utils.c					\
 
 NAME	=	myteams_server
 
@@ -20,10 +20,12 @@ OBJ	=	$(SRC:.c=.o)
 
 CPPFLAGS	=	-I../../include
 
+LDFLAGS		=	-L../../libs/myteams -lmyteams
+
 all:	$(NAME)
 
 $(NAME):	$(OBJ)
-	$(CC) -o $(NAME) $(OBJ) $(CPPFLAGS)
+	$(CC) -o $(NAME) $(OBJ) $(CPPFLAGS) $(LDFLAGS)
 	mv $(NAME) $(PATH_TO_ROOT)
 
 clean:

@@ -29,10 +29,12 @@ OBJ	=	$(SRC:.c=.o)
 
 CPPFLAGS	=	-I../../include
 
+LDFLAGS		=	-L../../libs/myteams -lmyteams
+
 all:	$(NAME)
 
 $(NAME):	$(OBJ)
-	$(CC) -o $(NAME) $(OBJ) $(CPPFLAGS)
+	$(CC) -o $(NAME) $(OBJ) $(CPPFLAGS) $(LDFLAGS)
 	mv $(NAME) $(PATH_TO_ROOT)
 
 clean:

@@ -9,6 +9,7 @@
 
 int user_login(client_t *client, char **param)
 {
+    client_event_logged_in("ok", "ok");
     dprintf(client->addrs.server_fd, "used loging cmd");
     return 0;
 }

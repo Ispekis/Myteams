@@ -20,6 +20,8 @@
     #include <sys/select.h>
     #include <stdbool.h>
     #include <stdlib.h>
+    #include <dlfcn.h>
+    #include "../libs/myteams/logging_client.h"
     #define TOTAL_CMD 15
     #define MAX_CONNECTIONS 100
 
