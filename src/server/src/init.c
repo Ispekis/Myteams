@@ -38,8 +38,5 @@ int init_server(server_t *server, int port)
 {
     if (create_socket_server(&server->addrs, port) == 1)
         return 1;
-    server->handle = dlopen("libs/myteams/libmyteams.so", RTLD_LAZY);
-    if (!server->handle)
-        return 1;
     return 0;
 }

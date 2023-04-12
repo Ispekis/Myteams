@@ -17,7 +17,6 @@ static void re_setfds(client_t *client)
 
 void destructor(client_t *client)
 {
-    dlclose(client->handle);
 }
 
 int run_client(char *ip, int port)

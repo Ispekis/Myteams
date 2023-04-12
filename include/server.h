@@ -21,6 +21,7 @@
     #include <stdbool.h>
     #include <stdlib.h>
     #include <dlfcn.h>
+    #include "../libs/myteams/logging_server.h"
     #define TOTAL_CMD 15
     #define MAX_CONNECTIONS 100
 
@@ -70,8 +71,6 @@ typedef struct sock_addrs {
 typedef struct server {
     sock_addrs_t addrs;
     int (*cmd[TOTAL_CMD])(struct server* server, char** param, int index);
-    void *handle;
-
 } server_t;
 
 typedef struct codes_s {

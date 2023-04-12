@@ -29,7 +29,7 @@ OBJ	=	$(SRC:.c=.o)
 
 CPPFLAGS	=	-I../../include
 
-LDFLAGS		=	-ldl
+LDFLAGS		=	-L../../libs/myteams -lmyteams
 
 all:	$(NAME)
 

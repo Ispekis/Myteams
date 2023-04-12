@@ -30,7 +30,6 @@ static int listen_events(server_t *server)
 
 static void destructor(server_t *server)
 {
-    dlclose(server->handle);
 }
 
 int run_server(int port)
