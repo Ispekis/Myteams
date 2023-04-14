@@ -1,0 +1,83 @@
+name: repo_check
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+env:
+  EXECUTABLES: "myteams_server"
+
+jobs:
+  check_repository_cleanliness:
+   runs-on: ubuntu-latest
+   container:
+      image: epitechcontent/epitest-docker
+   steps:
+     - uses: actions/checkout@v2
+       with:
+         fetch-depth: 0
+     - name : Generate Error Annotation
+       timeout-minutes: 2
+       run: |
+        CHECK=0
+        CLEANLINESS="$(find -iname "*~" -o -iname "*#*" -o -iname "*.exe" -o -iname "*.sh" -o -iname "*.o" -o -iname "*.gcda" -o -iname "*.gcov" -o -iname "tmp" -o -iname "*.a" -o -iname "*-;" -o -iname "*.gcno" -type f,d)"
+        for FILE in $CLEANLINESS
+        do
+        echo "::error file=$FILE,title=Unwanted file detected::$FILE"
+        CHECK=1
+        done
+        if [ $CHECK == 1 ]
+        then
+          exit 1
+        fi
+  check_program_compilation:
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: check_make
+        run: |
+          make
+          IS_EXE="$(find *)"
+          for FILE in $IS_EXE
+          do
+          if [ $FILE == ${{ env.EXECUTABLES }} ]
+          then
+            test -x $FILE && exit 0 || echo "::error file=${{ env.EXECUTABLES }},title=Binary is not an executable::${{ env.EXECUTABLES }}" && exit 1
+          fi
+          done
+          echo "::error file=${{ env.EXECUTABLES }},title=Binary not found::${{ env.EXECUTABLES }}"
+          exit 1
+      - name: check_clean
+        run: |
+          make fclean
+          CHECK="$(find *)"
+          for FILE in $CHECK
+          do
+          if [ $FILE == ${{ env.EXECUTABLES }} ]
+          then
+            echo "::error file=${{ env.EXECUTABLES }},title=Binary is not cleared::${{ env.EXECUTABLES }}"
+            exit 1
+          fi
+          done
+  run_tests:
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: run_tests
+        timeout-minutes: 2
+        run: |
+          make tests_run

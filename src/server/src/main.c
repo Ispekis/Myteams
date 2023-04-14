@@ -22,5 +22,7 @@ int main(int argc, char **argv)
     }
     if (error_handling(argc, argv) == 1)
         return 84;
+    if (run_server(atoi(argv[1])) == 1)
+        return 84;
     return 0;
 }

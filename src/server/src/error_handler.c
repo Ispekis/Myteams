@@ -5,9 +5,9 @@
 ** error_handler
 */
 
-#include "client.h"
+#include "server.h"
 
-int isAllDigits(char *str)
+int is_all_digits(char *str)
 {
     for (int i = 0; str[i] != '\0'; i++) {
         if (isdigit(str[i]) == 0) {
@@ -19,10 +19,10 @@ int isAllDigits(char *str)
 
 int error_handling(int ac, char **av)
 {
-    if (ac != 3)
+    if (ac != 2)
         return 1;
-    if (isAllDigits(av[2]) == 1) {
-        dprintf(STDERR_FILENO, "'%s' is not a valid port number\n", av[2]);
+    if (is_all_digits(av[1]) == 1) {
+        dprintf(STDERR_FILENO, "'%s' is not a valid port number\n", av[1]);
         return 1;
     }
     return 0;
