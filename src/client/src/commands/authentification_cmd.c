@@ -7,10 +7,23 @@
 
 #include "client.h"
 
+typedef struct {
+    int type;
+    char *name;
+    int name_len;
+} login_packet;
+
 int user_login(client_t *client, char **param)
 {
+    login_packet lp;
+
+    lp.name = param[0];
     client_event_logged_in("ok", "ok");
-    dprintf(client->addrs.server_fd, "used loging cmd");
+    lp.type = LOGIN;
+    send(client->addrs.server_fd, &lp.type, sizeof(lp.type), 0);
+    lp.name_len = strlen(lp.name) + 1;
+    send(client->addrs.server_fd, &lp.name_len, sizeof(lp.name_len), 0);
+    send(client->addrs.server_fd, lp.name, lp.name_len, 0);
     return 0;
 }
 
