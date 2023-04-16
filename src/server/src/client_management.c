@@ -7,6 +7,12 @@
 
 #include "server.h"
 
+// typedef struct {
+//     int type;
+//     char *name;
+//     int name_len;
+// } data_packet;
+
 static void add_client(client_t *clients, int client_fd)
 {
     for (int i = 0; i < MAX_CONNECTIONS; i++) {
@@ -31,25 +37,33 @@ void accept_client_to_server(sock_addrs_t *addrs)
     }
 }
 
-static void do_remove_client(int bytes, client_t *client)
+static void do_remove_client(size_t bytes, client_t *client)
 {
-    if (bytes == -1) {
+    if (bytes <= 0) {
         client->fd = -1;
     }
+}
+
+static void recv_from_client(server_t *server, int index)
+{
+    size_t bytes = 0;
+    client_packet recv_data;
+
+    bytes = recv(server->addrs.clients[index].fd, &recv_data, sizeof(recv_data), 0);
+    if (bytes > 0)
+        server->receive[recv_data.type](server, index, recv_data);
+    else
+        do_remove_client(bytes, &server->addrs.clients[index]);
 }
 
 void read_from_client(server_t *server, int index)
 {
     char buffer[1024];
-    size_t bytes = 0;
 
     if (FD_ISSET(server->addrs.clients[index].fd, &server->addrs.rfds)) {
         if (server->addrs.clients[index].fd >= 0 &&
         server->addrs.clients[index].fd != server->addrs.socket_fd) {
-            bytes = read(server->addrs.clients[index].fd, buffer, 1024);
-            printf("%s\n", buffer);
-            do_remove_client(bytes, &server->addrs.clients[index]);
-            memset(buffer, '\0', sizeof(buffer));
+            recv_from_client(server, index);
         }
     }
 }

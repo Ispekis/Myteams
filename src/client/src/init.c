@@ -41,10 +41,17 @@ static void init_commands(client_t *client)
     client->cmd[INFO] = info_current_res;
 }
 
+static void init_receiver(client_t *client)
+{
+    client->receive[TYPE_LOGIN] = recv_login;
+}
+
 int init_client(client_t *client, char *ip, int port)
 {
     if (create_socket_client(&client->addrs, ip, port) == 1)
         return 1;
     init_commands(client);
+    init_receiver(client);
+    client->data.is_logged = false;
     return 0;
 }
