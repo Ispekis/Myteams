@@ -29,11 +29,12 @@ static void logout_user(user_t *user)
 int receive_logout(server_t *server, int index, client_packet recv_data)
 {
     for (int i = 0; i < server->data.nbr_users; i++) {
-        if (uuid_compare(server->data.users[i].uuid, recv_data.user_uuid) == 0)
+        if (uuid_compare(server->data.users[i].uuid,
+        recv_data.user_uuid) == 0) {
             logout_user(&server->data.users[i]);
             send_response(server->addrs.clients[index].fd,
             server->data.users[i]);
-
+        }
     }
     return 0;
 }
