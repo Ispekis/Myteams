@@ -7,21 +7,8 @@
 
 #ifndef CLIENT_H_
     #define CLIENT_H_
-    #include <unistd.h>
-    #include <stdio.h>
-    #include <string.h>
-    #include <unistd.h>
-    #include <ctype.h>
-    #include <sys/socket.h>
-    #include <netinet/in.h>
-    #include <netinet/ip.h>
-    #include <stddef.h>
-    #include <arpa/inet.h>
-    #include <sys/select.h>
-    #include <stdbool.h>
-    #include <stdlib.h>
-    #include <dlfcn.h>
     #include "../libs/myteams/logging_client.h"
+    #include "shared.h"
     #define TOTAL_CMD 15
     #define MAX_CONNECTIONS 100
 
@@ -102,5 +89,7 @@ int list_sub_res(client_t *client, char **param);
 int info_current_res(client_t *client, char **param);
 
 int create_sub_res(client_t *client, char **param);
+
+void read_server(client_t *client);
 
 #endif /* !CLIENT_H_ */

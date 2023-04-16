@@ -13,6 +13,7 @@ static void re_setfds(client_t *client)
     FD_ZERO(&client->addrs.wfds);
     FD_ZERO(&client->addrs.efds);
     FD_SET(STDIN_FILENO, &client->addrs.rfds);
+    FD_SET(client->addrs.server_fd, &client->addrs.rfds);
 }
 
 void destructor(client_t *client)
@@ -31,6 +32,7 @@ int run_client(char *ip, int port)
         &client.addrs.efds, NULL) < 0)
             return 1;
         read_client_cli(&client);
+        read_server(&client);
     }
     destructor(&client);
     return 0;

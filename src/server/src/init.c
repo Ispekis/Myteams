@@ -34,9 +34,23 @@ static int create_socket_server(sock_addrs_t *addrs, int port)
     return 0;
 }
 
+static void init_receiver(server_t *server)
+{
+    server->receive[TYPE_LOGIN] = receive_login;
+    server->receive[TYPE_LOGOUT] = receive_logout;
+}
+
+static void init_data(server_t *server)
+{
+    server->data.nbr_users = 0;
+    server->data.users = malloc(sizeof(user_t));
+}
+
 int init_server(server_t *server, int port)
 {
     if (create_socket_server(&server->addrs, port) == 1)
         return 1;
+    init_receiver(server);
+    init_data(server);
     return 0;
 }

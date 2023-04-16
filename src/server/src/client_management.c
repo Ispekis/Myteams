@@ -7,11 +7,11 @@
 
 #include "server.h"
 
-typedef struct {
-    int type;
-    char *name;
-    int name_len;
-} login_packet;
+// typedef struct {
+//     int type;
+//     char *name;
+//     int name_len;
+// } data_packet;
 
 static void add_client(client_t *clients, int client_fd)
 {
@@ -44,30 +44,29 @@ static void do_remove_client(int bytes, client_t *client)
     }
 }
 
-void login_client(server_t *server, int index)
-{
-    login_packet data;
+// void login_client(server_t *server, int index)
+// {
+//     login_packet data;
 
-    recv(server->addrs.clients[index].fd, &data.name_len, sizeof(data.name_len), 0);
-    char* name = malloc(data.name_len);
-    recv(server->addrs.clients[index].fd, name, data.name_len, 0);
-    data.name = name;
-    printf("data = %s\n", data.name);
-}
+//     recv(server->addrs.clients[index].fd, &data.name_len, sizeof(data.name_len), 0);
+//     char* name = malloc(data.name_len);
+//     recv(server->addrs.clients[index].fd, name, data.name_len, 0);
+//     data.name = name;
+//     printf("data = %s\n", data.name);
+// }
 
 void read_from_client(server_t *server, int index)
 {
     char buffer[1024];
     size_t bytes = 0;
-    login_packet data;
 
     if (FD_ISSET(server->addrs.clients[index].fd, &server->addrs.rfds)) {
         if (server->addrs.clients[index].fd >= 0 &&
         server->addrs.clients[index].fd != server->addrs.socket_fd) {
             int type;
             recv(server->addrs.clients[index].fd, &type, sizeof(type), 0);
-            printf("type = %i\n", type);
-            login_client(server, index);
+            server->receive[type](server, index);
+            // login_client(server, index);
             // recv(server->addrs.clients[index].fd, &data.name_len, sizeof(data.name_len), 0);
             // char* name = malloc(data.name_len);
             // recv(server->addrs.clients[index].fd, name, data.name_len, 0);

@@ -7,22 +7,11 @@
 
 #ifndef SERVER_H_
     #define SERVER_H_
-    #include <unistd.h>
-    #include <stdio.h>
-    #include <string.h>
-    #include <unistd.h>
-    #include <ctype.h>
-    #include <sys/socket.h>
-    #include <netinet/in.h>
-    #include <netinet/ip.h>
-    #include <stddef.h>
-    #include <arpa/inet.h>
-    #include <sys/select.h>
-    #include <stdbool.h>
-    #include <stdlib.h>
-    #include <dlfcn.h>
+    #include <uuid/uuid.h>
     #include "../libs/myteams/logging_server.h"
+    #include "shared.h"
     #define TOTAL_CMD 15
+    #define TOTAL_TYPE 2
     #define MAX_CONNECTIONS 100
 
 static const char *CMD_LIB[] = {"help", "login", "logout", "users", "user",
@@ -68,9 +57,21 @@ typedef struct sock_addrs {
     client_t clients[MAX_CONNECTIONS];
 } sock_addrs_t;
 
+typedef struct user {
+    char *name;
+    uuid_t uuid;
+} user_t;
+
+typedef struct data {
+    user_t *users;
+    int nbr_users;
+} data_t;
+
 typedef struct server {
     sock_addrs_t addrs;
+    data_t data;
     int (*cmd[TOTAL_CMD])(struct server* server, char** param, int index);
+    int (*receive[TOTAL_TYPE])(struct server* server, int index);
 } server_t;
 
 typedef struct codes_s {
@@ -88,5 +89,9 @@ void read_from_client(server_t *server, int index);
 char *removing_line_break(char *str);
 int str_to_array(char ***array, char *str, char *sep);
 void reply_format(int fd, code_t code);
+
+// Receiver
+int receive_login(server_t *server, int index);
+int receive_logout(server_t *server, int index);
 
 #endif /* !SERVER_H_ */

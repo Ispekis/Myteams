@@ -11,19 +11,18 @@ typedef struct {
     int type;
     char *name;
     int name_len;
-} login_packet;
+} client_packet;
 
 int user_login(client_t *client, char **param)
 {
-    login_packet lp;
+    client_packet packet;
 
-    lp.name = param[0];
-    client_event_logged_in("ok", "ok");
-    lp.type = LOGIN;
-    send(client->addrs.server_fd, &lp.type, sizeof(lp.type), 0);
-    lp.name_len = strlen(lp.name) + 1;
-    send(client->addrs.server_fd, &lp.name_len, sizeof(lp.name_len), 0);
-    send(client->addrs.server_fd, lp.name, lp.name_len, 0);
+    packet.type = TYPE_LOGIN;
+    packet.name = param[0];
+    packet.name_len = strlen(packet.name) + 1;
+    send(client->addrs.server_fd, &packet.type, sizeof(packet.type), 0);
+    send(client->addrs.server_fd, &packet.name_len, sizeof(packet.name_len), 0);
+    send(client->addrs.server_fd, packet.name, packet.name_len, 0);
     return 0;
 }
 
