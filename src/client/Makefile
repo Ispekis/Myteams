@@ -23,7 +23,8 @@ SRC	=	src/main.c								\
 		src/commands/list_cmd.c					\
 		src/commands/info_cmd.c					\
 		src/receiver/login.c					\
-		src/receiver/read_server.c
+		src/receiver/read_server.c				\
+		src/receiver/logout.c
 
 NAME	=	myteams_cli
 
@@ -31,7 +32,7 @@ OBJ	=	$(SRC:.c=.o)
 
 CPPFLAGS	=	-I../../include
 
-LDFLAGS		=	-L../../libs/myteams -lmyteams
+LDFLAGS		=	-L../../libs/myteams -lmyteams -luuid
 
 all:	$(NAME)
 

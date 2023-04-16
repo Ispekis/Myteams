@@ -7,7 +7,6 @@
 
 #ifndef SERVER_H_
     #define SERVER_H_
-    #include <uuid/uuid.h>
     #include "../libs/myteams/logging_server.h"
     #include "shared.h"
     #define TOTAL_CMD 15
@@ -36,13 +35,6 @@ enum cmd_e {
 
 typedef struct client_s {
     int fd;
-    bool is_logged;
-    bool is_anonyme;
-    int ambivalence;
-    struct sockaddr_in data_socket;
-    struct sockaddr_in data_client;
-    int data_fd;
-    char *pathname;
 } client_t;
 
 typedef struct sock_addrs {
@@ -59,6 +51,7 @@ typedef struct sock_addrs {
 typedef struct user {
     char *name;
     uuid_t uuid;
+    bool is_logged;
 } user_t;
 
 typedef struct data {

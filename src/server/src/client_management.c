@@ -49,11 +49,13 @@ static void recv_from_client(server_t *server, int index)
     size_t bytes = 0;
     client_packet recv_data;
 
-    bytes = recv(server->addrs.clients[index].fd, &recv_data, sizeof(recv_data), 0);
-    if (bytes > 0)
+    bytes = recv(server->addrs.clients[index].fd, &recv_data,
+    sizeof(recv_data), 0);
+    if (bytes > 0) {
         server->receive[recv_data.type](server, index, recv_data);
-    else
+    } else {
         do_remove_client(bytes, &server->addrs.clients[index]);
+    }
 }
 
 void read_from_client(server_t *server, int index)

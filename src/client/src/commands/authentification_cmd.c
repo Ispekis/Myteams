@@ -26,6 +26,14 @@ int user_login(client_t *client, char **param)
 
 int user_logout(client_t *client, char **param)
 {
-    dprintf(client->addrs.server_fd, "used logout cmd");
+    client_packet packet;
+
+    if (!client->data.is_logged) {
+        printf("Not logged\n");
+        return 0;
+    }
+    packet.type = TYPE_LOGOUT;
+    uuid_copy(packet.user_uuid, client->data.user_uuid);
+    send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }
