@@ -21,6 +21,10 @@
     #include <stdbool.h>
     #include <stdlib.h>
     #include <dlfcn.h>
+    #define TOTAL_TYPE 2
+    #define MAX_NAME_LENGTH 32
+    #define MAX_DESCRIPTION_LENGTH 255
+    #define MAX_BODY_LENGTH 512
 
 enum PACKET_TYPE {
     TYPE_LOGIN,
@@ -30,10 +34,15 @@ enum PACKET_TYPE {
 typedef struct server_packet {
     int type;
     int user_uuid_len;
-    char *user_uuid;
+    char user_uuid[MAX_DESCRIPTION_LENGTH];
     int user_name_len;
-    char *user_name;
+    char user_name[MAX_NAME_LENGTH];
 } __attribute__((packed)) server_packet;
 
+typedef struct client_packet {
+    int type;
+    char user_name[MAX_NAME_LENGTH];
+    int name_len;
+} __attribute__((packed)) client_packet;
 
 #endif /* !SHARED_H_ */

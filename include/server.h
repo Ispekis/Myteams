@@ -11,7 +11,6 @@
     #include "../libs/myteams/logging_server.h"
     #include "shared.h"
     #define TOTAL_CMD 15
-    #define TOTAL_TYPE 2
     #define MAX_CONNECTIONS 100
 
 static const char *CMD_LIB[] = {"help", "login", "logout", "users", "user",
@@ -71,7 +70,7 @@ typedef struct server {
     sock_addrs_t addrs;
     data_t data;
     int (*cmd[TOTAL_CMD])(struct server* server, char** param, int index);
-    int (*receive[TOTAL_TYPE])(struct server* server, int index);
+    int (*receive[TOTAL_TYPE])(struct server* server, int index, client_packet recv_data);
 } server_t;
 
 typedef struct codes_s {
@@ -91,7 +90,7 @@ int str_to_array(char ***array, char *str, char *sep);
 void reply_format(int fd, code_t code);
 
 // Receiver
-int receive_login(server_t *server, int index);
-int receive_logout(server_t *server, int index);
+int receive_login(server_t *server, int index, client_packet recv_data);
+int receive_logout(server_t *server, int index, client_packet recv_data);
 
 #endif /* !SERVER_H_ */

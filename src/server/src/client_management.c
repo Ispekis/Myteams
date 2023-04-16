@@ -37,44 +37,33 @@ void accept_client_to_server(sock_addrs_t *addrs)
     }
 }
 
-static void do_remove_client(int bytes, client_t *client)
+static void do_remove_client(size_t bytes, client_t *client)
 {
-    if (bytes == -1) {
+    if (bytes <= 0) {
         client->fd = -1;
     }
 }
 
-// void login_client(server_t *server, int index)
-// {
-//     login_packet data;
+static void recv_from_client(server_t *server, int index)
+{
+    size_t bytes = 0;
+    client_packet recv_data;
 
-//     recv(server->addrs.clients[index].fd, &data.name_len, sizeof(data.name_len), 0);
-//     char* name = malloc(data.name_len);
-//     recv(server->addrs.clients[index].fd, name, data.name_len, 0);
-//     data.name = name;
-//     printf("data = %s\n", data.name);
-// }
+    bytes = recv(server->addrs.clients[index].fd, &recv_data, sizeof(recv_data), 0);
+    if (bytes > 0)
+        server->receive[recv_data.type](server, index, recv_data);
+    else
+        do_remove_client(bytes, &server->addrs.clients[index]);
+}
 
 void read_from_client(server_t *server, int index)
 {
     char buffer[1024];
-    size_t bytes = 0;
 
     if (FD_ISSET(server->addrs.clients[index].fd, &server->addrs.rfds)) {
         if (server->addrs.clients[index].fd >= 0 &&
         server->addrs.clients[index].fd != server->addrs.socket_fd) {
-            int type;
-            recv(server->addrs.clients[index].fd, &type, sizeof(type), 0);
-            server->receive[type](server, index);
-            // login_client(server, index);
-            // recv(server->addrs.clients[index].fd, &data.name_len, sizeof(data.name_len), 0);
-            // char* name = malloc(data.name_len);
-            // recv(server->addrs.clients[index].fd, name, data.name_len, 0);
-            // data.name = name;
-            // printf("data = %s\n", data.name);
-            // bytes = recv(server->addrs.clients[index].fd, &dl, sizeof(dl), 0);
-            // do_remove_client(bytes, &server->addrs.clients[index]);
-            // memset(buffer, '\0', sizeof(buffer));
+            recv_from_client(server, index);
         }
     }
 }

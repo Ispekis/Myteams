@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-int receive_logout(server_t *server, int index)
+int receive_logout(server_t *server, int index, client_packet recv_data)
 {
     return 0;
 }

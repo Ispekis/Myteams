@@ -44,9 +44,16 @@ typedef struct sock_addrs {
     fd_set efds;
 } sock_addrs_t;
 
+typedef struct data_s {
+    bool is_logged;
+} data_t;
+
 typedef struct client {
     sock_addrs_t addrs;
+    data_t data;
     int (*cmd[TOTAL_CMD])(struct client* client, char** param);
+    int (*receive[TOTAL_TYPE])(struct client* client, server_packet recv_data);
+
 } client_t;
 
 int error_handling(int ac, char **av);
@@ -91,5 +98,8 @@ int info_current_res(client_t *client, char **param);
 int create_sub_res(client_t *client, char **param);
 
 void read_server(client_t *client);
+
+
+int recv_login(client_t *client, server_packet recv_data);
 
 #endif /* !CLIENT_H_ */

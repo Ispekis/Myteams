@@ -10,8 +10,9 @@
 void read_server(client_t *client)
 {
     server_packet recv_data;
+
     if (FD_ISSET(client->addrs.server_fd, &client->addrs.rfds)) {
         recv(client->addrs.server_fd, &recv_data, sizeof(recv_data), 0);
-        printf("%i\n", recv_data.user_name_len);
+        client->receive[recv_data.type](client, recv_data);
     }
 }

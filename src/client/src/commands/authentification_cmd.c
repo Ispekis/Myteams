@@ -7,22 +7,20 @@
 
 #include "client.h"
 
-typedef struct {
-    int type;
-    char *name;
-    int name_len;
-} client_packet;
-
 int user_login(client_t *client, char **param)
 {
     client_packet packet;
 
+    if (param[0] == NULL)
+        return 0;
+    if (client->data.is_logged) {
+        printf("Already logged\n");
+        return 0;
+    }
     packet.type = TYPE_LOGIN;
-    packet.name = param[0];
-    packet.name_len = strlen(packet.name) + 1;
-    send(client->addrs.server_fd, &packet.type, sizeof(packet.type), 0);
-    send(client->addrs.server_fd, &packet.name_len, sizeof(packet.name_len), 0);
-    send(client->addrs.server_fd, packet.name, packet.name_len, 0);
+    strcpy(packet.user_name, param[0]);
+    packet.name_len = strlen(param[0]) + 1;
+    send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }
 
