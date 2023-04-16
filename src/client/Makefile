@@ -31,7 +31,7 @@ OBJ	=	$(SRC:.c=.o)
 
 CPPFLAGS	=	-I../../include
 
-LDFLAGS		=	-L../../libs/myteams -lmyteams
+LDFLAGS		=	-L../../libs/myteams -lmyteams -luuid
 
 all:	$(NAME)
 

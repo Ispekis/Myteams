@@ -32,9 +32,8 @@ static int send_response(int client_fd, char *name, char *uuid)
     server_event_user_logged_in(uuid);
     data.type = TYPE_LOGIN;
     data.user_name_len = strlen(name) + 1;
-    data.user_uuid_len = strlen(uuid) + 1;
     strcpy(data.user_name, name);
-    strcpy(data.user_uuid, uuid);
+    data.user_uuid, uuid_parse(uuid, data.user_uuid);
     send(client_fd, &data, sizeof(data), 0);
     return 0;
 }

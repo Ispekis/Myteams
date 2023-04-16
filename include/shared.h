@@ -21,6 +21,7 @@
     #include <stdbool.h>
     #include <stdlib.h>
     #include <dlfcn.h>
+    #include <uuid/uuid.h>
     #define TOTAL_TYPE 2
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
@@ -33,8 +34,7 @@ enum PACKET_TYPE {
 
 typedef struct server_packet {
     int type;
-    int user_uuid_len;
-    char user_uuid[MAX_DESCRIPTION_LENGTH];
+    uuid_t user_uuid;
     int user_name_len;
     char user_name[MAX_NAME_LENGTH];
 } __attribute__((packed)) server_packet;

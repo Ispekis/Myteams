@@ -46,6 +46,8 @@ typedef struct sock_addrs {
 
 typedef struct data_s {
     bool is_logged;
+    char user_name[MAX_NAME_LENGTH];
+    uuid_t user_uuid;
 } data_t;
 
 typedef struct client {

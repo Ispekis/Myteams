@@ -7,7 +7,6 @@
 
 #ifndef SERVER_H_
     #define SERVER_H_
-    #include <uuid/uuid.h>
     #include "../libs/myteams/logging_server.h"
     #include "shared.h"
     #define TOTAL_CMD 15
