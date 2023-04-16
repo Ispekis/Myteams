@@ -46,6 +46,8 @@ typedef struct sock_addrs {
 
 typedef struct data_s {
     bool is_logged;
+    char user_name[MAX_NAME_LENGTH];
+    uuid_t user_uuid;
 } data_t;
 
 typedef struct client {
@@ -97,9 +99,10 @@ int info_current_res(client_t *client, char **param);
 
 int create_sub_res(client_t *client, char **param);
 
-void read_server(client_t *client);
-
+int read_server(client_t *client);
 
 int recv_login(client_t *client, server_packet recv_data);
+
+int recv_logout(client_t *client, server_packet recv_data);
 
 #endif /* !CLIENT_H_ */

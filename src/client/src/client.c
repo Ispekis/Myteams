@@ -32,7 +32,8 @@ int run_client(char *ip, int port)
         &client.addrs.efds, NULL) < 0)
             return 1;
         read_client_cli(&client);
-        read_server(&client);
+        if (read_server(&client) == 1)
+            break;
     }
     destructor(&client);
     return 0;
