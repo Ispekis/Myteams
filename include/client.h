@@ -104,4 +104,6 @@ void read_server(client_t *client);
 
 int recv_login(client_t *client, server_packet recv_data);
 
+int recv_logout(client_t *client, server_packet recv_data);
+
 #endif /* !CLIENT_H_ */

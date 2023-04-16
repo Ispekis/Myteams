@@ -43,6 +43,7 @@ typedef struct client_packet {
     int type;
     char user_name[MAX_NAME_LENGTH];
     int name_len;
+    uuid_t user_uuid;
 } __attribute__((packed)) client_packet;
 
 #endif /* !SHARED_H_ */

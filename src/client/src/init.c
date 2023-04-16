@@ -44,6 +44,7 @@ static void init_commands(client_t *client)
 static void init_receiver(client_t *client)
 {
     client->receive[TYPE_LOGIN] = recv_login;
+    client->receive[TYPE_LOGOUT] = recv_logout;
 }
 
 int init_client(client_t *client, char *ip, int port)
