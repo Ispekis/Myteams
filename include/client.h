@@ -99,8 +99,7 @@ int info_current_res(client_t *client, char **param);
 
 int create_sub_res(client_t *client, char **param);
 
-void read_server(client_t *client);
-
+int read_server(client_t *client);
 
 int recv_login(client_t *client, server_packet recv_data);
 
