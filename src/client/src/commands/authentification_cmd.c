@@ -18,7 +18,7 @@ int user_login(client_t *client, char **param)
         return 0;
     }
     packet.type = TYPE_LOGIN;
-    strcpy(packet.user_name, param[0]);
+    strcpy(packet.name, param[0]);
     packet.name_len = strlen(param[0]) + 1;
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;

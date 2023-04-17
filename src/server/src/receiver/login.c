@@ -32,7 +32,7 @@ static int send_response(int client_fd, char *name, char *uuid)
     server_event_user_logged_in(uuid);
     data.type = TYPE_LOGIN;
     data.user_name_len = strlen(name) + 1;
-    strcpy(data.user_name, name);
+    strcpy(data.name, name);
     data.user_uuid, uuid_parse(uuid, data.user_uuid);
     send(client_fd, &data, sizeof(data), 0);
     return 0;
@@ -49,7 +49,7 @@ int receive_login(server_t *server, int index, client_packet recv_data)
     char uuid_str[37];
 
     for (int i = 0; i < server->data.nbr_users; i++)
-        if (strcmp(server->data.users[i].name, recv_data.user_name) == 0) {
+        if (strcmp(server->data.users[i].name, recv_data.name) == 0) {
             uuid_unparse(server->data.users[i].uuid, uuid_str);
             connect_user(&server->data.users[i],
             server->addrs.clients[index].fd);
@@ -57,7 +57,7 @@ int receive_login(server_t *server, int index, client_packet recv_data)
             server->data.users[i].name, uuid_str);
             return 0;
         }
-    create_user(server, index, recv_data.user_name);
+    create_user(server, index, recv_data.name);
     connect_user(&server->data.users[server->data.nbr_users - 1],
     server->addrs.clients[index].fd);
     uuid_unparse(server->data.users[server->data.nbr_users - 1].uuid, uuid_str);

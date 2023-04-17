@@ -47,8 +47,9 @@ enum PACKET_TYPE {
 typedef struct server_packet {
     int type;
     uuid_t user_uuid;
+    uuid_t channel_uuid;
     int user_name_len;
-    char user_name[MAX_NAME_LENGTH];
+    char name[MAX_NAME_LENGTH];
     char message[MAX_MESSAGE_LENGTH];
     int message_len;
     uuid_t dest_uuid;
@@ -57,7 +58,7 @@ typedef struct server_packet {
 
 typedef struct client_packet {
     int type;
-    char user_name[MAX_NAME_LENGTH];
+    char name[MAX_NAME_LENGTH];
     int name_len;
     uuid_t user_uuid;
     char message[MAX_MESSAGE_LENGTH];
