@@ -22,17 +22,18 @@
     #include <stdlib.h>
     #include <dlfcn.h>
     #include <uuid/uuid.h>
-    #define TOTAL_TYPE 2
+    #define TOTAL_TYPE 3
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
     #define MAX_BODY_LENGTH 512
+    #define MAX_MESSAGE_LENGTH 255
 
 enum PACKET_TYPE {
     TYPE_LOGIN,
     TYPE_LOGOUT,
+    TYPE_SEND,
     TYPE_USERS,
     TYPE_USER,
-    TYPE_SEND,
     TYPE_MESSAGES,
     TYPE_SUBSCRIBE,
     TYPE_SUBSCRIBED,
@@ -48,6 +49,10 @@ typedef struct server_packet {
     uuid_t user_uuid;
     int user_name_len;
     char user_name[MAX_NAME_LENGTH];
+    char message[MAX_MESSAGE_LENGTH];
+    int message_len;
+    uuid_t dest_uuid;
+    char description[MAX_MESSAGE_LENGTH];
 } __attribute__((packed)) server_packet;
 
 typedef struct client_packet {
@@ -55,6 +60,10 @@ typedef struct client_packet {
     char user_name[MAX_NAME_LENGTH];
     int name_len;
     uuid_t user_uuid;
+    char message[MAX_MESSAGE_LENGTH];
+    int message_len;
+    uuid_t dest_uuid;
+    char description[MAX_MESSAGE_LENGTH];
 } __attribute__((packed)) client_packet;
 
 #endif /* !SHARED_H_ */

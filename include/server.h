@@ -52,6 +52,7 @@ typedef struct user {
     char *name;
     uuid_t uuid;
     bool is_logged;
+    int current_fd;
 } user_t;
 
 typedef struct data {
@@ -63,7 +64,8 @@ typedef struct server {
     sock_addrs_t addrs;
     data_t data;
     int (*cmd[TOTAL_CMD])(struct server* server, char** param, int index);
-    int (*receive[TOTAL_TYPE])(struct server* server, int index, client_packet recv_data);
+    int (*receive[TOTAL_TYPE])(struct server* server,
+    int index, client_packet recv_data);
 } server_t;
 
 typedef struct codes_s {
@@ -85,5 +87,7 @@ void reply_format(int fd, code_t code);
 // Receiver
 int receive_login(server_t *server, int index, client_packet recv_data);
 int receive_logout(server_t *server, int index, client_packet recv_data);
+int receive_send(server_t *server, int index, client_packet recv_data);
+int receive_users(server_t *server, int index, client_packet recv_data);
 
 #endif /* !SERVER_H_ */
