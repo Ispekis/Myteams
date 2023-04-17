@@ -9,14 +9,12 @@
 
 int create_user(server_t *server, int index, char* name)
 {
-    user_t* new_user = realloc(server->data.users,
-    (server->data.nbr_users + 1) * sizeof(user_t));
-    if (new_user == NULL)
-        return 1;
+    // user_t* new_user = realloc(server->data.users,
+    // (server->data.nbr_users + 1) * sizeof(user_t));
+    // if (new_user == NULL)
+    //     return 1;
 
-    server->data.users = new_user;
-    server->data.users[server->data.nbr_users].name =
-    malloc(sizeof(char) * (strlen(name) + 1));
+    // server->data.users = new_user;
     if (server->data.users[server->data.nbr_users].name == NULL)
         return 1;
     strcpy(server->data.users[server->data.nbr_users].name, name);

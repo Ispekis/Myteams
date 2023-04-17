@@ -63,5 +63,6 @@ int init_server(server_t *server, int port)
         return 1;
     init_receiver(server);
     init_data(server);
+    load_save(server);
     return 0;
 }
