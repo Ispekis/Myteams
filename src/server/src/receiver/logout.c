@@ -24,6 +24,7 @@ static void logout_user(user_t *user)
     uuid_unparse(user->uuid, uuid_str);
     server_event_user_logged_out(uuid_str);
     user->is_logged = false;
+    user->current_fd = -1;
 }
 
 int receive_logout(server_t *server, int index, client_packet recv_data)

@@ -9,5 +9,16 @@
 
 int create_sub_res(client_t *client, char **param)
 {
+    client_packet packet;
 
+    if (!client->data.is_logged) {
+        printf("Not logged\n");
+        return 0;
+    }
+
+    if (param[0] == NULL || param[1] == NULL) {
+        printf("Invalid arguments\n");
+        return 0;
+    }
+    return 0;
 }

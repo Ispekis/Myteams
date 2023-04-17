@@ -38,9 +38,10 @@ static int send_response(int client_fd, char *name, char *uuid)
     return 0;
 }
 
-static void connect_user(user_t *user)
+static void connect_user(user_t *user, int fd)
 {
     user->is_logged = true;
+    user->current_fd = fd;
 }
 
 int receive_login(server_t *server, int index, client_packet recv_data)
@@ -50,13 +51,15 @@ int receive_login(server_t *server, int index, client_packet recv_data)
     for (int i = 0; i < server->data.nbr_users; i++)
         if (strcmp(server->data.users[i].name, recv_data.user_name) == 0) {
             uuid_unparse(server->data.users[i].uuid, uuid_str);
-            connect_user(&server->data.users[i]);
+            connect_user(&server->data.users[i],
+            server->addrs.clients[index].fd);
             send_response(server->addrs.clients[index].fd,
             server->data.users[i].name, uuid_str);
             return 0;
         }
     create_user(server, index, recv_data.user_name);
-    connect_user(&server->data.users[server->data.nbr_users - 1]);
+    connect_user(&server->data.users[server->data.nbr_users - 1],
+    server->addrs.clients[index].fd);
     uuid_unparse(server->data.users[server->data.nbr_users - 1].uuid, uuid_str);
     send_response(server->addrs.clients[index].fd,
     server->data.users[server->data.nbr_users - 1].name, uuid_str);
