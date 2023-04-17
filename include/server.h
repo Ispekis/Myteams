@@ -8,6 +8,7 @@
 #ifndef SERVER_H_
     #define SERVER_H_
     #include "../libs/myteams/logging_server.h"
+    #include "../libs/myteams/logging_client.h"
     #include "shared.h"
     #define TOTAL_CMD 15
     #define MAX_CONNECTIONS 100
@@ -54,9 +55,21 @@ typedef struct user {
     bool is_logged;
 } user_t;
 
+typedef struct channel {
+    char *name;
+    uuid_t uuid;
+} channel_t;
+
+typedef struct thread {
+    uuid_t message_uuid;
+    uuid_t uuid;
+} thread_t;
+
 typedef struct data {
     user_t *users;
     int nbr_users;
+    channel_t *channel;
+    int nbr_channel;
 } data_t;
 
 typedef struct server {
@@ -85,5 +98,6 @@ void reply_format(int fd, code_t code);
 // Receiver
 int receive_login(server_t *server, int index, client_packet recv_data);
 int receive_logout(server_t *server, int index, client_packet recv_data);
+int receive_users(server_t *server, int index, client_packet recv_data);
 
 #endif /* !SERVER_H_ */

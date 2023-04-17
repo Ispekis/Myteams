@@ -14,7 +14,8 @@ SRC	=	src/main.c					\
 		src/client_management.c		\
 		src/utils.c					\
 		src/receiver/login.c		\
-		src/receiver/logout.c
+		src/receiver/logout.c		\
+		src/receiver/get_users.c	\
 
 NAME	=	myteams_server
 
