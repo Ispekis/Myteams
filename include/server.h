@@ -25,7 +25,7 @@ static const char *CMD_LIB[] = {"help", "login", "logout", "users", "user",
 "send", "messages", "subscribe", "subscribed", "unsubscribe", "use", "create",
 "list", "info", NULL};
 
-static const char *save_file_name = "server.sav";
+static const char *save_file_name = "server.data";
 
 enum cmd_e {
     HELP,
