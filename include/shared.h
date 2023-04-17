@@ -29,7 +29,18 @@
 
 enum PACKET_TYPE {
     TYPE_LOGIN,
-    TYPE_LOGOUT
+    TYPE_LOGOUT,
+    TYPE_USERS,
+    TYPE_USER,
+    TYPE_SEND,
+    TYPE_MESSAGES,
+    TYPE_SUBSCRIBE,
+    TYPE_SUBSCRIBED,
+    TYPE_UNSUBSCRIBE,
+    TYPE_USE,
+    TYPE_CREATE,
+    TYPE_LIST,
+    TYPE_INFO,
 };
 
 typedef struct server_packet {
