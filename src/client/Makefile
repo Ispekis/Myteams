@@ -19,12 +19,15 @@ SRC	=	src/main.c								\
 		src/commands/miscellaneous_cmd.c		\
 		src/commands/subscription_cmd.c			\
 		src/commands/use_cmd.c					\
+		src/commands/user_cmd.c					\
 		src/commands/create_cmd.c				\
 		src/commands/list_cmd.c					\
 		src/commands/info_cmd.c					\
 		src/receiver/login.c					\
 		src/receiver/read_server.c				\
-		src/receiver/logout.c
+		src/receiver/logout.c					\
+		src/receiver/send.c						\
+		src/receiver/user.c						\
 
 NAME	=	myteams_cli
 
@@ -49,5 +52,8 @@ fclean:	clean
 	$(RM) $(PATH_TO_ROOT)/$(NAME)
 
 re:	fclean all
+
+debug: $(CPPFLAGS) += -g3
+debug: re
 
 .PHONY: all clean fclean re

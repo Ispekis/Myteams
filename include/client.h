@@ -78,6 +78,7 @@ int show_help(client_t *client, char **params);
 
 int user_login(client_t *client, char **param);
 int user_logout(client_t *client, char **param);
+int users_command(client_t *client, char **param);
 
 int send_message(client_t *client, char **param);
 int list_messages(client_t *client, char **param);
@@ -104,5 +105,7 @@ int read_server(client_t *client);
 int recv_login(client_t *client, server_packet recv_data);
 
 int recv_logout(client_t *client, server_packet recv_data);
+
+int recv_send(client_t *client, server_packet recv_data);
 
 #endif /* !CLIENT_H_ */

@@ -7,14 +7,16 @@
 
 PATH_TO_ROOT	=	../..
 
-SRC	=	src/main.c					\
-		src/error_handler.c			\
-		src/server.c				\
-		src/init.c					\
-		src/client_management.c		\
-		src/utils.c					\
-		src/receiver/login.c		\
-		src/receiver/logout.c
+SRC	=	src/main.c								\
+		src/error_handler.c						\
+		src/server.c							\
+		src/init.c								\
+		src/client_management.c					\
+		src/utils.c								\
+		src/receiver/login.c					\
+		src/receiver/logout.c					\
+		src/receiver/send.c						\
+		src/receiver/user.c						\
 
 NAME	=	myteams_server
 
@@ -39,5 +41,8 @@ fclean:	clean
 	$(RM) $(PATH_TO_ROOT)/$(NAME)
 
 re:	fclean all
+
+debug: $(CPPFLAGS) += -g3
+debug: re
 
 .PHONY: all clean fclean re

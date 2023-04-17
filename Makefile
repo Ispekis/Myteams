@@ -33,4 +33,8 @@ fclean:	clean
 
 re:	fclean all
 
+debug:
+	$(MAKE) debug -C $(CLIENT_PATH)
+	$(MAKE) debug -C $(SERVER_PATH)
+
 .PHONY: all clean fclean re tests_run
