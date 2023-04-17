@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-int create_channel(server_t *server, char *name)
+static int create_channel(server_t *server, char *name)
 {
     channel_t* new_channel = realloc(server->data.channel,
     (server->data.nbr_channel + 1) * sizeof(channel_t));
@@ -25,11 +25,14 @@ int create_channel(server_t *server, char *name)
     return 0;
 }
 
+static int join_channel()
+
 int receive_channel(server_t *server, int index, client_packet recv_data)
 {
     char uuid_str[37];
 
     for (int i = 0; i < server->data.nbr_channel; ++i) {
     }
-    create_channel(server, recv_data.);
+    create_channel(server, recv_data.name);
+    
 }

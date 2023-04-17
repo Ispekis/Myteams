@@ -13,7 +13,7 @@ static void send_response(int client_fd, user_t user)
 
     packet.type = TYPE_LOGOUT;
     uuid_copy(packet.user_uuid, user.uuid);
-    strcpy(packet.user_name, user.name);
+    strcpy(packet.name, user.name);
     send(client_fd, &packet, sizeof(packet), 0);
 }
 
