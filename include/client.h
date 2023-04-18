@@ -108,6 +108,10 @@ int recv_logout(client_t *client, server_packet recv_data);
 
 int recv_send(client_t *client, server_packet recv_data);
 
+int recv_user(client_t *client, server_packet recv_data);
+
+int recv_users(client_t *client, server_packet recv_data);
+
 int recv_create_team(client_t *client, server_packet recv_data);
 
 #endif /* !CLIENT_H_ */

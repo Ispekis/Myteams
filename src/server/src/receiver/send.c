@@ -15,7 +15,8 @@ int receive_send(server_t *server, int index, client_packet recv_data)
 
     uuid_unparse(recv_data.user_uuid, uuid_str);
     uuid_unparse(recv_data.dest_uuid, uuid_str2);
-    server_event_private_message_sended(uuid_str, uuid_str2, recv_data.message);
+    server_event_private_message_sended(uuid_str, uuid_str2,
+    recv_data.message);
     data.type = TYPE_SEND;
     uuid_copy(data.user_uuid, recv_data.user_uuid);
     strcpy(data.name, recv_data.name);
