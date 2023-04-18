@@ -20,5 +20,11 @@ int create_sub_res(client_t *client, char **param)
         printf("Invalid arguments\n");
         return 0;
     }
+    packet.type = TYPE_CREATE_TEAM;
+    uuid_copy(packet.user_uuid, client->data.user_uuid);
+    strcpy(packet.name, param[0]);
+    packet.name_len = strlen(param[0]) + 1;
+    strcpy(packet.description, param[1]);
+    send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }
