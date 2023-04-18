@@ -22,7 +22,7 @@ int send_message(client_t *client, char **param)
 
     packet.type = TYPE_SEND;
     uuid_copy(packet.user_uuid, client->data.user_uuid);
-    strcpy(packet.user_name, client->data.user_name);
+    strcpy(packet.name, client->data.user_name);
     strcpy(packet.message, param[1]);
     packet.message_len = strlen(param[1]) + 1;
     uuid_parse(param[0], packet.dest_uuid);

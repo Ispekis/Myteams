@@ -25,7 +25,7 @@ static int create_channel(server_t *server, char *name)
     return 0;
 }
 
-static int join_channel()
+static int join_channel(void)
 {
     return 0;
 }
@@ -37,5 +37,5 @@ int receive_channel(server_t *server, int index, client_packet recv_data)
     for (int i = 0; i < server->data.nbr_channel; ++i) {
     }
     create_channel(server, recv_data.name);
-    
+    return 0;
 }

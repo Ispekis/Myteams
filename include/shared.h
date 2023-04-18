@@ -39,7 +39,10 @@ enum PACKET_TYPE {
     TYPE_SUBSCRIBED,
     TYPE_UNSUBSCRIBE,
     TYPE_USE,
-    TYPE_CREATE,
+    TYPE_CREATE_TEAM,
+    TYPE_CREATE_CHANNEL,
+    TYPE_CREATE_THREAD,
+    TYPE_CREATE_REPLY,
     TYPE_LIST,
     TYPE_INFO,
 };
@@ -54,6 +57,7 @@ typedef struct server_packet {
     int message_len;
     uuid_t dest_uuid;
     char description[MAX_MESSAGE_LENGTH];
+    uuid_t team_uuid;
 } __attribute__((packed)) server_packet;
 
 typedef struct client_packet {
@@ -65,6 +69,7 @@ typedef struct client_packet {
     int message_len;
     uuid_t dest_uuid;
     char description[MAX_MESSAGE_LENGTH];
+    uuid_t team_uuid;
 } __attribute__((packed)) client_packet;
 
 #endif /* !SHARED_H_ */
