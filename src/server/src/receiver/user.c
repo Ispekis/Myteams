@@ -9,6 +9,19 @@
 
 int receive_users(server_t *server, int index, client_packet recv_data)
 {
+    server_packet data;
+    char user_uuid[37];
+
+    uuid_unparse(recv_data.user_uuid, user_uuid);
+    data.type = TYPE_USERS;
+    uuid_copy(data.user_uuid, recv_data.user_uuid);
+
+    for (int i = 0; i < server->data.nbr_users; i++) {
+        uuid_copy(data.dest_uuid, server->data.users[i].uuid);
+        strcpy(data.name, server->data.users[i].name);
+        data.status = (server->data.users[i].is_logged) ? 1 : 0;
+        send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
+    }
     return 0;
 }
 
