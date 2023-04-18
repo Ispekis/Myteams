@@ -40,6 +40,7 @@ static void init_receiver(server_t *server)
     server->receive[TYPE_LOGOUT] = receive_logout;
     server->receive[TYPE_SEND] = receive_send;
     server->receive[TYPE_USER] = receive_user;
+    server->receive[TYPE_USERS] = receive_users;
     server->receive[TYPE_CREATE_TEAM] = receive_teams;
 }
 

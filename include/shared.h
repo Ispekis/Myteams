@@ -22,7 +22,7 @@
     #include <stdlib.h>
     #include <dlfcn.h>
     #include <uuid/uuid.h>
-    #define TOTAL_TYPE 5
+    #define TOTAL_TYPE 6
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
     #define MAX_BODY_LENGTH 512

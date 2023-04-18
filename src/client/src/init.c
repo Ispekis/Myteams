@@ -47,6 +47,7 @@ static void init_receiver(client_t *client)
     client->receive[TYPE_LOGOUT] = recv_logout;
     client->receive[TYPE_SEND] = recv_send;
     client->receive[TYPE_USER] = recv_user;
+    client->receive[TYPE_USERS] = recv_users;
     client->receive[TYPE_CREATE_TEAM] = recv_create_team;
 }
 
