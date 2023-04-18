@@ -28,7 +28,7 @@ int get_user(client_t *client, char **param)
 
     packet.type = TYPE_USER;
     uuid_copy(packet.user_uuid, client->data.user_uuid);
-    strcpy(packet.user_name, client->data.user_name);
+    strcpy(packet.name, client->data.user_name);
     uuid_parse(param[0], packet.dest_uuid);
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;

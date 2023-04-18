@@ -24,7 +24,7 @@ int receive_user(server_t *server, int index, client_packet recv_data)
             data.type = TYPE_USER;
             uuid_copy(data.user_uuid, recv_data.user_uuid);
             uuid_parse(dest_user_uuid, data.dest_uuid);
-            strcpy(data.user_name, server->data.users[i].name);
+            strcpy(data.name, server->data.users[i].name);
             data.status = (server->data.users[i].is_logged) ? 1 : 0;
             send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
             return 0;
