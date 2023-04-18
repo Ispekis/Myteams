@@ -39,12 +39,16 @@ static void init_receiver(server_t *server)
     server->receive[TYPE_LOGIN] = receive_login;
     server->receive[TYPE_LOGOUT] = receive_logout;
     server->receive[TYPE_SEND] = receive_send;
+    server->receive[TYPE_USER] = receive_user;
+    server->receive[TYPE_CREATE_TEAM] = receive_teams;
 }
 
 static void init_data(server_t *server)
 {
     server->data.nbr_users = 0;
     server->data.users = malloc(sizeof(user_t));
+    server->data.nbr_teams = 0;
+    server->data.teams = malloc(sizeof(teams_t));
 }
 
 int init_server(server_t *server, int port)

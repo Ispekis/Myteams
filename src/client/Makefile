@@ -28,6 +28,7 @@ SRC	=	src/main.c								\
 		src/receiver/logout.c					\
 		src/receiver/send.c						\
 		src/receiver/user.c						\
+		src/receiver/teams_create.c				\
 
 NAME	=	myteams_cli
 
