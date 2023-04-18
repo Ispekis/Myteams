@@ -7,7 +7,29 @@
 
 #include "client.h"
 
-int users_command(client_t *client, char **param)
+int get_users(client_t *client, char **param)
 {
+    return 0;
+}
+
+int get_user(client_t *client, char **param)
+{
+    client_packet packet;
+
+    if (!client->data.is_logged) {
+        printf("Not logged\n");
+        return 0;
+    }
+
+    if (param[0] == NULL) {
+        printf("Invalid argument\n");
+        return 0;
+    }
+
+    packet.type = TYPE_USER;
+    uuid_copy(packet.user_uuid, client->data.user_uuid);
+    strcpy(packet.user_name, client->data.user_name);
+    uuid_parse(param[0], packet.dest_uuid);
+    send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }

@@ -89,5 +89,6 @@ int receive_login(server_t *server, int index, client_packet recv_data);
 int receive_logout(server_t *server, int index, client_packet recv_data);
 int receive_send(server_t *server, int index, client_packet recv_data);
 int receive_users(server_t *server, int index, client_packet recv_data);
+int receive_user(server_t *server, int index, client_packet recv_data);
 
 #endif /* !SERVER_H_ */

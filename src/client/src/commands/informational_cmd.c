@@ -14,13 +14,3 @@ int show_help(client_t *client, char **params)
     printf("subscribed unsubscribe use create list info\n");
     return 0;
 }
-
-int get_users(client_t *client, char **params)
-{
-    return 0;
-}
-
-int get_user(client_t *client, char **params)
-{
-    return 0;
-}

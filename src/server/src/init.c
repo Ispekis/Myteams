@@ -39,6 +39,7 @@ static void init_receiver(server_t *server)
     server->receive[TYPE_LOGIN] = receive_login;
     server->receive[TYPE_LOGOUT] = receive_logout;
     server->receive[TYPE_SEND] = receive_send;
+    server->receive[TYPE_USER] = receive_user;
 }
 
 static void init_data(server_t *server)
