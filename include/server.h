@@ -59,6 +59,7 @@ typedef struct user {
     bool is_logged;
     int current_fd;
     char **subbed_teams;
+    int nbr_teams;
 } user_t;
 
 typedef struct teams {

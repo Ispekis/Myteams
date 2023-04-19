@@ -54,7 +54,7 @@ fclean:	clean
 
 re:	fclean all
 
-debug: $(CPPFLAGS) += -g3
+debug: CPPFLAGS += -g3
 debug: re
 
 .PHONY: all clean fclean re
