@@ -15,13 +15,8 @@ int send_message(client_t *client, char **param)
         printf("Not logged\n");
         return 0;
     }
-    if (param == NULL) {
+    if (param == NULL || (param[0] != NULL && param[1] == NULL)) {
         printf("Invalid arguments\n");
-        return 0;
-    }
-
-    if (param[0] != NULL && param[1] == NULL) {
-        printf("Missing arguments\n");
         return 0;
     }
 

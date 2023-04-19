@@ -14,6 +14,7 @@ static int recv_success(client_t *client, server_packet recv_data)
     uuid_unparse(recv_data.user_uuid, uuid_str);
     client_event_logged_in(uuid_str, recv_data.name);
     client->data.is_logged = true;
+    client->data.context = recv_data.context;
     strcpy(client->data.user_name, recv_data.name);
     uuid_copy(client->data.user_uuid, recv_data.user_uuid);
     return 0;
