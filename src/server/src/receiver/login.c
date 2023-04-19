@@ -22,6 +22,9 @@ int create_user(server_t *server, int index, char* name)
     strcpy(server->data.users[server->data.nbr_users].name, name);
     uuid_generate(server->data.users[server->data.nbr_users].uuid);
     server->data.nbr_users++;
+    server->data.users->subbed_teams = malloc(sizeof(char *) + 1);
+    server->data.users->subbed_teams[0] = NULL;
+    server->data.users->nbr_teams = 0;
     return 0;
 }
 
