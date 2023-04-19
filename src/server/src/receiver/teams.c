@@ -7,46 +7,6 @@
 
 #include "server.h"
 
-static int member_add_team(data_t *data, char *user_uuid, char *team_uuid)
-{
-    size_t user = -1;
-    char user_uuid_tmp[37];
-
-    for (int i = 0; i < data->nbr_users; ++i) {
-        uuid_unparse(data->users[i].uuid, user_uuid_tmp);
-        user = strcmp(user_uuid_tmp, user_uuid) == 0 ? i : user;
-    }
-    if (user == -1)
-        return 1;
-    data->users[user].nbr_teams++;
-    data->users[user].subbed_teams = realloc(data->users[user].subbed_teams,
-    (data->users[user].nbr_teams + 1) * (sizeof(char*)));
-    data->users[user].subbed_teams[data->users[user].nbr_teams - 1] =
-    realloc(data->users[user].subbed_teams[data->users[user].nbr_teams - 1],
-    sizeof(char) * 37);
-    data->users[user].subbed_teams[data->users[user].nbr_teams - 1][36] = '\0';
-    data->users[user].subbed_teams[data->users[user].nbr_teams] = NULL;
-    strcpy(data->users[user].subbed_teams[data->users[user]
-    .nbr_teams - 1], team_uuid);
-    return 0;
-}
-
-int join_teams(server_t *server, char *user_uuid)
-{
-    server->data.teams->subs_nbr++;
-    server->data.teams->team_member = realloc(server->data.teams->team_member,
-    (server->data.teams->subs_nbr + 1) * (sizeof(char *)));
-    server->data.teams->team_member[server->data.teams->subs_nbr - 1] =
-    realloc(server->data.teams->team_member[server->data.teams->subs_nbr - 1],
-    sizeof(char) * 37);
-    server->data.teams->team_member
-    [server->data.teams->subs_nbr - 1][36] = '\0';
-    server->data.teams->team_member[server->data.teams->subs_nbr] = NULL;
-    strcpy(server->data.teams->team_member[server->data.teams->subs_nbr - 1],
-    user_uuid);
-    return 0;
-}
-
 static int create_teams(server_t *server, client_packet recv_data)
 {
     teams_t* new_team = realloc(server->data.teams,
