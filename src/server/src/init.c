@@ -44,6 +44,7 @@ static void init_receiver(server_t *server)
     server->receive[TYPE_CREATE_TEAM] = receive_teams;
     server->receive[TYPE_SUBSCRIBE] = receive_subscribe;
     server->receive[TYPE_LIST] = receive_list_teams;
+    server->receive[TYPE_UNSUBSCRIBE] = receive_unsubscribe;
     server->receive[TYPE_USE] = receive_use;
 }
 

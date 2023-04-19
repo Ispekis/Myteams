@@ -23,10 +23,11 @@ static int create_teams(server_t *server, client_packet recv_data)
     strcpy(server->data.teams[server->data.nbr_teams].description,
     recv_data.description);
     uuid_generate_random(server->data.teams[server->data.nbr_teams].teams_uuid);
+    server->data.teams[server->data.nbr_teams].team_member =
+    malloc(sizeof(char *) + 1);
+    server->data.teams[server->data.nbr_teams].team_member[0] = NULL;
+    server->data.teams[server->data.nbr_teams].subs_nbr = 0;
     server->data.nbr_teams++;
-    server->data.teams->team_member = malloc(sizeof(char *) + 1);
-    server->data.teams->team_member[0] = NULL;
-    server->data.teams->subs_nbr = 0;
     return 0;
 }
 
@@ -58,7 +59,7 @@ int receive_teams(server_t *server, int index, client_packet recv_data)
     create_teams(server, recv_data);
     uuid_unparse(server->data.teams[server->data.nbr_teams - 1].teams_uuid,
     team_uuid);
-    join_teams(server, user_uuid);
+    join_teams(&server->data, user_uuid, team_uuid);
     member_add_team(&server->data, user_uuid, team_uuid);
     send_response(server->addrs.clients[index].fd, recv_data,
     team_uuid, user_uuid);

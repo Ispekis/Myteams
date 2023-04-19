@@ -31,18 +31,26 @@ int member_add_team(data_t *data, char *user_uuid, char *team_uuid)
     return 0;
 }
 
-int join_teams(server_t *server, char *user_uuid)
+int join_teams(data_t *data, char *user_uuid, char *team_uuid)
 {
-    server->data.teams->subs_nbr++;
-    server->data.teams->team_member = realloc(server->data.teams->team_member,
-    (server->data.teams->subs_nbr + 1) * (sizeof(char *)));
-    server->data.teams->team_member[server->data.teams->subs_nbr - 1] =
-    realloc(server->data.teams->team_member[server->data.teams->subs_nbr - 1],
+    size_t team = -1;
+    char uuid_tmp[37];
+
+    for (int i = 0; i < data->nbr_teams; ++i) {
+        uuid_unparse(data->teams[i].teams_uuid, uuid_tmp);
+        team = strcmp(uuid_tmp, user_uuid) == 0 ? i : team;
+    }
+    if (team == -1)
+        return 1;
+    data->teams[team].subs_nbr++;
+    data->teams[team].team_member = realloc(data->teams[team].team_member,
+    (data->teams[team].subs_nbr + 1) * (sizeof(char *)));
+    data->teams[team].team_member[data->teams[team].subs_nbr - 1] = realloc
+    (data->teams[team].team_member[data->teams[team].subs_nbr - 1],
     sizeof(char) * 37);
-    server->data.teams->team_member
-    [server->data.teams->subs_nbr - 1][36] = '\0';
-    server->data.teams->team_member[server->data.teams->subs_nbr] = NULL;
-    strcpy(server->data.teams->team_member[server->data.teams->subs_nbr - 1],
+    data->teams[team].team_member[data->teams[team].subs_nbr - 1][36] = '\0';
+    data->teams[team].team_member[data->teams[team].subs_nbr] = NULL;
+    strcpy(data->teams[team].team_member[data->teams[team].subs_nbr - 1],
     user_uuid);
     return 0;
 }
@@ -91,7 +99,7 @@ int receive_subscribe(server_t *server, int index, client_packet recv_data)
         uuid_unparse(server->data.teams[i].teams_uuid, team_uuid);
         if (strcmp(user_uuid, team_uuid) == 0) {
             uuid_unparse(recv_data.user_uuid, user_uuid);
-            join_teams(server, user_uuid);
+            join_teams(&server->data, user_uuid, team_uuid);
             member_add_team(&server->data, user_uuid, team_uuid);
             send_response(server->addrs.clients[index].fd, team_uuid,
             user_uuid);

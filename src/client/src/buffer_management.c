@@ -77,7 +77,7 @@ char **get_params(char *input)
     char **arr;
     char *tmp = NULL;
 
-    if (nbr == -1)
+    if (nbr == -1 || input[0] == '\0')
         return NULL;
     arr = malloc(sizeof(char*) * (nbr  + 1));
     for (int i = 0; input[0] != '\0'; i++) {
