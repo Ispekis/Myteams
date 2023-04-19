@@ -22,7 +22,7 @@
     #include <stdlib.h>
     #include <dlfcn.h>
     #include <uuid/uuid.h>
-    #define TOTAL_TYPE 9
+    #define TOTAL_TYPE 10
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
     #define MAX_BODY_LENGTH 512
@@ -38,10 +38,10 @@ enum PACKET_TYPE {
     TYPE_CREATE_TEAM,
     TYPE_SUBSCRIBE,
     TYPE_LIST,
+    TYPE_UNSUBSCRIBE,
     TYPE_USE,
     TYPE_MESSAGES,
     TYPE_SUBSCRIBED,
-    TYPE_UNSUBSCRIBE,
     TYPE_CREATE_CHANNEL,
     TYPE_CREATE_THREAD,
     TYPE_CREATE_REPLY,
