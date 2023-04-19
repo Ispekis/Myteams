@@ -11,7 +11,7 @@ int user_login(client_t *client, char **param)
 {
     client_packet packet;
 
-    if (param[0] == NULL)
+    if (param == NULL || param[0] == NULL)
         return 0;
     if (client->data.is_logged) {
         printf("Already logged\n");
