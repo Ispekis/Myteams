@@ -115,6 +115,11 @@ int receive_send(server_t *server, int index, client_packet recv_data);
 int receive_users(server_t *server, int index, client_packet recv_data);
 int receive_user(server_t *server, int index, client_packet recv_data);
 int receive_teams(server_t *server, int index, client_packet recv_data);
+int receive_subscribe(server_t *server, int index, client_packet recv_data);
+
+// Usable in multiple file
+int join_teams(server_t *server, char *user_uuid);
+int member_add_team(data_t *data, char *user_uuid, char *team_uuid);
 int receive_list_teams(server_t *server, int index, client_packet recv_data);
 
 #endif /* !SERVER_H_ */
