@@ -7,18 +7,37 @@
 
 #include "server.h"
 
+static int get_nbr_corresponding_msg(int client_fd, user_t user,
+uuid_t dest_uuid)
+{
+    int count = 0;
+
+    for (int i = 0; i < user.nbr_messages; i++) {
+        if ((uuid_compare(user.messages->sender_uuid, user.uuid) == 0
+        && uuid_compare(user.messages->dest_uuid, dest_uuid) == 0)
+        || (uuid_compare(user.messages->dest_uuid, user.uuid) == 0
+        && uuid_compare(user.messages->sender_uuid, dest_uuid) == 0)) {
+            count++;
+        }
+    }
+    return count;
+}
+
 static int check_messages(int client_fd, user_t user, uuid_t dest_uuid)
 {
     server_packet packet;
+    char *msg = "msg1";
 
     packet.type = TYPE_MESSAGES;
-    packet.nbr_messages = 5;
+    packet.nbr_messages = get_nbr_corresponding_msg(client_fd, user,
+    dest_uuid);
     send(client_fd, &packet, sizeof(packet), 0);
     for (int i = 0; i < user.nbr_messages; i++) {
         if ((uuid_compare(user.messages->sender_uuid, user.uuid) == 0
         && uuid_compare(user.messages->dest_uuid, dest_uuid) == 0)
         || (uuid_compare(user.messages->dest_uuid, user.uuid) == 0
         && uuid_compare(user.messages->sender_uuid, dest_uuid) == 0)) {
+            // send(client_fd, &msg, (sizeof(msg) * strlen(msg)), 0);
             printf("%s\n", user.messages[i].message);
         }
     }

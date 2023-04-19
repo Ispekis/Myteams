@@ -58,6 +58,7 @@ typedef struct messages_s {
     uuid_t sender_uuid;
     uuid_t dest_uuid;
     char message[MAX_MESSAGE_LENGTH];
+    int message_len;
     time_t timestamp;
 } messages_t;
 
