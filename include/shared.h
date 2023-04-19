@@ -27,6 +27,7 @@
     #define MAX_DESCRIPTION_LENGTH 255
     #define MAX_BODY_LENGTH 512
     #define MAX_MESSAGE_LENGTH 255
+    #define MAX_UUID_LENGTH 37
 
 enum PACKET_TYPE {
     TYPE_LOGIN,
@@ -47,8 +48,19 @@ enum PACKET_TYPE {
     TYPE_INFO,
 };
 
+typedef struct codes_s {
+    int code;
+    char *msg;
+} code_t;
+
+static const code_t CODE_200 = {200, "Ok"};
+static const code_t CODE_400 = {400, "Error"};
+static const code_t C214 = {214, "Help message"};
+
+
 typedef struct server_packet {
     int type;
+    code_t code;
     uuid_t user_uuid;
     uuid_t channel_uuid;
     int user_name_len;
@@ -58,6 +70,7 @@ typedef struct server_packet {
     uuid_t dest_uuid;
     int status;
     char description[MAX_MESSAGE_LENGTH];
+    char team_name[MAX_NAME_LENGTH];
     uuid_t team_uuid;
 } __attribute__((packed)) server_packet;
 
@@ -71,6 +84,7 @@ typedef struct client_packet {
     uuid_t dest_uuid;
     int status;
     char description[MAX_MESSAGE_LENGTH];
+    char team_name[MAX_NAME_LENGTH];
     uuid_t team_uuid;
 } __attribute__((packed)) client_packet;
 

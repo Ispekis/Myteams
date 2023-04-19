@@ -7,7 +7,7 @@
 
 #include "client.h"
 
-int recv_login(client_t *client, server_packet recv_data)
+static int recv_success(client_t *client, server_packet recv_data)
 {
     char uuid_str[37];
 
@@ -16,5 +16,22 @@ int recv_login(client_t *client, server_packet recv_data)
     client->data.is_logged = true;
     strcpy(client->data.user_name, recv_data.name);
     uuid_copy(client->data.user_uuid, recv_data.user_uuid);
+    return 0;
+}
+
+static int recv_failure(void)
+{
+    printf("User already logged\n");
+    return 0;
+}
+
+int recv_login(client_t *client, server_packet recv_data)
+{
+
+    if (recv_data.code.code == CODE_200.code) {
+        recv_success(client, recv_data);
+    } else {
+        recv_failure();
+    }
     return 0;
 }

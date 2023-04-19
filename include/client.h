@@ -95,6 +95,7 @@ int unsubscribe_client(client_t *client, char **param);
 int set_command(client_t *client, char **param);
 
 int list_sub_res(client_t *client, char **param);
+int list_all_teams(client_t *client, char **param);
 
 int info_current_res(client_t *client, char **param);
 
@@ -113,5 +114,12 @@ int recv_user(client_t *client, server_packet recv_data);
 int recv_users(client_t *client, server_packet recv_data);
 
 int recv_create_team(client_t *client, server_packet recv_data);
+
+int recv_list_teams(client_t *client, server_packet recv_data);
+
+// Buffer management
+char **get_params(char *input);
+int nbr_params(char *input);
+char *get_cmd(char **str);
 
 #endif /* !CLIENT_H_ */

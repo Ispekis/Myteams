@@ -29,6 +29,8 @@ SRC	=	src/main.c								\
 		src/receiver/send.c						\
 		src/receiver/user.c						\
 		src/receiver/teams_create.c				\
+		src/receiver/list.c						\
+		src/buffer_management.c					\
 
 NAME	=	myteams_cli
 
@@ -54,7 +56,7 @@ fclean:	clean
 
 re:	fclean all
 
-debug: $(CPPFLAGS) += -g3
+debug: CPPFLAGS += -g3
 debug: re
 
 .PHONY: all clean fclean re

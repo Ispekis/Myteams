@@ -59,6 +59,7 @@ typedef struct user {
     bool is_logged;
     int current_fd;
     char **subbed_teams;
+    int nbr_teams;
 } user_t;
 
 typedef struct teams {
@@ -95,14 +96,8 @@ typedef struct server {
     int (*cmd[TOTAL_CMD])(struct server* server, char** param, int index);
     int (*receive[TOTAL_TYPE])(struct server* server,
     int index, client_packet recv_data);
-} server_t;
-
-typedef struct codes_s {
-    int code;
-    char *msg;
-} code_t;
-
-static const code_t C214 = {214, "Help message"};
+}
+server_t;
 
 int error_handling(int ac, char **av);
 int run_server(int port);
@@ -120,5 +115,6 @@ int receive_send(server_t *server, int index, client_packet recv_data);
 int receive_users(server_t *server, int index, client_packet recv_data);
 int receive_user(server_t *server, int index, client_packet recv_data);
 int receive_teams(server_t *server, int index, client_packet recv_data);
+int receive_list_teams(server_t *server, int index, client_packet recv_data);
 
 #endif /* !SERVER_H_ */
