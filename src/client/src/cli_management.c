@@ -21,13 +21,12 @@ static int choose_cmd(client_t *client, char *cmd, char** params)
 
 int get_cli_events(client_t *client, char* input)
 {
-    char **params;
+    char **params = NULL;
     char *cmd;
 
     cmd = get_cmd(&input);
     if (cmd == NULL) {
         cmd = input;
-        params = NULL;
     } else {
         if (nbr_params(input) == -1)
             return 0;

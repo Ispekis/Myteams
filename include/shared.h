@@ -79,6 +79,7 @@ typedef struct server_packet {
     char team_name[MAX_NAME_LENGTH];
     uuid_t team_uuid;
     int context;
+    int nbr_messages;
 } __attribute__((packed)) server_packet;
 
 typedef struct client_packet {

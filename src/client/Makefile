@@ -34,6 +34,7 @@ SRC	=	src/main.c								\
 		src/receiver/unsubscribe.c				\
 		src/receiver/use.c						\
 		src/buffer_management.c					\
+		src/receiver/messages.c					\
 
 NAME	=	myteams_cli
 
