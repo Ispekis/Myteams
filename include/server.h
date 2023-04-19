@@ -10,7 +10,6 @@
     #include "../libs/myteams/logging_server.h"
     #include "../libs/myteams/logging_client.h"
     #include "shared.h"
-    #include <time.h>
     #define TOTAL_CMD 15
     #define MAX_CONNECTIONS 100
     #define TOTAL_TEAM 10

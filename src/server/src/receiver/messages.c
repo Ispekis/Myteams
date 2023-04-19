@@ -26,7 +26,8 @@ uuid_t dest_uuid)
 static int check_messages(int client_fd, user_t user, uuid_t dest_uuid)
 {
     server_packet packet;
-    char *msg = "msg1";
+    char uuid_str[MAX_UUID_LENGTH];
+    uint32_t timestamp;
 
     packet.type = TYPE_MESSAGES;
     packet.nbr_messages = get_nbr_corresponding_msg(client_fd, user,
@@ -37,8 +38,11 @@ static int check_messages(int client_fd, user_t user, uuid_t dest_uuid)
         && uuid_compare(user.messages->dest_uuid, dest_uuid) == 0)
         || (uuid_compare(user.messages->dest_uuid, user.uuid) == 0
         && uuid_compare(user.messages->sender_uuid, dest_uuid) == 0)) {
-            // send(client_fd, &msg, (sizeof(msg) * strlen(msg)), 0);
-            printf("%s\n", user.messages[i].message);
+            uuid_unparse(user.messages->sender_uuid, uuid_str);
+            timestamp = htonl(user.messages[i].timestamp);
+            send(client_fd, &timestamp, sizeof(timestamp), 0);
+            send(client_fd, uuid_str, MAX_UUID_LENGTH, 0);
+            send(client_fd, user.messages[i].message, strlen(user.messages[i].message), 0);
         }
     }
 }
