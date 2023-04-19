@@ -98,13 +98,6 @@ typedef struct server {
     int index, client_packet recv_data);
 } server_t;
 
-typedef struct codes_s {
-    int code;
-    char *msg;
-} code_t;
-
-static const code_t C214 = {214, "Help message"};
-
 int error_handling(int ac, char **av);
 int run_server(int port);
 int init_server(server_t *server, int port);
