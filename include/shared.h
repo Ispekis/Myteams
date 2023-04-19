@@ -22,7 +22,7 @@
     #include <stdlib.h>
     #include <dlfcn.h>
     #include <uuid/uuid.h>
-    #define TOTAL_TYPE 8
+    #define TOTAL_TYPE 9
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
     #define MAX_BODY_LENGTH 512
@@ -35,17 +35,24 @@ enum PACKET_TYPE {
     TYPE_SEND,
     TYPE_USER,
     TYPE_USERS,
-    TYPE_MESSAGES,
+    TYPE_CREATE_TEAM,
     TYPE_SUBSCRIBE,
+    TYPE_LIST,
+    TYPE_USE,
+    TYPE_MESSAGES,
     TYPE_SUBSCRIBED,
     TYPE_UNSUBSCRIBE,
-    TYPE_USE,
-    TYPE_CREATE_TEAM,
     TYPE_CREATE_CHANNEL,
     TYPE_CREATE_THREAD,
     TYPE_CREATE_REPLY,
-    TYPE_LIST,
     TYPE_INFO,
+};
+
+enum CONTEXT {
+    DEFAULT_CONTEXT,
+    TEAM_CONTEXT,
+    CHANNEL_CONTEXT,
+    THREAD_CONTEXT,
 };
 
 typedef struct codes_s {
@@ -72,6 +79,7 @@ typedef struct server_packet {
     char description[MAX_MESSAGE_LENGTH];
     char team_name[MAX_NAME_LENGTH];
     uuid_t team_uuid;
+    int context;
 } __attribute__((packed)) server_packet;
 
 typedef struct client_packet {
@@ -86,6 +94,7 @@ typedef struct client_packet {
     char description[MAX_MESSAGE_LENGTH];
     char team_name[MAX_NAME_LENGTH];
     uuid_t team_uuid;
+    int context;
 } __attribute__((packed)) client_packet;
 
 #endif /* !SHARED_H_ */

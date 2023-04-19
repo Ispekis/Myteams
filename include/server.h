@@ -58,6 +58,7 @@ typedef struct user {
     uuid_t uuid;
     bool is_logged;
     int current_fd;
+    int context;
     char **subbed_teams;
     int nbr_teams;
 } user_t;
@@ -116,6 +117,7 @@ int receive_users(server_t *server, int index, client_packet recv_data);
 int receive_user(server_t *server, int index, client_packet recv_data);
 int receive_teams(server_t *server, int index, client_packet recv_data);
 int receive_subscribe(server_t *server, int index, client_packet recv_data);
+int receive_use(server_t *server, int index, client_packet recv_data);
 
 // Usable in multiple file
 int join_teams(server_t *server, char *user_uuid);

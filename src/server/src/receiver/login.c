@@ -37,6 +37,7 @@ static int send_response(int client_fd, char *name, char *uuid, code_t code)
     if (code.code == CODE_200.code) {
         server_event_user_logged_in(uuid);
         data.user_name_len = strlen(name) + 1;
+        data.context = DEFAULT_CONTEXT;
         strcpy(data.name, name);
         data.user_uuid, uuid_parse(uuid, data.user_uuid);
     }
@@ -48,6 +49,7 @@ static void connect_user(user_t *user, int fd)
 {
     user->is_logged = true;
     user->current_fd = fd;
+    user->context = DEFAULT_CONTEXT;
 }
 
 code_t verify_loggin(user_t user)

@@ -48,6 +48,7 @@ typedef struct data_s {
     bool is_logged;
     char user_name[MAX_NAME_LENGTH];
     uuid_t user_uuid;
+    int context;
 } data_t;
 
 typedef struct client {
@@ -78,7 +79,6 @@ int show_help(client_t *client, char **params);
 
 int user_login(client_t *client, char **param);
 int user_logout(client_t *client, char **param);
-int users_command(client_t *client, char **param);
 
 int send_message(client_t *client, char **param);
 int list_messages(client_t *client, char **param);
@@ -92,7 +92,7 @@ int subscribe_client(client_t *client, char **param);
 int list_subscribed(client_t *client, char **param);
 int unsubscribe_client(client_t *client, char **param);
 
-int set_command(client_t *client, char **param);
+int use_command(client_t *client, char **param);
 
 int list_sub_res(client_t *client, char **param);
 int list_all_teams(client_t *client, char **param);
@@ -118,6 +118,8 @@ int recv_create_team(client_t *client, server_packet recv_data);
 int recv_subscribe(client_t *client, server_packet recv_data);
 
 int recv_list_teams(client_t *client, server_packet recv_data);
+
+int recv_use(client_t *client, server_packet recv_data);
 
 // Buffer management
 char **get_params(char *input);
