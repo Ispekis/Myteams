@@ -51,6 +51,8 @@ static void connect_user(user_t *user, int fd)
     user->is_logged = true;
     user->current_fd = fd;
     user->context = DEFAULT_CONTEXT;
+    user->nbr_messages = 0;
+    user->messages = malloc(sizeof(messages_t));
 }
 
 code_t verify_loggin(user_t user)

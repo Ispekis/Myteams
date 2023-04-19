@@ -7,6 +7,39 @@
 
 #include "server.h"
 
+int create_messages(user_t *users)
+{
+    messages_t* new_messages = realloc(users->messages,
+    (users->nbr_messages + 1) * sizeof(messages_t));
+
+    if (new_messages == NULL) {
+        printf("%s\n", "malloc error");
+        return 1;
+    }
+
+    users->messages = new_messages;
+    users->nbr_messages++;
+}
+
+int store_message(data_t *data, server_packet server_data, uuid_t dest_uuid)
+{
+    for (int i = 0; i < data->nbr_users; i++) {
+        if (uuid_compare(dest_uuid, data->users[i].uuid) == 0
+        || uuid_compare(server_data.user_uuid, data->users[i].uuid) == 0) {
+            create_messages(&data->users[i]);
+            uuid_copy(data->users[i].messages[data->users[i].nbr_messages - 1]
+            .sender_uuid, server_data.user_uuid);
+            uuid_copy(data->users[i].messages[data->users[i].nbr_messages - 1]
+            .dest_uuid, dest_uuid);
+            strcpy(data->users[i].messages[data->users[i].nbr_messages - 1]
+            .message, server_data.message);
+            data->users[i].messages[data->users[i].nbr_messages - 1]
+            .timestamp = time(NULL);
+        }
+    }
+    return 0;
+}
+
 int receive_send(server_t *server, int index, client_packet recv_data)
 {
     server_packet data;
@@ -24,8 +57,9 @@ int receive_send(server_t *server, int index, client_packet recv_data)
     data.message_len = recv_data.message_len;
     uuid_copy(data.dest_uuid, recv_data.dest_uuid);
     for (int i = 0; i < server->data.nbr_users; i++)
-        if (uuid_compare(server->data.users[i].uuid, recv_data.dest_uuid) == 0)
+        if (uuid_compare(server->data.users[i].uuid, recv_data.dest_uuid) == 0) {
+            store_message(&server->data, data, server->data.users[i].uuid);
             send(server->data.users[i].current_fd, &data, sizeof(data), 0);
-
+        }
     return 0;
 }

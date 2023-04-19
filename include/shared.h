@@ -64,7 +64,6 @@ static const code_t CODE_200 = {200, "Ok"};
 static const code_t CODE_400 = {400, "Error"};
 static const code_t C214 = {214, "Help message"};
 
-
 typedef struct server_packet {
     int type;
     code_t code;

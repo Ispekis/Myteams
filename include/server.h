@@ -10,6 +10,7 @@
     #include "../libs/myteams/logging_server.h"
     #include "../libs/myteams/logging_client.h"
     #include "shared.h"
+    #include <time.h>
     #define TOTAL_CMD 15
     #define MAX_CONNECTIONS 100
     #define TOTAL_TEAM 10
@@ -53,6 +54,13 @@ typedef struct sock_addrs {
     client_t clients[MAX_CONNECTIONS];
 } sock_addrs_t;
 
+typedef struct messages_s {
+    uuid_t sender_uuid;
+    uuid_t dest_uuid;
+    char message[MAX_MESSAGE_LENGTH];
+    time_t timestamp;
+} messages_t;
+
 typedef struct user {
     char *name;
     uuid_t uuid;
@@ -61,6 +69,8 @@ typedef struct user {
     int context;
     char **subbed_teams;
     int nbr_teams;
+    messages_t *messages;
+    int nbr_messages;
 } user_t;
 
 typedef struct teams {
@@ -124,5 +134,7 @@ int receive_use(server_t *server, int index, client_packet recv_data);
 // Usable in multiple file
 int join_teams(data_t *data, char *user_uuid, char *team_uuid);
 int member_add_team(data_t *data, char *user_uuid, char *team_uuid);
+int receive_list_teams(server_t *server, int index, client_packet recv_data);
+int receive_messages(server_t *server, int index, client_packet recv_data);
 
 #endif /* !SERVER_H_ */

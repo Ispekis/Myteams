@@ -22,6 +22,7 @@ SRC	=	src/main.c								\
 		src/receiver/subscribe.c				\
 		src/receiver/unsubscribe.c				\
 		src/receiver/use.c						\
+		src/receiver/messages.c
 
 NAME	=	myteams_server
 

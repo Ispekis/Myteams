@@ -33,5 +33,14 @@ int send_message(client_t *client, char **param)
 
 int list_messages(client_t *client, char **param)
 {
+    client_packet packet;
+
+    if (param == NULL)
+        return 1;
+
+    packet.type = TYPE_MESSAGES;
+    uuid_copy(packet.user_uuid, client->data.user_uuid);
+    uuid_parse(param[0], packet.dest_uuid);
+    send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }
