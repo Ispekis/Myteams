@@ -7,23 +7,36 @@
 
 #include "client.h"
 
-int get_cli_events(client_t *client, char* input)
+static int choose_cmd(client_t *client, char *cmd, char** params)
 {
-    char **params;
-    int nbr_params = str_to_array(&params, input, " \t");
-    char *cmd;
     int cmd_pos;
 
-    if (nbr_params == 0)
-        return 0;
-    cmd = strdup(params[0]);
-    params++;
     if (cmd[0] == '/') {
         cmd++;
         cmd_pos = get_cmd_pos(cmd);
         if (cmd_pos != -1)
             client->cmd[cmd_pos](client, params);
     }
+}
+
+int get_cli_events(client_t *client, char* input)
+{
+    char **params;
+    char *cmd;
+
+    cmd = get_cmd(&input);
+    if (cmd == NULL) {
+        cmd = input;
+        params = NULL;
+    } else {
+        if (nbr_params(input) == -1)
+            return 0;
+        params = get_params(input);
+        if (params == NULL) {
+            return 0;
+        }
+    }
+    choose_cmd(client, cmd, params);
     return 0;
 }
 

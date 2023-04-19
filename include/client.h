@@ -114,4 +114,9 @@ int recv_users(client_t *client, server_packet recv_data);
 
 int recv_create_team(client_t *client, server_packet recv_data);
 
+// Buffer management
+char **get_params(char *input);
+int nbr_params(char *input);
+char *get_cmd(char **str);
+
 #endif /* !CLIENT_H_ */
