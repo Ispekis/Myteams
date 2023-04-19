@@ -18,6 +18,7 @@ SRC	=	src/main.c								\
 		src/receiver/send.c						\
 		src/receiver/user.c						\
 		src/receiver/teams.c					\
+		src/receiver/list.c						\
 
 NAME	=	myteams_server
 
