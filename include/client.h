@@ -115,6 +115,8 @@ int recv_users(client_t *client, server_packet recv_data);
 
 int recv_create_team(client_t *client, server_packet recv_data);
 
+int recv_subscribe(client_t *client, server_packet recv_data);
+
 int recv_list_teams(client_t *client, server_packet recv_data);
 
 // Buffer management

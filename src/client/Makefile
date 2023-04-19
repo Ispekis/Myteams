@@ -29,6 +29,7 @@ SRC	=	src/main.c								\
 		src/receiver/send.c						\
 		src/receiver/user.c						\
 		src/receiver/teams_create.c				\
+		src/receiver/subscribe.c				\
 		src/receiver/list.c						\
 		src/buffer_management.c					\
 
