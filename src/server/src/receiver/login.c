@@ -28,15 +28,18 @@ int create_user(server_t *server, int index, char* name)
     return 0;
 }
 
-static int send_response(int client_fd, char *name, char *uuid)
+static int send_response(int client_fd, char *name, char *uuid, code_t code)
 {
     server_packet data;
 
-    server_event_user_logged_in(uuid);
     data.type = TYPE_LOGIN;
-    data.user_name_len = strlen(name) + 1;
-    strcpy(data.name, name);
-    data.user_uuid, uuid_parse(uuid, data.user_uuid);
+    data.code = code;
+    if (code.code == CODE_200.code) {
+        server_event_user_logged_in(uuid);
+        data.user_name_len = strlen(name) + 1;
+        strcpy(data.name, name);
+        data.user_uuid, uuid_parse(uuid, data.user_uuid);
+    }
     send(client_fd, &data, sizeof(data), 0);
     return 0;
 }
@@ -47,6 +50,13 @@ static void connect_user(user_t *user, int fd)
     user->current_fd = fd;
 }
 
+code_t verify_loggin(user_t user)
+{
+    if (user.is_logged)
+        return CODE_400;
+    return CODE_200;
+}
+
 int receive_login(server_t *server, int index, client_packet recv_data)
 {
     char uuid_str[37];
@@ -54,17 +64,18 @@ int receive_login(server_t *server, int index, client_packet recv_data)
     for (int i = 0; i < server->data.nbr_users; i++)
         if (strcmp(server->data.users[i].name, recv_data.name) == 0) {
             uuid_unparse(server->data.users[i].uuid, uuid_str);
+            send_response(server->addrs.clients[index].fd, server->data.
+            users[i].name, uuid_str, verify_loggin(server->data.users[i]));
             connect_user(&server->data.users[i],
             server->addrs.clients[index].fd);
-            send_response(server->addrs.clients[index].fd,
-            server->data.users[i].name, uuid_str);
             return 0;
         }
     create_user(server, index, recv_data.name);
     connect_user(&server->data.users[server->data.nbr_users - 1],
     server->addrs.clients[index].fd);
-    uuid_unparse(server->data.users[server->data.nbr_users - 1].uuid, uuid_str);
+    uuid_unparse(server->data.users[server->data.nbr_users - 1].uuid,
+    uuid_str);
     send_response(server->addrs.clients[index].fd,
-    server->data.users[server->data.nbr_users - 1].name, uuid_str);
+    server->data.users[server->data.nbr_users - 1].name, uuid_str, CODE_200);
     return 0;
 }
