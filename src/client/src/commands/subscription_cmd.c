@@ -14,7 +14,7 @@ static int check_arguments(client_t *client, char **param)
         printf("Not logged\n");
         return 1;
     }
-    if (param[0] == NULL) {
+    if (param == NULL || param[0] == NULL) {
         printf("Invalid arguments\n");
         return 1;
     }
@@ -37,6 +37,16 @@ int subscribe_client(client_t *client, char **param)
 int list_subscribed(client_t *client, char **param)
 {
     client_packet packet;
+
+    if (!client->data.is_logged) {
+        printf("Not logged\n");
+        return 0;
+    }
+    packet.type = TYPE_SUBSCRIBE;
+    uuid_copy(packet.user_uuid, client->data.user_uuid);
+    if (!(param == NULL || param[0] == NULL))
+        uuid_parse(param[0], packet.dest_uuid);
+    send(client->addrs.server_fd, &packet, sizeof(packet), 0);
 }
 
 int unsubscribe_client(client_t *client, char **param)

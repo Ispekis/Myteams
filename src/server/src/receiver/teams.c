@@ -22,7 +22,7 @@ static int create_teams(server_t *server, client_packet recv_data)
     strcpy(server->data.teams[server->data.nbr_teams].name, recv_data.name);
     strcpy(server->data.teams[server->data.nbr_teams].description,
     recv_data.description);
-    uuid_generate_random(server->data.teams[server->data.nbr_teams].teams_uuid);
+    uuid_generate(server->data.teams[server->data.nbr_teams].teams_uuid);
     server->data.teams[server->data.nbr_teams].team_member =
     malloc(sizeof(char *) + 1);
     server->data.teams[server->data.nbr_teams].team_member[0] = NULL;

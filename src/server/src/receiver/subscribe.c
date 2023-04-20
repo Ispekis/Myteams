@@ -38,7 +38,7 @@ int join_teams(data_t *data, char *user_uuid, char *team_uuid)
 
     for (int i = 0; i < data->nbr_teams; ++i) {
         uuid_unparse(data->teams[i].teams_uuid, uuid_tmp);
-        team = strcmp(uuid_tmp, user_uuid) == 0 ? i : team;
+        team = strcmp(uuid_tmp, team_uuid) == 0 ? i : team;
     }
     if (team == -1)
         return 1;
