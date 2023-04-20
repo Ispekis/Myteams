@@ -10,6 +10,8 @@
     #include "../libs/myteams/logging_server.h"
     #include "../libs/myteams/logging_client.h"
     #include "shared.h"
+    #include <signal.h>
+    #include <fcntl.h>
     #define TOTAL_CMD 15
     #define MAX_CONNECTIONS 100
     #define TOTAL_TEAM 10
@@ -22,6 +24,8 @@
 static const char *CMD_LIB[] = {"help", "login", "logout", "users", "user",
 "send", "messages", "subscribe", "subscribed", "unsubscribe", "use", "create",
 "list", "info", NULL};
+
+static const char *save_file_name = "server.data";
 
 enum cmd_e {
     HELP,
@@ -64,7 +68,7 @@ typedef struct messages_s {
 } messages_t;
 
 typedef struct user {
-    char *name;
+    char name[MAX_NAME_LENGTH];
     uuid_t uuid;
     bool is_logged;
     int current_fd;
@@ -140,5 +144,15 @@ int join_teams(data_t *data, char *user_uuid, char *team_uuid);
 int member_add_team(data_t *data, char *user_uuid, char *team_uuid);
 int receive_list_teams(server_t *server, int index, client_packet recv_data);
 int receive_messages(server_t *server, int index, client_packet recv_data);
+
+// save_backup
+void catch_shutdown(server_t *server);
+void load_save(server_t *server);
+
+// Savers
+void save_users(data_t data, int fd);
+
+// Loaders
+void load_users(data_t *data, int fd);
 
 #endif /* !SERVER_H_ */

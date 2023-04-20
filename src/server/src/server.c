@@ -38,6 +38,7 @@ int run_server(int port)
 
     if (init_server(&server, port) == 1)
         return 1;
+    catch_shutdown(&server);
     while (1) {
         re_set_fds(&server.addrs);
         if (select(FD_SETSIZE, &server.addrs.rfds, NULL, NULL, NULL) < 0)
