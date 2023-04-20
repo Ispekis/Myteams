@@ -101,6 +101,8 @@ typedef struct data {
     int nbr_channel;
     teams_t *teams;
     int nbr_teams;
+    thread_t *thread;
+    int nbr_thread;
 } data_t;
 
 typedef struct server {
