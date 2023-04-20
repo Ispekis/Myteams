@@ -9,12 +9,12 @@
 
 int create_user(server_t *server, int index, char* name)
 {
-    // user_t* new_user = realloc(server->data.users,
-    // (server->data.nbr_users + 1) * sizeof(user_t));
-    // if (new_user == NULL)
-    //     return 1;
+    user_t* new_user = realloc(server->data.users,
+    (server->data.nbr_users + 1) * sizeof(user_t));
+    if (new_user == NULL)
+        return 1;
 
-    // server->data.users = new_user;
+    server->data.users = new_user;
     if (server->data.users[server->data.nbr_users].name == NULL)
         return 1;
     strcpy(server->data.users[server->data.nbr_users].name, name);
@@ -45,13 +45,15 @@ static int send_response(int client_fd, char *name, char *uuid, int action)
     return 0;
 }
 
-static void connect_user(user_t *user, int fd)
+static void connect_user(user_t *user, int fd, int action)
 {
     user->is_logged = true;
     user->current_fd = fd;
     user->context = DEFAULT_CONTEXT;
-    user->nbr_messages = 0;
-    user->messages = malloc(sizeof(messages_t));
+    if (action == USER_CREATE) {
+        user->nbr_messages = 0;
+        user->messages = malloc(sizeof(messages_t));
+    }
 }
 
 void check_alread_logged(user_t user)
@@ -80,12 +82,12 @@ int receive_login(server_t *server, int index, client_packet recv_data)
             send_response(server->addrs.clients[index].fd, server->data.
             users[i].name, uuid_str, USER_LOGING);
             connect_user(&server->data.users[i],
-            server->addrs.clients[index].fd);
+            server->addrs.clients[index].fd, USER_LOGING);
             return 0;
         }
     create_user(server, index, recv_data.name);
     connect_user(&server->data.users[server->data.nbr_users - 1],
-    server->addrs.clients[index].fd);
+    server->addrs.clients[index].fd, USER_CREATE);
     uuid_unparse(server->data.users[server->data.nbr_users - 1].uuid,
     uuid_str);
     send_response(server->addrs.clients[index].fd, server->data.

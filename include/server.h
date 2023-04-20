@@ -99,7 +99,7 @@ typedef struct thread {
 } thread_t;
 
 typedef struct data {
-    user_t users[TOTAL_USERS];
+    user_t *users;
     int nbr_users;
     channel_t *channel;
     int nbr_channel;
@@ -148,5 +148,11 @@ int receive_messages(server_t *server, int index, client_packet recv_data);
 // save_backup
 void catch_shutdown(server_t *server);
 void load_save(server_t *server);
+
+// Savers
+void save_users(data_t data, int fd);
+
+// Loaders
+void load_users(data_t *data, int fd);
 
 #endif /* !SERVER_H_ */

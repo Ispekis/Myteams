@@ -15,9 +15,9 @@ void load_save(server_t *server)
     int bytes;
 
     if (fd != -1) {
-        bytes = read(fd, &server->data, sizeof(server->data));
-        close(fd);
+        load_users(&server->data, fd);
     }
+    close(fd);
 }
 
 static void signal_handler(int sig)
@@ -27,7 +27,7 @@ static void signal_handler(int sig)
     for (int i = 0; i < sig_server->data.nbr_users; i++) {
         sig_server->data.users[i].is_logged = false;
     }
-    write(fd, &sig_server->data, sizeof(sig_server->data));
+    save_users(sig_server->data, fd);
     close(fd);
 }
 
