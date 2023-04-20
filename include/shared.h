@@ -22,7 +22,8 @@
     #include <stdlib.h>
     #include <dlfcn.h>
     #include <uuid/uuid.h>
-    #define TOTAL_TYPE 10
+    #include <time.h>
+    #define TOTAL_TYPE 11
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
     #define MAX_BODY_LENGTH 512
@@ -64,7 +65,6 @@ static const code_t CODE_200 = {200, "Ok"};
 static const code_t CODE_400 = {400, "Error"};
 static const code_t C214 = {214, "Help message"};
 
-
 typedef struct server_packet {
     int type;
     code_t code;
@@ -80,6 +80,7 @@ typedef struct server_packet {
     char team_name[MAX_NAME_LENGTH];
     uuid_t team_uuid;
     int context;
+    int nbr_messages;
 } __attribute__((packed)) server_packet;
 
 typedef struct client_packet {
