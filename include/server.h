@@ -16,6 +16,8 @@
     #define TOTAL_MEMBER 100
     #define MAX_SIZE_NAME 255
     #define MAX_DESCRIPTION_LENGTH 255
+    #define USER_LOGING 0
+    #define USER_CREATE 1
 
 static const char *CMD_LIB[] = {"help", "login", "logout", "users", "user",
 "send", "messages", "subscribe", "subscribed", "unsubscribe", "use", "create",
