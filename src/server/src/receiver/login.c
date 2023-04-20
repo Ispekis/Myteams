@@ -29,19 +29,17 @@ int create_user(server_t *server, int index, char* name)
     return 0;
 }
 
-static int send_response(int client_fd, char *name, char *uuid, code_t code)
+static int send_response(int client_fd, char *name, char *uuid)
 {
     server_packet data;
 
     data.type = TYPE_LOGIN;
-    data.code = code;
-    if (code.code == CODE_200.code) {
-        server_event_user_logged_in(uuid);
-        data.user_name_len = strlen(name) + 1;
-        data.context = DEFAULT_CONTEXT;
-        strcpy(data.name, name);
-        data.user_uuid, uuid_parse(uuid, data.user_uuid);
-    }
+    data.code = CODE_200;
+    server_event_user_logged_in(uuid);
+    data.user_name_len = strlen(name) + 1;
+    data.context = DEFAULT_CONTEXT;
+    strcpy(data.name, name);
+    data.user_uuid, uuid_parse(uuid, data.user_uuid);
     send(client_fd, &data, sizeof(data), 0);
     return 0;
 }
@@ -55,11 +53,19 @@ static void connect_user(user_t *user, int fd)
     user->messages = malloc(sizeof(messages_t));
 }
 
-code_t verify_loggin(user_t user)
+void check_alread_logged(user_t user)
 {
-    if (user.is_logged)
-        return CODE_400;
-    return CODE_200;
+    server_packet packet;
+    char uuid_str[MAX_UUID_LENGTH];
+
+    if (user.is_logged) {
+        uuid_unparse(user.uuid, uuid_str);
+        server_event_user_logged_out(uuid_str);
+        packet.type = TYPE_LOGOUT;
+        uuid_copy(packet.user_uuid, user.uuid);
+        strcpy(packet.name, user.name);
+        send(user.current_fd, &packet, sizeof(packet), 0);
+    }
 }
 
 int receive_login(server_t *server, int index, client_packet recv_data)
@@ -68,9 +74,10 @@ int receive_login(server_t *server, int index, client_packet recv_data)
 
     for (int i = 0; i < server->data.nbr_users; i++)
         if (strcmp(server->data.users[i].name, recv_data.name) == 0) {
+            check_alread_logged(server->data.users[i]);
             uuid_unparse(server->data.users[i].uuid, uuid_str);
             send_response(server->addrs.clients[index].fd, server->data.
-            users[i].name, uuid_str, verify_loggin(server->data.users[i]));
+            users[i].name, uuid_str);
             connect_user(&server->data.users[i],
             server->addrs.clients[index].fd);
             return 0;
@@ -81,6 +88,6 @@ int receive_login(server_t *server, int index, client_packet recv_data)
     uuid_unparse(server->data.users[server->data.nbr_users - 1].uuid,
     uuid_str);
     send_response(server->addrs.clients[index].fd,
-    server->data.users[server->data.nbr_users - 1].name, uuid_str, CODE_200);
+    server->data.users[server->data.nbr_users - 1].name, uuid_str);
     return 0;
 }
