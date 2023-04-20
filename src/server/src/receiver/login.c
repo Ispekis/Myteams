@@ -29,13 +29,16 @@ int create_user(server_t *server, int index, char* name)
     return 0;
 }
 
-static int send_response(int client_fd, char *name, char *uuid)
+static int send_response(int client_fd, char *name, char *uuid, int action)
 {
     server_packet data;
 
     data.type = TYPE_LOGIN;
     data.code = CODE_200;
-    server_event_user_logged_in(uuid);
+    if (action == USER_LOGING)
+        server_event_user_logged_in(uuid);
+    else
+        server_event_user_created(uuid, name);
     data.user_name_len = strlen(name) + 1;
     data.context = DEFAULT_CONTEXT;
     strcpy(data.name, name);
@@ -77,7 +80,7 @@ int receive_login(server_t *server, int index, client_packet recv_data)
             check_alread_logged(server->data.users[i]);
             uuid_unparse(server->data.users[i].uuid, uuid_str);
             send_response(server->addrs.clients[index].fd, server->data.
-            users[i].name, uuid_str);
+            users[i].name, uuid_str, USER_LOGING);
             connect_user(&server->data.users[i],
             server->addrs.clients[index].fd);
             return 0;
@@ -87,7 +90,7 @@ int receive_login(server_t *server, int index, client_packet recv_data)
     server->addrs.clients[index].fd);
     uuid_unparse(server->data.users[server->data.nbr_users - 1].uuid,
     uuid_str);
-    send_response(server->addrs.clients[index].fd,
-    server->data.users[server->data.nbr_users - 1].name, uuid_str);
+    send_response(server->addrs.clients[index].fd, server->data.
+    users[server->data.nbr_users - 1].name, uuid_str, USER_CREATE);
     return 0;
 }
