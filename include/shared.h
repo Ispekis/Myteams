@@ -23,7 +23,7 @@
     #include <dlfcn.h>
     #include <uuid/uuid.h>
     #include <time.h>
-    #define TOTAL_TYPE 11
+    #define TOTAL_TYPE 12
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
     #define MAX_BODY_LENGTH 512
@@ -42,11 +42,11 @@ enum PACKET_TYPE {
     TYPE_UNSUBSCRIBE,
     TYPE_USE,
     TYPE_MESSAGES,
+    TYPE_INFO,
     TYPE_SUBSCRIBED,
     TYPE_CREATE_CHANNEL,
     TYPE_CREATE_THREAD,
-    TYPE_CREATE_REPLY,
-    TYPE_INFO,
+    TYPE_CREATE_REPLY
 };
 
 enum CONTEXT {

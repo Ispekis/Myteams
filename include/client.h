@@ -131,6 +131,8 @@ int recv_use(client_t *client, server_packet recv_data);
 
 int recv_messages(client_t *client, server_packet recv_data);
 
+int recv_info(client_t *client, server_packet recv_data);
+
 // Buffer management
 char **get_params(char *input);
 int nbr_params(char *input);

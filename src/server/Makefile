@@ -26,6 +26,8 @@ SRC	=	src/main.c								\
 		src/save_backup.c						\
 		src/load/load_users.c					\
 		src/save/save_users.c					\
+		src/receiver/info.c						\
+		src/receiver/info_context.c				\
 
 NAME	=	myteams_server
 

@@ -115,8 +115,7 @@ typedef struct server {
     int (*cmd[TOTAL_CMD])(struct server* server, char** param, int index);
     int (*receive[TOTAL_TYPE])(struct server* server,
     int index, client_packet recv_data);
-}
-server_t;
+} server_t;
 
 int error_handling(int ac, char **av);
 int run_server(int port);
@@ -138,6 +137,7 @@ int receive_subscribe(server_t *server, int index, client_packet recv_data);
 int receive_list_teams(server_t *server, int index, client_packet recv_data);
 int receive_unsubscribe(server_t *server, int index, client_packet recv_data);
 int receive_use(server_t *server, int index, client_packet recv_data);
+int receive_info(server_t *server, int index, client_packet recv_data);
 
 // Usable in multiple file
 int join_teams(data_t *data, char *user_uuid, char *team_uuid);
@@ -154,5 +154,10 @@ void save_users(data_t data, int fd);
 
 // Loaders
 void load_users(data_t *data, int fd);
+
+// info function switch
+void info_team(user_t user, int client_fd, client_packet recv_data);
+void info_channel(user_t user, int client_fd, client_packet recv_data);
+void info_thread(user_t user, int client_fd, client_packet recv_data);
 
 #endif /* !SERVER_H_ */
