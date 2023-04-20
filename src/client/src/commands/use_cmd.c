@@ -17,9 +17,9 @@ int use_command(client_t *client, char **param)
     }
 
     if (param == NULL)
-        uuid_clear(packet.team_uuid);
+        uuid_clear(packet.use_uuid);
     else
-        uuid_parse(param[0], packet.team_uuid);
+        uuid_parse(param[0], packet.use_uuid);
 
     packet.type = TYPE_USE;
     packet.context = client->data.context;

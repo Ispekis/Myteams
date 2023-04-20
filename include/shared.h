@@ -81,6 +81,8 @@ typedef struct server_packet {
     uuid_t team_uuid;
     uuid_t channel_uuid;
     uuid_t thread_uuid;
+    uuid_t use_uuid;
+    uuid_t send_uuid;
     int nbr_messages;
 } __attribute__((packed)) server_packet;
 
@@ -99,6 +101,8 @@ typedef struct client_packet {
     uuid_t team_uuid;
     uuid_t channel_uuid;
     uuid_t thread_uuid;
+    uuid_t use_uuid;
+    uuid_t send_uuid;
 } __attribute__((packed)) client_packet;
 
 #endif /* !SHARED_H_ */
