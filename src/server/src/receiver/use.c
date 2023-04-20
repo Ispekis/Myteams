@@ -9,16 +9,17 @@
 
 static int send_response(server_t *server, int index, client_packet recv_data)
 {
-    printf("ici\n");
     server_packet data;
     data.type = TYPE_USE;
     for (int i = 0; i < server->data.nbr_teams; i++) {
         if (uuid_compare(server->data.teams[i].teams_uuid,
-        recv_data.dest_uuid) == 0) {
+        recv_data.team_uuid) == 0) {
             data.context = TEAM_CONTEXT;
+            uuid_copy(data.team_uuid, recv_data.team_uuid);
             send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
         } else {
             data.context = recv_data.context;
+            uuid_copy(data.team_uuid, recv_data.team_uuid);
             send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
         }
     }
@@ -31,9 +32,10 @@ int receive_use(server_t *server, int index, client_packet recv_data)
     char team_uuid[37];
     data.type = TYPE_USE;
 
-    uuid_unparse(recv_data.dest_uuid, team_uuid);
-    if (uuid_is_null(recv_data.dest_uuid)) {
+    uuid_unparse(recv_data.team_uuid, team_uuid);
+    if (uuid_is_null(recv_data.team_uuid)) {
         data.context = DEFAULT_CONTEXT;
+        uuid_copy(data.team_uuid, recv_data.team_uuid);
         send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
     } else {
         send_response(server, index, recv_data);

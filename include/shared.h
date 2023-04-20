@@ -66,36 +66,39 @@ static const code_t CODE_400 = {400, "Error"};
 static const code_t C214 = {214, "Help message"};
 
 typedef struct server_packet {
-    int type;
     code_t code;
-    uuid_t user_uuid;
-    uuid_t channel_uuid;
+    int type;
     int user_name_len;
+    int message_len;
+    int status;
+    int context;
     char name[MAX_NAME_LENGTH];
     char message[MAX_MESSAGE_LENGTH];
-    int message_len;
-    uuid_t dest_uuid;
-    int status;
     char description[MAX_MESSAGE_LENGTH];
     char team_name[MAX_NAME_LENGTH];
+    uuid_t user_uuid;
+    uuid_t dest_uuid;
     uuid_t team_uuid;
-    int context;
+    uuid_t channel_uuid;
+    uuid_t thread_uuid;
     int nbr_messages;
 } __attribute__((packed)) server_packet;
 
 typedef struct client_packet {
     int type;
-    char name[MAX_NAME_LENGTH];
     int name_len;
-    uuid_t user_uuid;
-    char message[MAX_MESSAGE_LENGTH];
     int message_len;
-    uuid_t dest_uuid;
     int status;
+    int context;
+    char name[MAX_NAME_LENGTH];
+    char message[MAX_MESSAGE_LENGTH];
     char description[MAX_MESSAGE_LENGTH];
     char team_name[MAX_NAME_LENGTH];
+    uuid_t user_uuid;
+    uuid_t dest_uuid;
     uuid_t team_uuid;
-    int context;
+    uuid_t channel_uuid;
+    uuid_t thread_uuid;
 } __attribute__((packed)) client_packet;
 
 #endif /* !SHARED_H_ */

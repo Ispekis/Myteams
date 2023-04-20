@@ -17,13 +17,12 @@ int use_command(client_t *client, char **param)
     }
 
     if (param == NULL)
-        uuid_clear(packet.dest_uuid);
+        uuid_clear(packet.team_uuid);
     else
-        uuid_parse(param[0], packet.dest_uuid);
+        uuid_parse(param[0], packet.team_uuid);
 
     packet.type = TYPE_USE;
     packet.context = client->data.context;
-    printf("%d\n", client->data.context);
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }

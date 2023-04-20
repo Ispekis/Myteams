@@ -44,11 +44,18 @@ typedef struct sock_addrs {
     fd_set efds;
 } sock_addrs_t;
 
+typedef struct context_type_s {
+    uuid_t team_uuid;
+    uuid_t channel_uuid;
+    uuid_t thread_uuid;
+} context_type_t;
+
 typedef struct data_s {
     bool is_logged;
     char user_name[MAX_NAME_LENGTH];
     uuid_t user_uuid;
     int context;
+    context_type_t context_type;
 } data_t;
 
 typedef struct client {
@@ -56,7 +63,6 @@ typedef struct client {
     data_t data;
     int (*cmd[TOTAL_CMD])(struct client* client, char** param);
     int (*receive[TOTAL_TYPE])(struct client* client, server_packet recv_data);
-
 } client_t;
 
 int error_handling(int ac, char **av);
