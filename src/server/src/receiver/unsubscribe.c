@@ -7,16 +7,8 @@
 
 #include "server.h"
 
-static int find_team_index(data_t *data, char *user_uuid, int index)
-{
-    size_t user = -1;
-    char user_uuid_tmp[37];
-
-    for (int i = 0; i < data->teams[index].subs_nbr; ++i) {
-        uuid_unparse(data->users[i].uuid, user_uuid_tmp);
-        user = strcmp(user_uuid_tmp, user_uuid) == 0 ? i : user;
-    }
-}
+int find_team_index(data_t *data, char *user_uuid, int index);
+int check_user_sub(server_t *server, char *user_uuid, char *team_uuid);
 
 static int remove_member_team(data_t *data, char *user_uuid, char *team_uuid,
 int index)
@@ -48,18 +40,18 @@ static int leave_teams(data_t *data, char *user_uuid, char *team_uuid)
     char user_uuid_tmp[37];
 
     for (int i = 0; i < data->nbr_teams; ++i) {
-        strcpy(user_uuid_tmp, data->teams[i].teams_uuid);
+        uuid_unparse(data->teams[i].teams_uuid, user_uuid_tmp);
         team = strcmp(user_uuid_tmp, team_uuid) == 0 ? i : team;
     }
-    if (team == -1 || (user = find_team_index(data, user_uuid, user)) == -1)
+    if (team == -1 || (user = find_team_index(data, user_uuid, team)) == -1)
         return 1;
-    for (int i = (int)user; data->teams[user].team_member[i + i] != NULL; ++i)
-        strcpy(data->teams[user].team_member[i],
-        data->teams[user].team_member[i + i]);
-    data->teams->subs_nbr--;
-    data->teams->team_member = realloc(data->teams->team_member,
-    (data->teams->subs_nbr + 1) * (sizeof(char *)));
-    data->teams->team_member[data->teams->subs_nbr] = NULL;
+    for (int i = (int)user; data->teams[team].team_member[i + i] != NULL; ++i)
+        strcpy(data->teams[team].team_member[i],
+        data->teams[team].team_member[i + i]);
+    data->teams[team].subs_nbr--;
+    data->teams[team].team_member = realloc(data->teams[team].team_member,
+    (data->teams[team].subs_nbr + 1) * (sizeof(char *)));
+    data->teams[team].team_member[data->teams[team].subs_nbr] = NULL;
     return 0;
 }
 
@@ -68,7 +60,6 @@ int index)
 {
     server_packet data;
 
-    leave_teams(&server->data, user_uuid, team_uuid);
     server_event_user_unsubscribed(team_uuid, user_uuid);
     data.type = TYPE_UNSUBSCRIBE;
     uuid_parse(team_uuid, data.team_uuid);
@@ -81,20 +72,21 @@ int receive_unsubscribe(server_t *server, int index, client_packet recv_data)
 {
     char user_uuid[37];
     char team_uuid[37];
+    char tmp_uuid[37];
     size_t user = -1;
 
     uuid_unparse(recv_data.user_uuid, user_uuid);
-    for (int i = 0; i < server->data.nbr_users; ++i) {
-        uuid_unparse(server->data.users[i].uuid, team_uuid);
-        user = strcmp(team_uuid, user_uuid) == 0 ? i : user;
-    }
-    uuid_unparse(recv_data.dest_uuid, user_uuid);
+    uuid_unparse(recv_data.dest_uuid, tmp_uuid);
+    if ((user = check_user_sub(server, user_uuid, tmp_uuid)) == -1)
+        return 1;
     for (int i = 0; i < server->data.users[user].nbr_teams; ++i) {
         strcpy(team_uuid, server->data.users[user].subbed_teams[i]);
-        if (strcmp(user_uuid, team_uuid) == 0) {
-            uuid_unparse(recv_data.user_uuid, user_uuid);
-            remove_member_team(&server->data, user_uuid, team_uuid, i);
-            send_response(server, team_uuid, user_uuid, index);
+        if (strcmp(tmp_uuid, team_uuid) == 0) {
+            uuid_unparse(recv_data.user_uuid, tmp_uuid);
+            remove_member_team(&server->data, tmp_uuid, team_uuid, user);
+            leave_teams(&server->data, user_uuid, team_uuid);
+            send_response(server, team_uuid, tmp_uuid, index);
+            return 0;
         }
     }
     return 0;
