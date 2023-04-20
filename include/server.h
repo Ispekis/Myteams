@@ -56,7 +56,7 @@ typedef struct sock_addrs {
 typedef struct messages_s {
     uuid_t sender_uuid;
     uuid_t dest_uuid;
-    char message[MAX_MESSAGE_LENGTH];
+    char *message;
     int message_len;
     time_t timestamp;
 } messages_t;
