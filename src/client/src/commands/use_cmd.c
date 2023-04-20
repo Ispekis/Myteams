@@ -16,15 +16,14 @@ int use_command(client_t *client, char **param)
         return 0;
     }
 
-    if (param[0] == NULL) {
-        printf("Invalid argument\n");
-        return 0;
-    }
+    if (param == NULL)
+        uuid_clear(packet.dest_uuid);
+    else
+        uuid_parse(param[0], packet.dest_uuid);
 
     packet.type = TYPE_USE;
     packet.context = client->data.context;
     printf("%d\n", client->data.context);
-    uuid_parse(param[0], packet.dest_uuid);
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }
