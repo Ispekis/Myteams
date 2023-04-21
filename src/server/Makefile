@@ -21,7 +21,7 @@ SRC	=	src/main.c								\
 		src/receiver/list.c						\
 		src/receiver/subscribe.c				\
 		src/receiver/unsubscribe.c				\
-		src/receiver/use.c				\
+		src/receiver/use.c						\
 		src/receiver/unsub_misc.c				\
 		src/receiver/messages.c					\
 		src/save_backup.c						\
@@ -29,6 +29,7 @@ SRC	=	src/main.c								\
 		src/save/save_users.c					\
 		src/receiver/info.c						\
 		src/receiver/info_context.c				\
+		src/receiver/subscribed.c				\
 
 NAME	=	myteams_server
 

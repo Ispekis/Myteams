@@ -42,10 +42,13 @@ int list_subscribed(client_t *client, char **param)
         printf("Not logged\n");
         return 0;
     }
-    packet.type = TYPE_SUBSCRIBE;
+    packet.type = TYPE_SUBSCRIBED;
     uuid_copy(packet.user_uuid, client->data.user_uuid);
-    if (!(param == NULL || param[0] == NULL))
+    packet.name_len = 0;
+    if (!(param == NULL || param[0] == NULL)) {
         uuid_parse(param[0], packet.dest_uuid);
+        packet.name_len = 1;
+    }
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
 }
 

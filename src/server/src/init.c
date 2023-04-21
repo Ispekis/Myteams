@@ -47,6 +47,7 @@ static void init_receiver(server_t *server)
     server->receive[TYPE_UNSUBSCRIBE] = receive_unsubscribe;
     server->receive[TYPE_USE] = receive_use;
     server->receive[TYPE_MESSAGES] = receive_messages;
+    server->receive[TYPE_SUBSCRIBED] = receive_subscribed;
     server->receive[TYPE_INFO] = receive_info;
 }
 
