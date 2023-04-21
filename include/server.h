@@ -132,13 +132,13 @@ int receive_logout(server_t *server, int index, client_packet recv_data);
 int receive_send(server_t *server, int index, client_packet recv_data);
 int receive_users(server_t *server, int index, client_packet recv_data);
 int receive_user(server_t *server, int index, client_packet recv_data);
-int receive_teams(server_t *server, int index, client_packet recv_data);
 int receive_subscribe(server_t *server, int index, client_packet recv_data);
 int receive_list_teams(server_t *server, int index, client_packet recv_data);
 int receive_unsubscribe(server_t *server, int index, client_packet recv_data);
 int receive_use(server_t *server, int index, client_packet recv_data);
 int receive_info(server_t *server, int index, client_packet recv_data);
 int receive_subscribed(server_t *server, int index, client_packet recv_data);
+int receive_create(server_t *server, int index, client_packet recv_data);
 
 // Usable in multiple file
 int join_teams(data_t *data, char *user_uuid, char *team_uuid);
@@ -160,5 +160,8 @@ void load_users(data_t *data, int fd);
 void info_team(user_t user, int client_fd, client_packet recv_data);
 void info_channel(user_t user, int client_fd, client_packet recv_data);
 void info_thread(user_t user, int client_fd, client_packet recv_data);
+
+// create functions switch
+int receive_teams(data_t *data, int client_fd, client_packet recv_data);
 
 #endif /* !SERVER_H_ */

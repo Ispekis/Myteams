@@ -120,8 +120,6 @@ int recv_user(client_t *client, server_packet recv_data);
 
 int recv_users(client_t *client, server_packet recv_data);
 
-int recv_create_team(client_t *client, server_packet recv_data);
-
 int recv_subscribe(client_t *client, server_packet recv_data);
 
 int recv_list_teams(client_t *client, server_packet recv_data);
@@ -135,6 +133,12 @@ int recv_messages(client_t *client, server_packet recv_data);
 int recv_info(client_t *client, server_packet recv_data);
 
 int recv_subscribed(client_t *client, server_packet recv_data);
+
+int recv_create(client_t *client, server_packet recv_data);
+
+// switch create function
+int recv_create_team(data_t *data, server_packet recv_data);
+
 
 // Buffer management
 char **get_params(char *input);

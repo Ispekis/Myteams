@@ -19,7 +19,8 @@ int create_sub_res(client_t *client, char **param)
         printf("Invalid arguments\n");
         return 0;
     }
-    packet.type = TYPE_CREATE_TEAM;
+    packet.type = TYPE_CREATE;
+    packet.context = client->data.context;
     uuid_copy(packet.user_uuid, client->data.user_uuid);
     strcpy(packet.name, param[0]);
     packet.name_len = strlen(param[0]) + 1;

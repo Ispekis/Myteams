@@ -7,7 +7,7 @@
 
 #include "client.h"
 
-int recv_create_team(client_t *client, server_packet recv_data)
+int recv_create_team(data_t *data, server_packet recv_data)
 {
     char team_uuid[37];
 
