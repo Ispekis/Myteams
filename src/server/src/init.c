@@ -41,7 +41,6 @@ static void init_receiver(server_t *server)
     server->receive[TYPE_SEND] = receive_send;
     server->receive[TYPE_USER] = receive_user;
     server->receive[TYPE_USERS] = receive_users;
-    server->receive[TYPE_CREATE_TEAM] = receive_teams;
     server->receive[TYPE_SUBSCRIBE] = receive_subscribe;
     server->receive[TYPE_LIST] = receive_list_teams;
     server->receive[TYPE_UNSUBSCRIBE] = receive_unsubscribe;
@@ -49,6 +48,7 @@ static void init_receiver(server_t *server)
     server->receive[TYPE_MESSAGES] = receive_messages;
     server->receive[TYPE_SUBSCRIBED] = receive_subscribed;
     server->receive[TYPE_INFO] = receive_info;
+    server->receive[TYPE_CREATE] = receive_create;
 }
 
 static void init_data(server_t *server)
