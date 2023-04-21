@@ -61,9 +61,13 @@ typedef struct codes_s {
     char *msg;
 } code_t;
 
-static const code_t CODE_200 = {200, "Ok"};
-static const code_t CODE_400 = {400, "Error"};
-static const code_t C214 = {214, "Help message"};
+static const code_t CODE_120 = {200, "Service conncted to server"};
+static const code_t CODE_200 = {200, "Action successfully completed"};
+static const code_t CODE_214 = {214, "Showing help message"};
+static const code_t CODE_400 = {400, "Bad Request"};
+static const code_t CODE_403 = {403, "Action not permitted"};
+static const code_t CODE_404 = {404, "Resource not found"};
+static const code_t CODE_500 = {500, "Internal Server Error"};
 
 typedef struct server_packet {
     code_t code;

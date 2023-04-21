@@ -79,6 +79,7 @@ int read_client_cli(client_t *client);
 char *removing_line_break(char *str);
 int get_cmd_pos(char *str);
 int str_to_array(char ***array, char *str, char *sep);
+void print_code_res(code_t code);
 
 // Commands
 int show_help(client_t *client, char **params);
