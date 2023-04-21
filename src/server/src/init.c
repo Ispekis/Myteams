@@ -57,6 +57,8 @@ static void init_data(server_t *server)
     server->data.users = malloc(sizeof(user_t));
     server->data.nbr_teams = 0;
     server->data.teams = malloc(sizeof(teams_t));
+    server->data.nbr_thread = 0;
+    server->data.threads = malloc(sizeof(thread_t));
 }
 
 int init_server(server_t *server, int port)

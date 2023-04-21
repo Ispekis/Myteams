@@ -94,8 +94,12 @@ typedef struct channel {
 } channel_t;
 
 typedef struct thread {
-    uuid_t message_uuid;
+    uuid_t channel_uuid;
     uuid_t thread_uuid;
+    uuid_t user_uuid;
+    char thread_title[MAX_NAME_LENGTH];
+    char thread_body[MAX_BODY_LENGTH];
+    time_t timestamp;
 } thread_t;
 
 typedef struct data {
@@ -105,7 +109,7 @@ typedef struct data {
     int nbr_channel;
     teams_t *teams;
     int nbr_teams;
-    thread_t *thread;
+    thread_t *threads;
     int nbr_thread;
 } data_t;
 
@@ -163,5 +167,6 @@ void info_thread(user_t user, int client_fd, client_packet recv_data);
 
 // create functions switch
 int receive_teams(data_t *data, int client_fd, client_packet recv_data);
+int create_thread(data_t *data, int client_fd, client_packet recv_data);
 
 #endif /* !SERVER_H_ */

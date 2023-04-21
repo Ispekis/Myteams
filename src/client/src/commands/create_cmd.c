@@ -7,6 +7,23 @@
 
 #include "client.h"
 
+static void choose_create_send(client_packet *packet, data_t data,
+char **param)
+{
+    switch (data.context) {
+        case DEFAULT_CONTEXT:
+            send_team_packet(packet, data, param);
+            break;
+        case THREAD_CONTEXT:
+            send_thread_packet(packet, data, param);
+            break;
+        case CHANNEL_CONTEXT:
+            break;
+        case TEAM_CONTEXT:
+            break;
+    }
+}
+
 int create_sub_res(client_t *client, char **param)
 {
     client_packet packet;
@@ -22,9 +39,7 @@ int create_sub_res(client_t *client, char **param)
     packet.type = TYPE_CREATE;
     packet.context = client->data.context;
     uuid_copy(packet.user_uuid, client->data.user_uuid);
-    strcpy(packet.name, param[0]);
-    packet.name_len = strlen(param[0]) + 1;
-    strcpy(packet.description, param[1]);
+    choose_create_send(&packet, client->data, param);
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }

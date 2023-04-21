@@ -50,7 +50,7 @@ static int send_response(server_t *server, int index, client_packet recv_data)
         recv_data.use_uuid) == 0)
             return send_channel(server, index, recv_data);
     for (int i = 0; i < server->data.nbr_thread; i++)
-        if (uuid_compare(server->data.thread[i].thread_uuid,
+        if (uuid_compare(server->data.threads[i].thread_uuid,
         recv_data.use_uuid) == 0)
             return send_thread(server, index, recv_data);
 

@@ -31,6 +31,7 @@ SRC	=	src/main.c								\
 		src/receiver/info_context.c				\
 		src/receiver/subscribed.c				\
 		src/receiver/create.c					\
+		src/receiver/create_thread.c			\
 
 NAME	=	myteams_server
 

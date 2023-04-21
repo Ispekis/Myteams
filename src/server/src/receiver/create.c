@@ -20,7 +20,7 @@ static void choose_create(data_t *data, int client_fd, client_packet recv_data)
             printf("Channel\n");
             break;
         case THREAD_CONTEXT:
-            printf("Thread\n");
+            create_thread(data, client_fd, recv_data);
             break;
     }
 }
