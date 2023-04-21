@@ -53,6 +53,11 @@ enum CONTEXT {
     THREAD_CONTEXT,
 };
 
+enum STATUS {
+    SUCCESS,
+    FAILURE,
+};
+
 typedef struct codes_s {
     int code;
     char *msg;
@@ -85,6 +90,7 @@ typedef struct server_packet {
     uuid_t use_uuid;
     uuid_t send_uuid;
     int nbr_messages;
+    int command_status;
 } __attribute__((packed)) server_packet;
 
 typedef struct client_packet {
