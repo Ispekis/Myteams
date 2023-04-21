@@ -53,14 +53,9 @@ enum CONTEXT {
     THREAD_CONTEXT,
 };
 
-enum STATUS {
-    SUCCESS,
-    FAILURE,
-};
-
 typedef struct codes_s {
     int code;
-    char *msg;
+    char msg[MAX_MESSAGE_LENGTH];
 } code_t;
 
 static const code_t CODE_120 = {200, "Service conncted to server"};
@@ -90,7 +85,6 @@ typedef struct server_packet {
     uuid_t use_uuid;
     uuid_t send_uuid;
     int nbr_messages;
-    int command_status;
 } __attribute__((packed)) server_packet;
 
 typedef struct client_packet {

@@ -31,7 +31,7 @@ int get_user(client_t *client, char **param)
         return 0;
     }
 
-    if (param[0] == NULL) {
+    if (param == NULL) {
         printf("Invalid argument\n");
         return 0;
     }
