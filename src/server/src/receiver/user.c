@@ -30,6 +30,7 @@ int receive_user(server_t *server, int index, client_packet recv_data)
     server_packet data;
     char dest_user_uuid[37];
     data.type = TYPE_USER;
+
     uuid_unparse(recv_data.dest_uuid, dest_user_uuid);
     for (int i = 0; i < server->data.nbr_users; i++)
         if (uuid_compare(server->data.users[i].uuid,
