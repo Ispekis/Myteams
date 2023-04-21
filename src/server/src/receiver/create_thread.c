@@ -7,52 +7,68 @@
 
 #include "server.h"
 
-static void send_response(data_t data, int client_fd)
+static void send_response(channel_t ch, int client_fd, int nbr_threads)
 {
     server_packet packet;
 
     packet.type = TYPE_CREATE;
-    uuid_copy(packet.thread_uuid, data.threads[data.nbr_thread].thread_uuid);
-    uuid_copy(packet.user_uuid, data.threads[data.nbr_thread].user_uuid);
-    strcpy(packet.thread_title, data.threads[data.nbr_thread].thread_title);
-    strcpy(packet.thread_message, data.threads[data.nbr_thread].thread_body);
-    packet.timestamp = data.threads[data.nbr_thread].timestamp;
+    uuid_copy(packet.thread_uuid, ch.threads[nbr_threads].thread_uuid);
+    uuid_copy(packet.user_uuid, ch.threads[nbr_threads].user_uuid);
+    strcpy(packet.thread_title, ch.threads[nbr_threads].thread_title);
+    strcpy(packet.thread_message, ch.threads[nbr_threads].thread_body);
+    packet.timestamp = ch.threads[nbr_threads].timestamp;
     send(client_fd, &packet, sizeof(packet), 0);
 }
 
-static void display_log(data_t data)
+static void display_log(channel_t ch, int nbr_threads)
 {
     char channel_uuid_str[MAX_UUID_LENGTH];
     char thread_uuid_str[MAX_UUID_LENGTH];
     char user_uuid_str[MAX_UUID_LENGTH];
 
-    uuid_unparse(data.threads[data.nbr_thread].channel_uuid, channel_uuid_str);
-    uuid_unparse(data.threads[data.nbr_thread].thread_uuid, thread_uuid_str);
-    uuid_unparse(data.threads[data.nbr_thread].user_uuid, user_uuid_str);
+    uuid_unparse(ch.threads[nbr_threads].channel_uuid, channel_uuid_str);
+    uuid_unparse(ch.threads[nbr_threads].thread_uuid, thread_uuid_str);
+    uuid_unparse(ch.threads[nbr_threads].user_uuid, user_uuid_str);
     server_event_thread_created(channel_uuid_str, thread_uuid_str,
-    user_uuid_str, data.threads[data.nbr_thread].thread_title,
-    data.threads[data.nbr_thread].thread_body);
+    user_uuid_str, ch.threads[nbr_threads].thread_title,
+    ch.threads[nbr_threads].thread_body);
+}
+
+static void set_data(channel_t *ch, client_packet recv_data, int nbr_threads)
+{
+    uuid_generate(ch->threads[nbr_threads].thread_uuid);
+    uuid_copy(ch->threads->user_uuid, recv_data.user_uuid);
+    uuid_copy(ch->threads[nbr_threads].channel_uuid,
+    recv_data.channel_uuid);
+    strcpy(ch->threads[nbr_threads].thread_title, recv_data.thread_title);
+    strcpy(ch->threads[nbr_threads].thread_body,
+    recv_data.thread_message);
+    ch->threads[nbr_threads].timestamp = time(NULL);
+    ch->threads[nbr_threads].nbr_replies = 0;
+    ch->threads[nbr_threads].replies = malloc(sizeof(reply_t));
 }
 
 int create_thread(data_t *data, int client_fd, client_packet recv_data)
 {
     char uuid_str[MAX_UUID_LENGTH];
-    thread_t *new_thread = realloc(data->threads,
-    sizeof(thread_t) * (data->nbr_thread + 1));
+    int ch_index = index_of_channel(*data, data->nbr_channel,
+    recv_data.channel_uuid);
+    thread_t *new_thread ;
 
+    if (ch_index == -1) {
+        printf("Not found");
+        return 0;
+    }
+    new_thread = realloc(data->channel[ch_index].threads,
+    sizeof(thread_t) * (data->channel[ch_index].nbr_thread + 1));
     if (new_thread == NULL)
         return 1;
-    data->threads = new_thread;
-    uuid_generate(data->threads[data->nbr_teams].thread_uuid);
-    uuid_copy(data->threads->user_uuid, recv_data.user_uuid);
-    uuid_copy(data->threads[data->nbr_thread].channel_uuid,
-    recv_data.channel_uuid);
-    strcpy(data->threads[data->nbr_teams].thread_title, recv_data.thread_title);
-    strcpy(data->threads[data->nbr_teams].thread_body,
-    recv_data.thread_message);
-    data->threads[data->nbr_thread].timestamp = time(NULL);
-    display_log(*data);
-    send_response(*data, client_fd);
+    data->channel[ch_index].threads = new_thread;
+    set_data(&data->channel[ch_index], recv_data,
+    data->channel[ch_index].nbr_thread);
+    display_log(data->channel[ch_index], data->channel[ch_index].nbr_thread);
+    send_response(data->channel[ch_index], client_fd,
+    data->channel[ch_index].nbr_thread);
     data->nbr_teams++;
     return 0;
 }

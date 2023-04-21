@@ -13,8 +13,8 @@ static void choose_create(data_t *data, int client_fd, client_packet recv_data)
         case DEFAULT_CONTEXT:
             receive_teams(data, client_fd, recv_data);
             break;
-        case TEAM_CONTEXT:
-            printf("Team\n");
+        case REPLY_CONTEXT:
+            create_reply(data, client_fd, recv_data);
             break;
         case CHANNEL_CONTEXT:
             printf("Channel\n");

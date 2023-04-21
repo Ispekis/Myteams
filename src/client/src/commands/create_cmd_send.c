@@ -20,3 +20,8 @@ void send_team_packet(client_packet *packet, data_t data, char **param)
     packet->name_len = strlen(param[0]) + 1;
     strcpy(packet->description, param[1]);
 }
+
+void send_reply_packet(client_packet *packet, data_t data, char **param)
+{
+    
+}

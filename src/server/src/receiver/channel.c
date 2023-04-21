@@ -21,6 +21,8 @@ static int create_channel(server_t *server, char *name)
         return 1;
     strcpy(server->data.channel[server->data.nbr_channel].name, name);
     uuid_generate(server->data.channel[server->data.nbr_channel].uuid);
+    server->data.channel[server->data.nbr_channel].nbr_thread = 0;
+    server->data.channel[server->data.nbr_channel].threads = malloc(sizeof(thread_t));
     server->data.channel++;
     return 0;
 }

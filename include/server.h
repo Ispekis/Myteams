@@ -87,11 +87,9 @@ typedef struct teams {
     char **team_member;
 } teams_t;
 
-typedef struct channel {
-    char *name;
-    uuid_t uuid;
-    size_t member_nbr;
-} channel_t;
+typedef struct reply_s {
+    char body[MAX_BODY_LENGTH];
+} reply_t;
 
 typedef struct thread {
     uuid_t channel_uuid;
@@ -100,7 +98,17 @@ typedef struct thread {
     char thread_title[MAX_NAME_LENGTH];
     char thread_body[MAX_BODY_LENGTH];
     time_t timestamp;
+    reply_t *replies;
+    int nbr_replies;
 } thread_t;
+
+typedef struct channel {
+    char *name;
+    uuid_t uuid;
+    size_t member_nbr;
+    thread_t *threads;
+    int nbr_thread;
+} channel_t;
 
 typedef struct data {
     user_t *users;
@@ -109,8 +117,6 @@ typedef struct data {
     int nbr_channel;
     teams_t *teams;
     int nbr_teams;
-    thread_t *threads;
-    int nbr_thread;
 } data_t;
 
 typedef struct server {
@@ -154,6 +160,9 @@ int receive_messages(server_t *server, int index, client_packet recv_data);
 void catch_shutdown(server_t *server);
 void load_save(server_t *server);
 
+// Index getters
+int index_of_channel(data_t data, int max_len, uuid_t uuid);
+
 // Savers
 void save_users(data_t data, int fd);
 
@@ -168,5 +177,6 @@ void info_thread(user_t user, int client_fd, client_packet recv_data);
 // create functions switch
 int receive_teams(data_t *data, int client_fd, client_packet recv_data);
 int create_thread(data_t *data, int client_fd, client_packet recv_data);
+int create_reply(data_t *data, int client_fd, client_packet recv_data);
 
 #endif /* !SERVER_H_ */

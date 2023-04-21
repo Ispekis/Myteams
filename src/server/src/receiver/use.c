@@ -11,7 +11,7 @@ static int send_teams(server_t *server, int index, client_packet recv_data)
 {
     server_packet data;
     data.type = TYPE_USE;
-    data.context = TEAM_CONTEXT;
+    data.context = DEFAULT_CONTEXT;
     uuid_copy(data.team_uuid, recv_data.use_uuid);
     send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
     return 0;
@@ -49,10 +49,10 @@ static int send_response(server_t *server, int index, client_packet recv_data)
         if (uuid_compare(server->data.channel[i].uuid,
         recv_data.use_uuid) == 0)
             return send_channel(server, index, recv_data);
-    for (int i = 0; i < server->data.nbr_thread; i++)
-        if (uuid_compare(server->data.threads[i].thread_uuid,
-        recv_data.use_uuid) == 0)
-            return send_thread(server, index, recv_data);
+    // for (int i = 0; i < server->data.nbr_thread; i++)
+    //     if (uuid_compare(server->data.threads[i].thread_uuid,
+    //     recv_data.use_uuid) == 0)
+    //         return send_thread(server, index, recv_data);
 
     data.context = recv_data.context;
     uuid_copy(data.team_uuid, recv_data.use_uuid);

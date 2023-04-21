@@ -10,7 +10,7 @@
 static void choose_info(user_t user, int client_fd, client_packet recv_data)
 {
     switch (recv_data.context) {
-        case TEAM_CONTEXT:
+        case REPLY_CONTEXT:
             printf("team\n");
             break;
         case CHANNEL_CONTEXT:
