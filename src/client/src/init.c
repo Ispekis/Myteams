@@ -54,6 +54,7 @@ static void init_receiver(client_t *client)
     client->receive[TYPE_UNSUBSCRIBE] = recv_unsubscribe;
     client->receive[TYPE_USE] = recv_use;
     client->receive[TYPE_MESSAGES] = recv_messages;
+    client->receive[TYPE_SUBSCRIBED] = recv_subscribed;
 }
 
 int init_client(client_t *client, char *ip, int port)

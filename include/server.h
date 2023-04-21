@@ -138,6 +138,7 @@ int receive_list_teams(server_t *server, int index, client_packet recv_data);
 int receive_unsubscribe(server_t *server, int index, client_packet recv_data);
 int receive_use(server_t *server, int index, client_packet recv_data);
 int receive_info(server_t *server, int index, client_packet recv_data);
+int receive_subscribed(server_t *server, int index, client_packet recv_data);
 
 // Usable in multiple file
 int join_teams(data_t *data, char *user_uuid, char *team_uuid);
