@@ -55,6 +55,11 @@ enum CONTEXT {
     THREAD_CONTEXT,
 };
 
+enum STATUS {
+    SUCCESS,
+    FAILURE,
+};
+
 typedef struct codes_s {
     int code;
     char msg[MAX_MESSAGE_LENGTH];
