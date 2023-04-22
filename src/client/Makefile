@@ -21,6 +21,7 @@ SRC	=	src/main.c								\
 		src/commands/use_cmd.c					\
 		src/commands/user_cmd.c					\
 		src/commands/create_cmd.c				\
+		src/commands/create_cmd_send.c			\
 		src/commands/list_cmd.c					\
 		src/commands/info_cmd.c					\
 		src/receiver/login.c					\
