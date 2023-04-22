@@ -9,7 +9,7 @@
 
 void load_messages(user_t *user, int fd)
 {
-    char uuid_str[MAX_UUID_LENGTH];
+    /*char uuid_str[MAX_UUID_LENGTH];
     uint32_t timestamp;
 
     read(fd, &user->nbr_messages, sizeof(user->nbr_messages));
@@ -27,7 +27,7 @@ void load_messages(user_t *user, int fd)
         uuid_parse(uuid_str, user->messages[i].sender_uuid);
         read(fd, uuid_str, MAX_UUID_LENGTH);
         uuid_parse(uuid_str, user->messages[i].dest_uuid);
-    }
+    }*/
 }
 
 void load_users(data_t *data, int fd)

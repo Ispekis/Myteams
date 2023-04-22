@@ -9,7 +9,7 @@
 
 static void save_messages(user_t user, int fd)
 {
-    uint32_t timestamp;
+    /*uint32_t timestamp;
     char uuid_str[MAX_UUID_LENGTH];
 
     write(fd, &user.nbr_messages, sizeof(user.nbr_messages));
@@ -23,7 +23,7 @@ static void save_messages(user_t user, int fd)
         write(fd, uuid_str, MAX_UUID_LENGTH);
         uuid_unparse(user.messages[i].dest_uuid, uuid_str);
         write(fd, uuid_str, MAX_UUID_LENGTH);
-    }
+    }*/
 }
 
 void save_users(data_t data, int fd)

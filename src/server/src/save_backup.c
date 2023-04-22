@@ -33,6 +33,6 @@ static void signal_handler(int sig)
 
 void catch_shutdown(server_t *server)
 {
-    sig_server = server;
-    signal(SIGINT, signal_handler);
+    // sig_server = server;
+    // signal(SIGINT, signal_handler);
 }
