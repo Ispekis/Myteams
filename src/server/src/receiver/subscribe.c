@@ -7,6 +7,9 @@
 
 #include "server.h"
 
+int check_known(data_t *data, int client_fd, char *team_uuid,
+int type);
+
 int member_add_team(data_t *data, char *user_uuid, char *team_uuid)
 {
     size_t user = -1;
@@ -63,26 +66,30 @@ static int send_response(int client_fd, char *team_uuid, char *user_uuid)
     data.type = TYPE_SUBSCRIBE;
     uuid_parse(team_uuid, data.team_uuid);
     uuid_parse(user_uuid, data.user_uuid);
+    data.code = CODE_200;
     send(client_fd, &data, sizeof(data), 0);
     return 0;
 }
 
-int is_subscribed(data_t *data, client_packet recv_data, char *param_uuid)
+int is_subscribed(data_t *data, client_packet recv_data, char *param_uuid,
+int client_fd)
 {
     size_t user = -1;
     char user_uuid_tmp[37];
     char real_user[37];
 
+    if (check_known(data, client_fd, param_uuid, TYPE_SUBSCRIBE) == -1)
+        return -1;
     uuid_unparse(recv_data.user_uuid, real_user);
     for (int i = 0; i < data->nbr_users; ++i) {
         uuid_unparse(data->users[i].uuid, user_uuid_tmp);
         user = strcmp(user_uuid_tmp, real_user) == 0 ? i : user;
     }
     if (user == -1)
-        return 1;
+        return -1;
     for (int i = 0; i < data->users[user].nbr_teams; ++i) {
         if (strcmp(data->users[user].subbed_teams[i], param_uuid) == 0)
-            return 1;
+            return -1;
     }
     return 0;
 }
@@ -93,7 +100,8 @@ int receive_subscribe(server_t *server, int index, client_packet recv_data)
     char team_uuid[37];
 
     uuid_unparse(recv_data.dest_uuid, user_uuid);
-    if (is_subscribed(&server->data, recv_data, user_uuid) == 1)
+    if (is_subscribed(&server->data, recv_data, user_uuid,
+    server->addrs.clients[index].fd) == -1)
         return 1;
     for (int i = 0; i < server->data.nbr_teams; ++i) {
         uuid_unparse(server->data.teams[i].teams_uuid, team_uuid);

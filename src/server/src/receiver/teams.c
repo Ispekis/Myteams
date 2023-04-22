@@ -42,6 +42,7 @@ char *team_uuid, char *user_uuid)
     strcpy(data.name, recv_data.name);
     strcpy(data.description, recv_data.description);
     uuid_parse(team_uuid, data.team_uuid);
+    data.code = CODE_200;
     send(client_fd, &data, sizeof(data), 0);
     return 0;
 }
@@ -50,10 +51,14 @@ int receive_teams(data_t *data, int client_fd, client_packet recv_data)
 {
     char user_uuid[37];
     char team_uuid[37];
+    server_packet packet;
 
     for (int i = 0; i < data->nbr_teams; i++)
         if (strcmp(data->teams[i].name, recv_data.name) == 0) {
-            return 1;
+            packet.code = CODE_400;
+            packet.type = TYPE_CREATE;
+            send(client_fd, &packet, sizeof(packet), 0);
+            return 0;
         }
     uuid_unparse(recv_data.user_uuid, user_uuid);
     create_teams(data, recv_data);
