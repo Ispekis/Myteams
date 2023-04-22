@@ -13,9 +13,10 @@ int recv_subscribed(client_t *client, server_packet recv_data)
 
     if (recv_data.context == 0) {
         uuid_unparse(recv_data.team_uuid, tmp_uuid);
-        client_print_team(tmp_uuid, recv_data.team_name, recv_data.description);
+        client_print_team(tmp_uuid, recv_data.team_name,
+        recv_data.description);
     } else {
-        if (recv_data.code.code == 200) {
+        if (recv_data.code.code == CODE_200.code) {
             uuid_unparse(recv_data.user_uuid, tmp_uuid);
             client_print_user(tmp_uuid, recv_data.name, recv_data.status);
         } else {
