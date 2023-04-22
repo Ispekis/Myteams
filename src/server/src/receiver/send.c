@@ -28,12 +28,8 @@ uuid_t dest_uuid)
     .sender_uuid, server_data.user_uuid);
     uuid_copy(user->messages[user->nbr_messages - 1]
     .dest_uuid, dest_uuid);
-    user->messages[user->nbr_messages - 1]
-    .message_len = server_data.message_len;
-    user->messages[user->nbr_messages - 1]
-    .message = malloc(sizeof(char) * server_data.message_len);
-    user->messages[user->nbr_messages - 1]
-    .message = strdup(server_data.message);
+    strcpy(user->messages[user->nbr_messages - 1]
+    .message, server_data.message);
     user->messages[user->nbr_messages - 1]
     .message[server_data.message_len] = '\0';
     user->messages[user->nbr_messages - 1]
