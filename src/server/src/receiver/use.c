@@ -7,72 +7,85 @@
 
 #include "server.h"
 
-static int send_teams(server_t *server, int index, client_packet recv_data)
+static void send_res_team(int client_fd)
 {
-    server_packet data;
-    data.type = TYPE_USE;
-    data.context = TEAM_CONTEXT;
-    uuid_copy(data.team_uuid, recv_data.use_uuid);
-    send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
-    return 0;
+    server_packet packet;
+
+    packet.type = TYPE_USE;
+    packet.code = CODE_200;
+    packet.context = DEFAULT_CONTEXT;
+    send(client_fd, &packet, sizeof(packet), 0);
 }
 
-static int send_channel(server_t *server, int index, client_packet recv_data)
+static void send_res_channel(data_t data, int client_fd,
+client_packet recv_data)
 {
-    server_packet data;
-    data.type = TYPE_USE;
-    data.context = CHANNEL_CONTEXT;
-    uuid_copy(data.channel_uuid, recv_data.use_uuid);
-    send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
-    return 0;
+    server_packet packet;
+
+    packet.type = TYPE_USE;
+    if (index_of_team(&data, recv_data) == NULL) {
+        packet.code = CODE_404;
+    } else {
+        packet.code = CODE_200;
+        packet.context = CHANNEL_CONTEXT;
+        uuid_copy(packet.team_uuid, recv_data.team_uuid);
+    }
+    send(client_fd, &packet, sizeof(packet), 0);
 }
 
-static int send_thread(server_t *server, int index, client_packet recv_data)
+static void send_res_thread(data_t data, int client_fd, client_packet recv_data)
 {
-    server_packet data;
-    data.type = TYPE_USE;
-    data.context = THREAD_CONTEXT;
-    uuid_copy(data.thread_uuid, recv_data.use_uuid);
-    send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
-    return 0;
+    server_packet packet;
+
+    packet.type = TYPE_USE;
+    if (index_of_channel(&data, recv_data) == NULL) {
+        packet.code = CODE_404;
+    } else {
+        packet.code = CODE_200;
+        packet.context = THREAD_CONTEXT;
+        uuid_copy(packet.team_uuid, recv_data.team_uuid);
+        uuid_copy(packet.channel_uuid, recv_data.channel_uuid);
+    }
+    send(client_fd, &packet, sizeof(packet), 0);
 }
 
-static int send_response(server_t *server, int index, client_packet recv_data)
+static void send_res_reply(data_t data, int client_fd, client_packet recv_data)
 {
-    server_packet data;
-    data.type = TYPE_USE;
-    for (int i = 0; i < server->data.nbr_teams; i++)
-        if (uuid_compare(server->data.teams[i].teams_uuid,
-        recv_data.use_uuid) == 0)
-            return send_teams(server, index, recv_data);
-    for (int i = 0; i < server->data.nbr_channel; i++)
-        if (uuid_compare(server->data.channel[i].uuid,
-        recv_data.use_uuid) == 0)
-            return send_channel(server, index, recv_data);
-    for (int i = 0; i < server->data.nbr_thread; i++)
-        if (uuid_compare(server->data.thread[i].thread_uuid,
-        recv_data.use_uuid) == 0)
-            return send_thread(server, index, recv_data);
+    server_packet packet;
 
-    data.context = recv_data.context;
-    uuid_copy(data.team_uuid, recv_data.use_uuid);
-    send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
-    return 0;
+    packet.type = TYPE_USE;
+    if (index_of_thread(&data, recv_data) == NULL) {
+        packet.code = CODE_404;
+    } else {
+        packet.code = CODE_200;
+        packet.context = REPLY_CONTEXT;
+        uuid_copy(packet.team_uuid, recv_data.team_uuid);
+        uuid_copy(packet.channel_uuid, recv_data.channel_uuid);
+        uuid_copy(packet.thread_uuid, recv_data.thread_uuid);
+    }
+    send(client_fd, &packet, sizeof(packet), 0);
 }
 
 int receive_use(server_t *server, int index, client_packet recv_data)
 {
-    server_packet data;
-    char team_uuid[37];
-    data.type = TYPE_USE;
-
-    uuid_unparse(recv_data.use_uuid, team_uuid);
-    if (uuid_is_null(recv_data.use_uuid)) {
-        data.context = DEFAULT_CONTEXT;
-        uuid_copy(data.send_uuid, recv_data.use_uuid);
-        send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
-    } else {
-        send_response(server, index, recv_data);
-    }
+    if (uuid_is_null(recv_data.team_uuid)
+        && uuid_is_null(recv_data.channel_uuid)
+        && uuid_is_null(recv_data.thread_uuid))
+        send_res_team(server->addrs.clients[index].fd);
+    if (!uuid_is_null(recv_data.team_uuid)
+        && uuid_is_null(recv_data.channel_uuid)
+        && uuid_is_null(recv_data.thread_uuid))
+        send_res_channel(server->data, server->addrs.clients[index].fd,
+        recv_data);
+    if (!uuid_is_null(recv_data.team_uuid)
+        && !uuid_is_null(recv_data.channel_uuid)
+        && uuid_is_null(recv_data.thread_uuid))
+        send_res_thread(server->data, server->addrs.clients[index].fd,
+        recv_data);
+    if (!uuid_is_null(recv_data.team_uuid)
+        && !uuid_is_null(recv_data.channel_uuid)
+        && !uuid_is_null(recv_data.thread_uuid))
+        send_res_reply(server->data, server->addrs.clients[index].fd,
+        recv_data);
     return 0;
 }
