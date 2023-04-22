@@ -35,8 +35,10 @@ static int send_response(int client_fd, char *name, char *uuid, int action)
     data.code = CODE_200;
     if (action == USER_LOGING)
         server_event_user_logged_in(uuid);
-    else
+    else {
         server_event_user_created(uuid, name);
+        server_event_user_logged_in(uuid);
+    }
     data.user_name_len = strlen(name) + 1;
     data.context = DEFAULT_CONTEXT;
     strcpy(data.name, name);
