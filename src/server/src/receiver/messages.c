@@ -25,15 +25,12 @@ uuid_t dest_uuid)
 
 static int send_messages(int client_fd, messages_t message)
 {
-    char uuid_str[MAX_UUID_LENGTH];
-    uint32_t timestamp;
+    server_packet packet;
 
-    uuid_unparse(message.sender_uuid, uuid_str);
-    timestamp = htonl(message.timestamp);
-    send(client_fd, &timestamp, sizeof(timestamp), 0);
-    send(client_fd, uuid_str, MAX_UUID_LENGTH, 0);
-    send(client_fd, &message.message_len, sizeof(message.message_len), 0);
-    send(client_fd, message.message, message.message_len - 1, 0);
+    uuid_copy(packet.send_uuid, message.sender_uuid);
+    strcpy(packet.message, message.message);
+    packet.timestamp = message.timestamp;
+    send(client_fd, &packet, sizeof(packet), 0);
 }
 
 static int check_messages(int client_fd, user_t user, uuid_t dest_uuid)
