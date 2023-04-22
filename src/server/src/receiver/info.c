@@ -7,17 +7,17 @@
 
 #include "server.h"
 
-static void choose_info(user_t user, int client_fd, client_packet recv_data)
+static void choose_info(data_t data, int client_fd, client_packet recv_data)
 {
     switch (recv_data.context) {
         case REPLY_CONTEXT:
-            printf("team\n");
+            info_thread(data, client_fd, recv_data);
             break;
         case CHANNEL_CONTEXT:
-            printf("channel\n");
+            info_team(data, client_fd, recv_data);
             break;
         case THREAD_CONTEXT:
-            printf("thread\n");
+            info_channel(data, client_fd, recv_data);
             break;
         default:
             break;
@@ -26,10 +26,6 @@ static void choose_info(user_t user, int client_fd, client_packet recv_data)
 
 int receive_info(server_t *server, int index, client_packet recv_data)
 {
-    for (int i = 0; i < server->data.nbr_users; i++) {
-        if (uuid_compare(server->data.users[i].uuid, recv_data.user_uuid) == 0)
-            choose_info(server->data.users[i], server->addrs.clients->fd,
-            recv_data);
-    }
+    choose_info(server->data, server->addrs.clients[index].fd, recv_data);
     return 0;
 }

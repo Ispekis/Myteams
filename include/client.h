@@ -114,6 +114,12 @@ int send_team_packet(client_packet *packet, data_t data, char **param);
 int send_reply_packet(client_packet *packet, data_t data, char **param);
 int send_channel_packet(client_packet *packet, data_t data, char **param);
 
+// Info senders
+void do_default_info(data_t data);
+void send_info_team(client_packet *packet, data_t data);
+void send_info_channel(client_packet *packet, data_t data);
+void send_info_thread(client_packet *packet, data_t data);
+
 int read_server(client_t *client);
 
 int recv_login(client_t *client, server_packet recv_data);
