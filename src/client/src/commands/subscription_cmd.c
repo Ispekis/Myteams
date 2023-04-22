@@ -12,6 +12,7 @@ static int check_arguments(client_t *client, char **param)
 {
     if (!client->data.is_logged) {
         printf("Not logged\n");
+        client_error_unauthorized();
         return 1;
     }
     if (param == NULL || param[0] == NULL) {
@@ -40,6 +41,7 @@ int list_subscribed(client_t *client, char **param)
 
     if (!client->data.is_logged) {
         printf("Not logged\n");
+        client_error_unauthorized();
         return 0;
     }
     packet.type = TYPE_SUBSCRIBED;

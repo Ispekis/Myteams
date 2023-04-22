@@ -13,6 +13,7 @@ int send_message(client_t *client, char **param)
 
     if (!client->data.is_logged) {
         printf("Not logged\n");
+        client_error_unauthorized();
         return 0;
     }
     if (param == NULL || (param[0] != NULL && param[1] == NULL)) {

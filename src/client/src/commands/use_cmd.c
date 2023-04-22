@@ -13,6 +13,7 @@ int use_command(client_t *client, char **param)
 
     if (!client->data.is_logged) {
         printf("Not logged\n");
+        client_error_unauthorized();
         return 0;
     }
     uuid_clear(packet.team_uuid);
