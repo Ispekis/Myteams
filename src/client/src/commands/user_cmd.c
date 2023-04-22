@@ -13,6 +13,7 @@ int get_users(client_t *client, char **param)
 
     if (!client->data.is_logged) {
         printf("Not logged\n");
+        client_error_unauthorized();
         return 0;
     }
 
@@ -28,6 +29,7 @@ int get_user(client_t *client, char **param)
 
     if (!client->data.is_logged) {
         printf("Not logged\n");
+        client_error_unauthorized();
         return 0;
     }
 

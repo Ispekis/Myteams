@@ -28,6 +28,7 @@ int create_sub_res(client_t *client, char **param)
 
     if (!client->data.is_logged) {
         print_code_res(CODE_403);
+        client_error_unauthorized();
         return 0;
     }
     if (param == NULL) {
