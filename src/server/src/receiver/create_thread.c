@@ -51,7 +51,7 @@ static void set_data(channel_t *ch, client_packet recv_data, int nbr_threads)
 int create_thread(data_t *data, int client_fd, client_packet recv_data)
 {
     channel_t *channel = index_of_channel(data, recv_data);
-    thread_t *new_thread ;
+    thread_t *new_thread;
 
     if (channel == NULL) {
         printf("Not found\n");

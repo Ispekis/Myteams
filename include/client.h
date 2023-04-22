@@ -109,10 +109,10 @@ int info_current_res(client_t *client, char **param);
 int create_sub_res(client_t *client, char **param);
 
 // Create senders
-void send_thread_packet(client_packet *packet, data_t data, char **param);
-void send_team_packet(client_packet *packet, data_t data, char **param);
-void send_reply_packet(client_packet *packet, data_t data, char **param);
-void send_channel_packet(client_packet *packet, data_t data, char **param);
+int send_thread_packet(client_packet *packet, data_t data, char **param);
+int send_team_packet(client_packet *packet, data_t data, char **param);
+int send_reply_packet(client_packet *packet, data_t data, char **param);
+int send_channel_packet(client_packet *packet, data_t data, char **param);
 
 int read_server(client_t *client);
 

@@ -81,6 +81,8 @@ typedef struct user {
 
 typedef struct reply_s {
     char body[MAX_BODY_LENGTH];
+    uuid_t user_uuid;
+    time_t timestamp;
 } reply_t;
 
 typedef struct thread {

@@ -89,6 +89,7 @@ typedef struct server_packet {
     time_t timestamp;
     uuid_t use_uuid;
     uuid_t send_uuid;
+    char body[MAX_BODY_LENGTH];
     int nbr_messages;
 } __attribute__((packed)) server_packet;
 
@@ -111,6 +112,7 @@ typedef struct client_packet {
     uuid_t thread_uuid;
     char thread_title[MAX_NAME_LENGTH];
     char thread_message[MAX_BODY_LENGTH];
+    char body[MAX_BODY_LENGTH];
     uuid_t send_uuid;
 } __attribute__((packed)) client_packet;
 
