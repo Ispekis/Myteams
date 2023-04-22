@@ -15,14 +15,18 @@ int use_command(client_t *client, char **param)
         printf("Not logged\n");
         return 0;
     }
-
-    if (param == NULL)
-        uuid_clear(packet.use_uuid);
-    else
-        uuid_parse(param[0], packet.use_uuid);
-
+    uuid_clear(packet.team_uuid);
+    uuid_clear(packet.channel_uuid);
+    uuid_clear(packet.thread_uuid);
+    if (param != NULL) {
+        if (param[0] != NULL)
+            uuid_parse(param[0], packet.team_uuid);
+        if (param[1] != NULL)
+            uuid_parse(param[1], packet.channel_uuid);
+        if (param[2] != NULL)
+            uuid_parse(param[2], packet.thread_uuid);
+    }
     packet.type = TYPE_USE;
-    packet.context = client->data.context;
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }

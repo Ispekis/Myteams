@@ -7,14 +7,7 @@
 
 #include "server.h"
 
-int index_of_threads()
-{
-
-}
-
 int create_reply(data_t *data, int client_fd, client_packet recv_data)
 {
-    printf("Reply\n");
-    // for (int i = 0)
     return 0;
 }

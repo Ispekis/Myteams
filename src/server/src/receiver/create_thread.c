@@ -37,7 +37,7 @@ static void display_log(channel_t ch, int nbr_threads)
 static void set_data(channel_t *ch, client_packet recv_data, int nbr_threads)
 {
     uuid_generate(ch->threads[nbr_threads].thread_uuid);
-    uuid_copy(ch->threads->user_uuid, recv_data.user_uuid);
+    uuid_copy(ch->threads[nbr_threads].user_uuid, recv_data.user_uuid);
     uuid_copy(ch->threads[nbr_threads].channel_uuid,
     recv_data.channel_uuid);
     strcpy(ch->threads[nbr_threads].thread_title, recv_data.thread_title);
@@ -50,25 +50,23 @@ static void set_data(channel_t *ch, client_packet recv_data, int nbr_threads)
 
 int create_thread(data_t *data, int client_fd, client_packet recv_data)
 {
-    char uuid_str[MAX_UUID_LENGTH];
-    int ch_index = index_of_channel(*data, data->nbr_channel,
-    recv_data.channel_uuid);
+    channel_t *channel = index_of_channel(data, recv_data);
     thread_t *new_thread ;
 
-    if (ch_index == -1) {
-        printf("Not found");
+    if (channel == NULL) {
+        printf("Not found\n");
         return 0;
     }
-    new_thread = realloc(data->channel[ch_index].threads,
-    sizeof(thread_t) * (data->channel[ch_index].nbr_thread + 1));
+    new_thread = realloc(channel->threads,
+    sizeof(thread_t) * (channel->nbr_thread + 1));
     if (new_thread == NULL)
         return 1;
-    data->channel[ch_index].threads = new_thread;
-    set_data(&data->channel[ch_index], recv_data,
-    data->channel[ch_index].nbr_thread);
-    display_log(data->channel[ch_index], data->channel[ch_index].nbr_thread);
-    send_response(data->channel[ch_index], client_fd,
-    data->channel[ch_index].nbr_thread);
-    data->nbr_teams++;
+    channel->threads = new_thread;
+    set_data(channel, recv_data,
+    channel->nbr_thread);
+    display_log(*channel, channel->nbr_thread);
+    send_response(*channel, client_fd,
+    channel->nbr_thread);
+    channel->nbr_thread++;
     return 0;
 }

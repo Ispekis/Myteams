@@ -17,7 +17,7 @@ static void choose_create(data_t *data, int client_fd, client_packet recv_data)
             create_reply(data, client_fd, recv_data);
             break;
         case CHANNEL_CONTEXT:
-            printf("Channel\n");
+            receive_channel(data, client_fd, recv_data);
             break;
         case THREAD_CONTEXT:
             create_thread(data, client_fd, recv_data);

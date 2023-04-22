@@ -18,6 +18,7 @@ char **param)
             send_thread_packet(packet, data, param);
             break;
         case CHANNEL_CONTEXT:
+            send_channel_packet(packet, data, param);
             break;
         case REPLY_CONTEXT:
             send_reply_packet(packet, data, param);
@@ -38,7 +39,7 @@ int create_sub_res(client_t *client, char **param)
         return 0;
     }
     packet.type = TYPE_CREATE;
-    packet.context = REPLY_CONTEXT;
+    packet.context = client->data.context;
     uuid_copy(packet.user_uuid, client->data.user_uuid);
     choose_create_send(&packet, client->data, param);
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);

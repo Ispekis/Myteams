@@ -55,7 +55,7 @@ enum CONTEXT {
 
 typedef struct codes_s {
     int code;
-    char *msg;
+    char msg[MAX_MESSAGE_LENGTH];
 } code_t;
 
 static const code_t CODE_120 = {200, "Service conncted to server"};
@@ -81,6 +81,8 @@ typedef struct server_packet {
     uuid_t dest_uuid;
     uuid_t team_uuid;
     uuid_t channel_uuid;
+    char channel_name[MAX_NAME_LENGTH];
+    char channel_desc[MAX_DESCRIPTION_LENGTH];
     uuid_t thread_uuid;
     char thread_title[MAX_NAME_LENGTH];
     char thread_message[MAX_BODY_LENGTH];
@@ -104,10 +106,11 @@ typedef struct client_packet {
     uuid_t dest_uuid;
     uuid_t team_uuid;
     uuid_t channel_uuid;
+    char channel_name[MAX_NAME_LENGTH];
+    char channel_desc[MAX_DESCRIPTION_LENGTH];
     uuid_t thread_uuid;
     char thread_title[MAX_NAME_LENGTH];
     char thread_message[MAX_BODY_LENGTH];
-    uuid_t use_uuid;
     uuid_t send_uuid;
 } __attribute__((packed)) client_packet;
 

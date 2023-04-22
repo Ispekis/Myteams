@@ -7,15 +7,41 @@
 
 #include "server.h"
 
-int index_of_channel(data_t data, int max_len, uuid_t uuid)
+channel_t *index_of_channel(data_t *data, client_packet recv_data)
 {
-    for (int i = 0; i < max_len; i++)
-        if (uuid_compare(data.channel[i].uuid, uuid) == 0)
-            return i;
-    return -1;
+    teams_t *team = index_of_team(data, recv_data);
+
+    if (team == NULL)
+        return NULL;
+    for (int i = 0; i < team->nbr_channel; i++) {
+        if (uuid_compare(team->channel[i].uuid, recv_data.channel_uuid) == 0) {
+            return &team->channel[i];
+        }
+    }
+    return NULL;
 }
 
-int index_of_thread()
+thread_t *index_of_thread(data_t *data, client_packet recv_data)
 {
+    channel_t *channel = index_of_channel(data, recv_data);
 
+    if (channel == NULL)
+        return NULL;
+    for (int i = 0; i < channel->nbr_thread; i++) {
+        if (uuid_compare(channel->threads[i].thread_uuid,
+            recv_data.thread_uuid) == 0) {
+            return &channel->threads[i];
+        }
+    }
+    return NULL;
+}
+
+teams_t *index_of_team(data_t *data, client_packet recv_data)
+{
+    for (int i = 0; i < data->nbr_teams; i++) {
+        if (uuid_compare(data->teams[i].teams_uuid, recv_data.team_uuid) == 0) {
+            return &data->teams[i];
+        }
+    }
+    return NULL;
 }
