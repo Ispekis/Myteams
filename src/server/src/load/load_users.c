@@ -16,8 +16,8 @@ void load_users(data_t *data, int fd)
         data->users[i].messages = malloc(sizeof(messages_t) *
         data->users[i].nbr_messages);
         for (int y = 0; y < data->users[i].nbr_messages; y++) {
-            read(fd, &data->users[i].messages[i],
-            sizeof(data->users[i].messages[i]));
+            read(fd, &data->users[i].messages[y],
+            sizeof(data->users[i].messages[y]));
         }
     }
 }

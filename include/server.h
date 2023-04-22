@@ -73,7 +73,7 @@ typedef struct user {
     bool is_logged;
     int current_fd;
     int context;
-    char **subbed_teams;
+    uuid_t *teams_uuid;
     int nbr_teams;
     messages_t *messages;
     int nbr_messages;
@@ -107,10 +107,10 @@ typedef struct channel {
 
 typedef struct teams {
     uuid_t teams_uuid;
-    char *name;
+    char name[MAX_NAME_LENGTH];
     char description[MAX_DESCRIPTION_LENGTH];
     size_t subs_nbr;
-    char **team_member;
+    uuid_t *members_uuid;
     channel_t *channel;
     int nbr_channel;
 } teams_t;
@@ -156,8 +156,8 @@ int receive_subscribed(server_t *server, int index, client_packet recv_data);
 int receive_create(server_t *server, int index, client_packet recv_data);
 
 // Usable in multiple file
-int join_teams(data_t *data, char *user_uuid, char *team_uuid);
-int member_add_team(data_t *data, char *user_uuid, char *team_uuid);
+int join_teams(teams_t *team, uuid_t user_uuid);
+int member_add_team(user_t *user, uuid_t team_uuid);
 int receive_list_teams(server_t *server, int index, client_packet recv_data);
 int receive_messages(server_t *server, int index, client_packet recv_data);
 
@@ -169,6 +169,7 @@ void load_save(server_t *server);
 channel_t *index_of_channel(data_t *data, client_packet recv_data);
 thread_t *index_of_thread(data_t *data, client_packet recv_data);
 teams_t *index_of_team(data_t *data, client_packet recv_data);
+user_t *index_of_user(data_t *data, uuid_t user_uuid);
 
 // Savers
 void save_users(data_t data, int fd);

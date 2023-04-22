@@ -45,3 +45,13 @@ teams_t *index_of_team(data_t *data, client_packet recv_data)
     }
     return NULL;
 }
+
+user_t *index_of_user(data_t *data, uuid_t user_uuid)
+{
+    for (int i = 0; i < data->nbr_users; i++) {
+        if (uuid_compare(data->users[i].uuid, user_uuid) == 0) {
+            return &data->users[i];
+        }
+    }
+    return NULL;
+}

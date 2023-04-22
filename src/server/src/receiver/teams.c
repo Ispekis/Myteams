@@ -15,33 +15,31 @@ static int create_teams(data_t *data, client_packet recv_data)
         return 1;
 
     data->teams = new_team;
-    data->teams[data->nbr_teams].name =
-    malloc(sizeof(char) * (strlen(recv_data.name) + 1));
-    if (data->teams[data->nbr_teams].name == NULL)
-        return 1;
     strcpy(data->teams[data->nbr_teams].name, recv_data.name);
     strcpy(data->teams[data->nbr_teams].description,
     recv_data.description);
     uuid_generate(data->teams[data->nbr_teams].teams_uuid);
-    data->teams[data->nbr_teams].team_member =
-    malloc(sizeof(char *) + 1);
-    data->teams[data->nbr_teams].team_member[0] = NULL;
+    data->teams[data->nbr_teams].members_uuid = malloc(sizeof(uuid_t));
+    data->teams[data->nbr_teams].members_uuid = NULL;
     data->teams[data->nbr_teams].subs_nbr = 0;
-    data->nbr_teams++;
     return 0;
 }
 
 static int send_response(int client_fd, client_packet recv_data,
-char *team_uuid, char *user_uuid)
+uuid_t team_uuid)
 {
+    char uuid_str[MAX_UUID_LENGTH];
+    char team_str[MAX_UUID_LENGTH];
     server_packet data;
 
-    server_event_team_created(team_uuid, recv_data.name, user_uuid);
+    uuid_unparse(recv_data.user_uuid, uuid_str);
+    uuid_unparse(team_uuid, team_str);
+    server_event_team_created(team_str, recv_data.name, uuid_str);
     data.type = TYPE_CREATE;
     data.user_name_len = strlen(recv_data.name) + 1;
     strcpy(data.name, recv_data.name);
     strcpy(data.description, recv_data.description);
-    uuid_parse(team_uuid, data.team_uuid);
+    uuid_copy(data.team_uuid, team_uuid);
     data.code = CODE_200;
     send(client_fd, &data, sizeof(data), 0);
     return 0;
@@ -49,9 +47,8 @@ char *team_uuid, char *user_uuid)
 
 int receive_teams(data_t *data, int client_fd, client_packet recv_data)
 {
-    char user_uuid[37];
-    char team_uuid[37];
     server_packet packet;
+    user_t *user = index_of_user(data, recv_data.user_uuid);
 
     for (int i = 0; i < data->nbr_teams; i++)
         if (strcmp(data->teams[i].name, recv_data.name) == 0) {
@@ -60,13 +57,11 @@ int receive_teams(data_t *data, int client_fd, client_packet recv_data)
             send(client_fd, &packet, sizeof(packet), 0);
             return 0;
         }
-    uuid_unparse(recv_data.user_uuid, user_uuid);
     create_teams(data, recv_data);
-    uuid_unparse(data->teams[data->nbr_teams - 1].teams_uuid,
-    team_uuid);
-    join_teams(data, user_uuid, team_uuid);
-    member_add_team(data, user_uuid, team_uuid);
+    join_teams(&data->teams[data->nbr_teams], recv_data.user_uuid);
+    member_add_team(user, data->teams[data->nbr_teams].teams_uuid);
     send_response(client_fd, recv_data,
-    team_uuid, user_uuid);
+    data->teams[data->nbr_teams].teams_uuid);
+    data->nbr_teams++;
     return 0;
 }

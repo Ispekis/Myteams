@@ -61,7 +61,7 @@ static int check_user(server_t *server, char *user_uuid)
 static int subscribed_args(server_t *server, int index, client_packet recv_data
 , char *team_uuid)
 {
-    char tmp_uuid[37];
+    /*char tmp_uuid[37];
     size_t team = -1;
     size_t user = -1;
 
@@ -77,12 +77,12 @@ static int subscribed_args(server_t *server, int index, client_packet recv_data
             continue;
         send_response_args(server->addrs.clients[index].fd, server, user);
     }
-    return 0;
+    return 0;*/
 }
 
 int receive_subscribed(server_t *server, int index, client_packet recv_data)
 {
-    char tmp_uuid[37];
+    /*char tmp_uuid[37];
 
     if (recv_data.name_len == 0) {
         subscribed_no_args(server, index, recv_data);
@@ -93,7 +93,7 @@ int receive_subscribed(server_t *server, int index, client_packet recv_data)
             return 1;
         }
         subscribed_args(server, index, recv_data, tmp_uuid);
-    }
+    }*/
 
     return 0;
 }

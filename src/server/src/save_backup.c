@@ -24,6 +24,7 @@ static void save_data(server_t server)
 
     for (int i = 0; i < server.data.nbr_users; i++) {
         server.data.users[i].is_logged = false;
+        server.data.users[i].current_fd = -1;
     }
     save_users(server.data, fd);
     close(fd);

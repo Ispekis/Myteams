@@ -7,18 +7,6 @@
 
 #include "server.h"
 
-int find_team_index(data_t *data, char *user_uuid, int index)
-{
-    size_t user = -1;
-    char user_uuid_tmp[37];
-
-    for (int i = 0; i < data->teams[index].subs_nbr; ++i) {
-        strcpy(user_uuid_tmp, data->teams[index].team_member[i]);
-        user = strcmp(user_uuid_tmp, user_uuid) == 0 ? i : user;
-    }
-    return user;
-}
-
 int check_known(data_t *data, int client_fd, char *team_uuid,
 int type)
 {
@@ -41,7 +29,7 @@ int type)
 int check_user_sub(server_t *server, char *user_uuid, char *team_uuid,
 int index)
 {
-    size_t user = -1;
+    /*size_t user = -1;
     size_t team = -1;
     char tmp_uuid[37];
 
@@ -60,5 +48,5 @@ int index)
     }
     if (team == -1)
         return -1;
-    return user;
+    return user;*/
 }
