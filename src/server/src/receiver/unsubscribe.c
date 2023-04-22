@@ -8,7 +8,8 @@
 #include "server.h"
 
 int find_team_index(data_t *data, char *user_uuid, int index);
-int check_user_sub(server_t *server, char *user_uuid, char *team_uuid);
+int check_user_sub(server_t *server, char *user_uuid, char *team_uuid,
+int index);
 
 static int remove_member_team(data_t *data, char *user_uuid, char *team_uuid,
 int index)
@@ -64,6 +65,7 @@ int index)
     data.type = TYPE_UNSUBSCRIBE;
     uuid_parse(team_uuid, data.team_uuid);
     uuid_parse(user_uuid, data.user_uuid);
+    data.code = CODE_200;
     send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
     return 0;
 }
@@ -77,7 +79,7 @@ int receive_unsubscribe(server_t *server, int index, client_packet recv_data)
 
     uuid_unparse(recv_data.user_uuid, user_uuid);
     uuid_unparse(recv_data.dest_uuid, tmp_uuid);
-    if ((user = check_user_sub(server, user_uuid, tmp_uuid)) == -1)
+    if ((user = check_user_sub(server, user_uuid, tmp_uuid, index)) == -1)
         return 1;
     for (int i = 0; i < server->data.users[user].nbr_teams; ++i) {
         strcpy(team_uuid, server->data.users[user].subbed_teams[i]);

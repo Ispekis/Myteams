@@ -14,9 +14,14 @@ int recv_subscribed(client_t *client, server_packet recv_data)
     if (recv_data.context == 0) {
         uuid_unparse(recv_data.team_uuid, tmp_uuid);
         client_print_team(tmp_uuid, recv_data.team_name, recv_data.description);
-    } else if (recv_data.context == 1) {
-        uuid_unparse(recv_data.user_uuid, tmp_uuid);
-        client_print_user(tmp_uuid, recv_data.name, recv_data.status);
+    } else {
+        if (recv_data.code.code == 200) {
+            uuid_unparse(recv_data.user_uuid, tmp_uuid);
+            client_print_user(tmp_uuid, recv_data.name, recv_data.status);
+        } else {
+            uuid_unparse(recv_data.team_uuid, tmp_uuid);
+            client_error_unknown_team(tmp_uuid);
+        }
     }
     return 0;
 }

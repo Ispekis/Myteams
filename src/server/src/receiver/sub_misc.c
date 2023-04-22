@@ -19,12 +19,35 @@ int find_team_index(data_t *data, char *user_uuid, int index)
     return user;
 }
 
-int check_user_sub(server_t *server, char *user_uuid, char *team_uuid)
+int check_known(data_t *data, int client_fd, char *team_uuid,
+int type)
+{
+    char tmp_uuid[37];
+    server_packet packet;
+
+    for (int i = 0; i < data->nbr_teams; ++i) {
+        uuid_unparse(data->teams[i].teams_uuid, tmp_uuid);
+        if (strcmp(tmp_uuid, team_uuid) == 0) {
+            return 0;
+        }
+    }
+    packet.type = type;
+    packet.code = CODE_400;
+    uuid_parse(team_uuid, packet.team_uuid);
+    send(client_fd, &packet, sizeof(packet), 0);
+    return -1;
+}
+
+int check_user_sub(server_t *server, char *user_uuid, char *team_uuid,
+int index)
 {
     size_t user = -1;
     size_t team = -1;
     char tmp_uuid[37];
 
+    if (check_known(&server->data, server->addrs.clients[index].fd,
+    team_uuid, TYPE_UNSUBSCRIBE) == -1)
+        return -1;
     for (int i = 0; i < server->data.nbr_users; ++i) {
         uuid_unparse(server->data.users[i].uuid, tmp_uuid);
         user = strcmp(tmp_uuid, user_uuid) == 0 ? i : user;

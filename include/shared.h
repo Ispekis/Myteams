@@ -58,7 +58,7 @@ typedef struct codes_s {
     char msg[MAX_MESSAGE_LENGTH];
 } code_t;
 
-static const code_t CODE_120 = {200, "Service conncted to server"};
+static const code_t CODE_120 = {200, "Service connected to server"};
 static const code_t CODE_200 = {200, "Action successfully completed"};
 static const code_t CODE_214 = {214, "Showing help message"};
 static const code_t CODE_400 = {400, "Bad Request"};
