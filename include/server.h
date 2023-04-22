@@ -11,6 +11,7 @@
     #include "../libs/myteams/logging_client.h"
     #include "shared.h"
     #include <signal.h>
+    #include <sys/signalfd.h>
     #include <fcntl.h>
     #define TOTAL_CMD 15
     #define MAX_CONNECTIONS 100
@@ -64,7 +65,7 @@ typedef struct messages_s {
     uuid_t dest_uuid;
     char message[MAX_BODY_LENGTH];
     time_t timestamp;
-} messages_t;
+} __attribute__((packed)) messages_t;
 
 typedef struct user {
     char name[MAX_NAME_LENGTH];
@@ -76,7 +77,7 @@ typedef struct user {
     int nbr_teams;
     messages_t *messages;
     int nbr_messages;
-} user_t;
+} __attribute__((packed)) user_t;
 
 typedef struct reply_s {
     char body[MAX_BODY_LENGTH];
@@ -124,6 +125,8 @@ typedef struct data {
 typedef struct server {
     sock_addrs_t addrs;
     data_t data;
+    struct signalfd_siginfo fdsi;
+    int sfd;
     int (*cmd[TOTAL_CMD])(struct server* server, char** param, int index);
     int (*receive[TOTAL_TYPE])(struct server* server,
     int index, client_packet recv_data);
@@ -159,7 +162,7 @@ int receive_list_teams(server_t *server, int index, client_packet recv_data);
 int receive_messages(server_t *server, int index, client_packet recv_data);
 
 // save_backup
-void catch_shutdown(server_t *server);
+int catch_shutdown(server_t server);
 void load_save(server_t *server);
 
 // Index getters
