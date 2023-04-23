@@ -14,6 +14,7 @@ void load_save(server_t *server)
 
     if (fd != -1) {
         load_users(&server->data, fd);
+        load_teams(&server->data, fd);
     }
     close(fd);
 }
@@ -27,6 +28,7 @@ static void save_data(server_t server)
         server.data.users[i].current_fd = -1;
     }
     save_users(server.data, fd);
+    save_teams(server.data, fd);
     close(fd);
 }
 

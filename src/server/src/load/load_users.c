@@ -7,17 +7,29 @@
 
 #include "server.h"
 
+static void load_messages(user_t *user, int fd)
+{
+    user->messages = malloc(sizeof(messages_t) * user->nbr_messages);
+    for (int i = 0; i < user->nbr_messages; i++) {
+        read(fd, &user->messages[i], sizeof(user->messages[i]));
+    }
+}
+
+static void load_teams_uuids(user_t *user, int fd)
+{
+    user->teams_uuid = malloc(sizeof(uuid_t) * user->nbr_teams);
+    for (int i = 0; i < user->nbr_teams; i++) {
+        read(fd, &user->teams_uuid[i], sizeof(user->teams_uuid[i]));
+    }
+}
+
 void load_users(data_t *data, int fd)
 {
     read(fd, &data->nbr_users, sizeof(data->nbr_users));
     data->users = malloc(sizeof(user_t) * data->nbr_users);
     for (int i = 0; i < data->nbr_users; i++) {
         read(fd, &data->users[i], sizeof(data->users[i]));
-        data->users[i].messages = malloc(sizeof(messages_t) *
-        data->users[i].nbr_messages);
-        for (int y = 0; y < data->users[i].nbr_messages; y++) {
-            read(fd, &data->users[i].messages[y],
-            sizeof(data->users[i].messages[y]));
-        }
+        load_teams_uuids(&data->users[i], fd);
+        load_messages(&data->users[i], fd);
     }
 }

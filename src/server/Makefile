@@ -36,6 +36,8 @@ SRC	=	src/main.c								\
 		src/receiver/create_channel.c			\
 		src/receiver/subscribed_users.c			\
 		src/receiver/subscribed_teams.c			\
+		src/save/save_teams.c					\
+		src/load/load_teams.c					\
 
 NAME	=	myteams_server
 
