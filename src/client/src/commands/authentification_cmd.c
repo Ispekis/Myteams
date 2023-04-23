@@ -29,7 +29,7 @@ int user_logout(client_t *client, char **param)
     client_packet packet;
 
     if (!client->data.is_logged) {
-        printf("Not logged\n");
+        print_code_res(CODE_403);
         return 0;
     }
     packet.type = TYPE_LOGOUT;
