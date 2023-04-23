@@ -38,6 +38,7 @@ SRC	=	src/main.c								\
 		src/receiver/subscribed_teams.c			\
 		src/save/save_teams.c					\
 		src/load/load_teams.c					\
+		src/receiver/list_context.c				\
 
 NAME	=	myteams_server
 

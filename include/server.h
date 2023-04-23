@@ -182,6 +182,12 @@ void info_team(data_t data, int client_fd, client_packet recv_data);
 void info_channel(data_t data, int client_fd, client_packet recv_data);
 void info_thread(data_t data, int client_fd, client_packet recv_data);
 
+// list function switch
+void list_team(data_t data, int client_fd, client_packet recv_data);
+void list_channel(data_t data, int client_fd, client_packet recv_data);
+void list_thread(data_t data, int client_fd, client_packet recv_data);
+void list_reply(data_t data, int client_fd, client_packet recv_data);
+
 // create functions switch
 int receive_teams(data_t *data, int client_fd, client_packet recv_data);
 int receive_channel(data_t *data, int client_fd, client_packet recv_data);
