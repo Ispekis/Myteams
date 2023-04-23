@@ -9,14 +9,23 @@
 
 int receive_list_teams(server_t *server, int index, client_packet recv_data)
 {
-    server_packet data;
-    data.type = TYPE_LIST;
-
-    for (int i = 0; i < server->data.nbr_teams; i++) {
-        uuid_copy(data.team_uuid, server->data.teams[i].teams_uuid);
-        strcpy(data.team_name, server->data.teams[i].name);
-        strcpy(data.description, server->data.teams[i].description);
-        send(server->addrs.clients[index].fd, &data, sizeof(data), 0);
+    switch (recv_data.context) {
+        case DEFAULT_CONTEXT:
+            list_team(server->data,
+            server->addrs.clients[index].fd, recv_data);
+            break;
+        case CHANNEL_CONTEXT:
+            list_channel(server->data,
+            server->addrs.clients[index].fd, recv_data);
+            break;
+        case THREAD_CONTEXT:
+            list_thread(server->data,
+            server->addrs.clients[index].fd, recv_data);
+            break;
+        case REPLY_CONTEXT:
+            list_reply(server->data,
+            server->addrs.clients[index].fd, recv_data);
+            break;
     }
     return 0;
 }

@@ -58,8 +58,6 @@ int receive_teams(data_t *data, int client_fd, client_packet recv_data)
             return 0;
         }
     create_teams(data, recv_data);
-    join_teams(&data->teams[data->nbr_teams], recv_data.user_uuid);
-    member_add_team(user, data->teams[data->nbr_teams].teams_uuid);
     send_response(client_fd, recv_data,
     data->teams[data->nbr_teams].teams_uuid);
     data->nbr_teams++;
