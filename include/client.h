@@ -102,7 +102,6 @@ int unsubscribe_client(client_t *client, char **param);
 int use_command(client_t *client, char **param);
 
 int list_sub_res(client_t *client, char **param);
-int list_all_teams(client_t *client, char **param);
 
 int info_current_res(client_t *client, char **param);
 
@@ -120,6 +119,12 @@ void send_info_team(client_packet *packet, data_t data);
 void send_info_channel(client_packet *packet, data_t data);
 void send_info_thread(client_packet *packet, data_t data);
 
+// List senders
+void send_list_team(client_packet *packet, data_t data);
+void send_list_channel(client_packet *packet, data_t data);
+void send_list_thread(client_packet *packet, data_t data);
+void send_list_reply(client_packet *packet, data_t data);
+
 int read_server(client_t *client);
 
 int recv_login(client_t *client, server_packet recv_data);
@@ -134,7 +139,7 @@ int recv_users(client_t *client, server_packet recv_data);
 
 int recv_subscribe(client_t *client, server_packet recv_data);
 
-int recv_list_teams(client_t *client, server_packet recv_data);
+int recv_list(client_t *client, server_packet recv_data);
 
 int recv_unsubscribe(client_t *client, server_packet recv_data);
 

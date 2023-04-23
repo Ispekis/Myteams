@@ -37,7 +37,7 @@ static void init_commands(client_t *client)
     client->cmd[UNSUBSCRIBE] = unsubscribe_client;
     client->cmd[USE] = use_command;
     client->cmd[CREATE] = create_sub_res;
-    client->cmd[LIST] = list_all_teams;
+    client->cmd[LIST] = list_sub_res;
     client->cmd[INFO] = info_current_res;
 }
 
@@ -50,7 +50,7 @@ static void init_receiver(client_t *client)
     client->receive[TYPE_USERS] = recv_users;
     client->receive[TYPE_CREATE] = recv_create;
     client->receive[TYPE_SUBSCRIBE] = recv_subscribe;
-    client->receive[TYPE_LIST] = recv_list_teams;
+    client->receive[TYPE_LIST] = recv_list;
     client->receive[TYPE_UNSUBSCRIBE] = recv_unsubscribe;
     client->receive[TYPE_USE] = recv_use;
     client->receive[TYPE_MESSAGES] = recv_messages;
