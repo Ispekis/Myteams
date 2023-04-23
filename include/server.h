@@ -188,4 +188,8 @@ int receive_channel(data_t *data, int client_fd, client_packet recv_data);
 int create_thread(data_t *data, int client_fd, client_packet recv_data);
 int create_reply(data_t *data, int client_fd, client_packet recv_data);
 
+// Subscribed
+void list_subscribed_team(data_t data, user_t user, int client_fd);
+void list_subscribed_user(data_t data, teams_t team, int client_fd);
+
 #endif /* !SERVER_H_ */
