@@ -12,12 +12,13 @@ int get_users(client_t *client, char **param)
     client_packet packet;
 
     if (!client->data.is_logged) {
-        printf("Not logged\n");
+        print_code_res(CODE_403);
         client_error_unauthorized();
         return 0;
     }
 
     packet.type = TYPE_USERS;
+    print_code_res(CODE_200);
     uuid_copy(packet.user_uuid, client->data.user_uuid);
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
@@ -28,12 +29,12 @@ int get_user(client_t *client, char **param)
     client_packet packet;
 
     if (!client->data.is_logged) {
-        printf("Not logged\n");
+        print_code_res(CODE_403);
         client_error_unauthorized();
         return 0;
     }
 
-    if (param[0] == NULL) {
+    if (param == NULL) {
         printf("Invalid argument\n");
         return 0;
     }
