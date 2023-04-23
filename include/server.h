@@ -10,8 +10,6 @@
     #include "../libs/myteams/logging_server.h"
     #include "../libs/myteams/logging_client.h"
     #include "shared.h"
-    #include <signal.h>
-    #include <sys/signalfd.h>
     #include <fcntl.h>
     #define TOTAL_CMD 15
     #define MAX_CONNECTIONS 100

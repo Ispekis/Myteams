@@ -37,8 +37,19 @@ void accept_client_to_server(sock_addrs_t *addrs)
     }
 }
 
-static void do_remove_client(size_t bytes, client_t *client)
+static void do_remove_client(server_t *server, size_t bytes, client_t *client)
 {
+    char uuid_str[MAX_UUID_LENGTH];
+
+    for (int i = 0; i < server->data.nbr_users; i++) {
+        if (server->data.users[i].current_fd == client->fd
+            && server->data.users[i].is_logged) {
+            uuid_unparse(server->data.users[i].uuid, uuid_str);
+            server_event_user_logged_out(uuid_str);
+            server->data.users[i].current_fd = -1;
+            server->data.users[i].is_logged = false;
+        }
+    }
     if (bytes <= 0) {
         client->fd = -1;
     }
@@ -54,7 +65,7 @@ static void recv_from_client(server_t *server, int index)
     if (bytes > 0) {
         server->receive[recv_data.type](server, index, recv_data);
     } else {
-        do_remove_client(bytes, &server->addrs.clients[index]);
+        do_remove_client(server, bytes, &server->addrs.clients[index]);
     }
 }
 

@@ -23,6 +23,8 @@
     #include <dlfcn.h>
     #include <uuid/uuid.h>
     #include <time.h>
+    #include <signal.h>
+    #include <sys/signalfd.h>
     #define TOTAL_TYPE 13
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
