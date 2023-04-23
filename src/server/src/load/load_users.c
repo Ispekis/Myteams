@@ -25,11 +25,16 @@ static void load_teams_uuids(user_t *user, int fd)
 
 void load_users(data_t *data, int fd)
 {
+    char uuid_str[MAX_UUID_LENGTH];
+
     read(fd, &data->nbr_users, sizeof(data->nbr_users));
     data->users = malloc(sizeof(user_t) * data->nbr_users);
     for (int i = 0; i < data->nbr_users; i++) {
         read(fd, &data->users[i], sizeof(data->users[i]));
         load_teams_uuids(&data->users[i], fd);
         load_messages(&data->users[i], fd);
+
+        uuid_unparse(data->users[i].uuid, uuid_str);
+        server_event_user_loaded(uuid_str, data->users[i].name);
     }
 }
