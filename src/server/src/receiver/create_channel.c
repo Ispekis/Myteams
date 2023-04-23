@@ -66,8 +66,6 @@ recv_data)
 
 int receive_channel(data_t *data, int client_fd, client_packet recv_data)
 {
-    char uuid_str[MAX_UUID_LENGTH];
-    char team_uuid[MAX_UUID_LENGTH];
     teams_t *team = index_of_team(data, recv_data);
     user_t *user = index_of_user(data, recv_data.user_uuid);
 
@@ -79,10 +77,6 @@ int receive_channel(data_t *data, int client_fd, client_packet recv_data)
         return 1;
     create_channel(team, team->nbr_channel, recv_data);
     display_log(*team, team->nbr_channel);
-    uuid_unparse(recv_data.user_uuid, uuid_str);
-    uuid_unparse(team->teams_uuid, team_uuid);
-    join_teams(team, recv_data.user_uuid);
-    member_add_team(user, team->teams_uuid);
     send_response(*team, client_fd, team->nbr_channel);
     team->nbr_channel++;
     return 0;
