@@ -13,6 +13,7 @@ int list_sub_res(client_t *client, char **param)
 
     if (!client->data.is_logged) {
         printf("Not logged\n");
+        client_error_unauthorized();
         return 0;
     }
 
@@ -25,6 +26,7 @@ int list_all_teams(client_t *client, char **param)
 
     if (!client->data.is_logged) {
         printf("Not logged\n");
+        client_error_unauthorized();
         return 0;
     }
 

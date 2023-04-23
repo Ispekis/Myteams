@@ -73,7 +73,7 @@ typedef struct user {
     bool is_logged;
     int current_fd;
     int context;
-    char **subbed_teams;
+    uuid_t *teams_uuid;
     int nbr_teams;
     messages_t *messages;
     int nbr_messages;
@@ -83,7 +83,7 @@ typedef struct reply_s {
     char body[MAX_BODY_LENGTH];
     uuid_t user_uuid;
     time_t timestamp;
-} reply_t;
+} __attribute__((packed)) reply_t;
 
 typedef struct thread {
     uuid_t channel_uuid;
@@ -94,7 +94,7 @@ typedef struct thread {
     time_t timestamp;
     reply_t *replies;
     int nbr_replies;
-} thread_t;
+} __attribute__((packed)) thread_t;
 
 typedef struct channel {
     char name[MAX_NAME_LENGTH];
@@ -103,17 +103,17 @@ typedef struct channel {
     size_t member_nbr;
     thread_t *threads;
     int nbr_thread;
-} channel_t;
+} __attribute__((packed)) channel_t;
 
 typedef struct teams {
     uuid_t teams_uuid;
-    char *name;
+    char name[MAX_NAME_LENGTH];
     char description[MAX_DESCRIPTION_LENGTH];
     size_t subs_nbr;
-    char **team_member;
+    uuid_t *members_uuid;
     channel_t *channel;
     int nbr_channel;
-} teams_t;
+} __attribute__((packed)) teams_t;
 
 typedef struct data {
     user_t *users;
@@ -156,8 +156,8 @@ int receive_subscribed(server_t *server, int index, client_packet recv_data);
 int receive_create(server_t *server, int index, client_packet recv_data);
 
 // Usable in multiple file
-int join_teams(data_t *data, char *user_uuid, char *team_uuid);
-int member_add_team(data_t *data, char *user_uuid, char *team_uuid);
+int join_teams(teams_t *team, uuid_t user_uuid);
+int member_add_team(user_t *user, uuid_t team_uuid);
 int receive_list_teams(server_t *server, int index, client_packet recv_data);
 int receive_messages(server_t *server, int index, client_packet recv_data);
 
@@ -169,12 +169,15 @@ void load_save(server_t *server);
 channel_t *index_of_channel(data_t *data, client_packet recv_data);
 thread_t *index_of_thread(data_t *data, client_packet recv_data);
 teams_t *index_of_team(data_t *data, client_packet recv_data);
+user_t *index_of_user(data_t *data, uuid_t user_uuid);
 
 // Savers
 void save_users(data_t data, int fd);
+void save_teams(data_t data, int fd);
 
 // Loaders
 void load_users(data_t *data, int fd);
+void load_teams(data_t *data, int fd);
 
 // info function switch
 void info_team(data_t data, int client_fd, client_packet recv_data);
@@ -186,5 +189,9 @@ int receive_teams(data_t *data, int client_fd, client_packet recv_data);
 int receive_channel(data_t *data, int client_fd, client_packet recv_data);
 int create_thread(data_t *data, int client_fd, client_packet recv_data);
 int create_reply(data_t *data, int client_fd, client_packet recv_data);
+
+// Subscribed
+void list_subscribed_team(data_t data, user_t user, int client_fd);
+void list_subscribed_user(data_t data, teams_t team, int client_fd);
 
 #endif /* !SERVER_H_ */
