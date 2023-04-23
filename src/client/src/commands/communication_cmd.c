@@ -12,7 +12,7 @@ int send_message(client_t *client, char **param)
     client_packet packet;
 
     if (!client->data.is_logged) {
-        printf("Not logged\n");
+        print_code_res(CODE_403);
         client_error_unauthorized();
         return 0;
     }
