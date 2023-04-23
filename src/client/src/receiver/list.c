@@ -15,7 +15,8 @@ static void recv_list_team(int server_fd, server_packet recv_data)
     for (int i = 0; i < recv_data.nbr; i++) {
         recv(server_fd, &list_packet, sizeof(list_packet), 0);
         uuid_unparse(list_packet.team_uuid, team_uuid);
-        client_print_team(team_uuid, list_packet.team_name, list_packet.description);
+        client_print_team(team_uuid, list_packet.team_name,
+        list_packet.description);
     }
 }
 
@@ -27,7 +28,8 @@ static void recv_list_channel(int server_fd, server_packet recv_data)
     for (int i = 0; i < recv_data.nbr; i++) {
         recv(server_fd, &list_packet, sizeof(list_packet), 0);
         uuid_unparse(list_packet.channel_uuid, channel_uuid);
-        client_team_print_channels(channel_uuid, list_packet.channel_name, list_packet.channel_desc);
+        client_team_print_channels(channel_uuid, list_packet.channel_name,
+        list_packet.channel_desc);
     }
 }
 
