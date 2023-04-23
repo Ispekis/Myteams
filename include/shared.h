@@ -91,6 +91,7 @@ typedef struct server_packet {
     uuid_t send_uuid;
     char body[MAX_BODY_LENGTH];
     int nbr_messages;
+    int nbr;
 } __attribute__((packed)) server_packet;
 
 typedef struct client_packet {

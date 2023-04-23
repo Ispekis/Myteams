@@ -30,7 +30,7 @@ int subscribe_client(client_t *client, char **param)
         return 0;
     packet.type = TYPE_SUBSCRIBE;
     uuid_copy(packet.user_uuid, client->data.user_uuid);
-    uuid_parse(param[0], packet.dest_uuid);
+    uuid_parse(param[0], packet.team_uuid);
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }
@@ -46,10 +46,10 @@ int list_subscribed(client_t *client, char **param)
     }
     packet.type = TYPE_SUBSCRIBED;
     uuid_copy(packet.user_uuid, client->data.user_uuid);
-    packet.name_len = 0;
-    if (!(param == NULL || param[0] == NULL)) {
-        uuid_parse(param[0], packet.dest_uuid);
-        packet.name_len = 1;
+    if (param == NULL) {
+        uuid_clear(packet.team_uuid);
+    } else {
+        uuid_parse(param[0], packet.team_uuid);
     }
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
 }
@@ -62,7 +62,7 @@ int unsubscribe_client(client_t *client, char **param)
         return 0;
     packet.type = TYPE_UNSUBSCRIBE;
     uuid_copy(packet.user_uuid, client->data.user_uuid);
-    uuid_parse(param[0], packet.dest_uuid);
+    uuid_parse(param[0], packet.team_uuid);
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }

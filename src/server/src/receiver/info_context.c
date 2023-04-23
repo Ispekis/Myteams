@@ -35,7 +35,6 @@ void info_channel(data_t data, int client_fd, client_packet recv_data)
     strcpy(packet.channel_name, channel->name);
     strcpy(packet.channel_desc, channel->description);
     send(client_fd, &packet, sizeof(packet), 0);
-    printf("Inside\n");
 }
 
 void info_thread(data_t data, int client_fd, client_packet recv_data)
