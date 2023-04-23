@@ -17,6 +17,7 @@ static void send_response(channel_t ch, int client_fd, int nbr_threads)
     strcpy(packet.thread_title, ch.threads[nbr_threads].thread_title);
     strcpy(packet.thread_message, ch.threads[nbr_threads].thread_body);
     packet.timestamp = ch.threads[nbr_threads].timestamp;
+    packet.code = CODE_200;
     send(client_fd, &packet, sizeof(packet), 0);
 }
 
@@ -48,6 +49,24 @@ static void set_data(channel_t *ch, client_packet recv_data, int nbr_threads)
     ch->threads[nbr_threads].replies = malloc(sizeof(reply_t));
 }
 
+static int check_known_thread(channel_t *channel, int client_fd, client_packet
+recv_data)
+{
+    server_packet packet;
+
+    for (int i = 0; i < channel->nbr_thread; ++i) {
+        if (strcmp(recv_data.thread_title,
+        channel->threads[i].thread_title) == 0) {
+            packet.code = CODE_400;
+            packet.type = TYPE_CREATE;
+            packet.context = THREAD_CONTEXT;
+            send(client_fd, &packet, sizeof(packet), 0);
+            return -1;
+        }
+    }
+    return 0;
+}
+
 int create_thread(data_t *data, int client_fd, client_packet recv_data)
 {
     channel_t *channel = index_of_channel(data, recv_data);
@@ -57,16 +76,16 @@ int create_thread(data_t *data, int client_fd, client_packet recv_data)
         printf("Not found\n");
         return 0;
     }
+    if (check_known_thread(channel, client_fd, recv_data) == -1)
+        return 1;
     new_thread = realloc(channel->threads,
     sizeof(thread_t) * (channel->nbr_thread + 1));
     if (new_thread == NULL)
         return 1;
     channel->threads = new_thread;
-    set_data(channel, recv_data,
-    channel->nbr_thread);
+    set_data(channel, recv_data, channel->nbr_thread);
     display_log(*channel, channel->nbr_thread);
-    send_response(*channel, client_fd,
-    channel->nbr_thread);
+    send_response(*channel, client_fd, channel->nbr_thread);
     channel->nbr_thread++;
     return 0;
 }

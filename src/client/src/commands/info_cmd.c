@@ -7,13 +7,23 @@
 
 #include "client.h"
 
-void do_default_info(client_t *client)
+static int choose_info_send(client_packet *packet, data_t data)
 {
-    char uuid_str[MAX_UUID_LENGTH];
-
-    uuid_unparse(client->data.user_uuid, uuid_str);
-    client_print_user(uuid_str, client->data.user_name,
-    client->data.is_logged);
+    switch (data.context) {
+        case DEFAULT_CONTEXT:
+            do_default_info(data);
+            return 1;
+        case THREAD_CONTEXT:
+            send_info_channel(packet, data);
+            return 0;
+        case CHANNEL_CONTEXT:
+            send_info_team(packet, data);
+            return 0;
+        case REPLY_CONTEXT:
+            send_info_thread(packet, data);
+            return 0;
+    }
+    return 0;
 }
 
 int info_current_res(client_t *client, char **param)
@@ -22,15 +32,14 @@ int info_current_res(client_t *client, char **param)
 
     if (!client->data.is_logged) {
         printf("Not logged\n");
-        return 0;
-    }
-    if (client->data.context == DEFAULT_CONTEXT) {
-        do_default_info(client);
+        client_error_unauthorized();
         return 0;
     }
     packet.type = TYPE_INFO;
     uuid_copy(packet.user_uuid, client->data.user_uuid);
     packet.context = client->data.context;
+    if (choose_info_send(&packet, client->data) == 1)
+        return 0;
     send(client->addrs.server_fd, &packet, sizeof(packet), 0);
     return 0;
 }

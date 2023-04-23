@@ -7,8 +7,6 @@
 
 #include "server.h"
 
-static server_t *sig_server = NULL;
-
 void load_save(server_t *server)
 {
     int fd = open(save_file_name, O_RDONLY);
@@ -16,23 +14,32 @@ void load_save(server_t *server)
 
     if (fd != -1) {
         load_users(&server->data, fd);
+        load_teams(&server->data, fd);
     }
     close(fd);
 }
 
-static void signal_handler(int sig)
+static void save_data(server_t server)
 {
     int fd = open(save_file_name, O_CREAT | O_WRONLY, 0644);
 
-    for (int i = 0; i < sig_server->data.nbr_users; i++) {
-        sig_server->data.users[i].is_logged = false;
+    for (int i = 0; i < server.data.nbr_users; i++) {
+        server.data.users[i].is_logged = false;
+        server.data.users[i].current_fd = -1;
     }
-    save_users(sig_server->data, fd);
+    save_users(server.data, fd);
+    save_teams(server.data, fd);
     close(fd);
 }
 
-void catch_shutdown(server_t *server)
+int catch_shutdown(server_t server)
 {
-    sig_server = server;
-    signal(SIGINT, signal_handler);
+    if (FD_ISSET(server.sfd, &server.addrs.rfds)) {
+        read(server.sfd, &server.fdsi, sizeof(struct signalfd_siginfo));
+        if (server.fdsi.ssi_signo == SIGINT) {
+            save_data(server);
+            return 1;
+        }
+    }
+    return 0;
 }

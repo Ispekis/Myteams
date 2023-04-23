@@ -23,6 +23,8 @@
     #include <dlfcn.h>
     #include <uuid/uuid.h>
     #include <time.h>
+    #include <signal.h>
+    #include <sys/signalfd.h>
     #define TOTAL_TYPE 13
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
@@ -58,7 +60,7 @@ typedef struct codes_s {
     char msg[MAX_MESSAGE_LENGTH];
 } code_t;
 
-static const code_t CODE_120 = {200, "Service conncted to server"};
+static const code_t CODE_120 = {200, "Service connected to server"};
 static const code_t CODE_200 = {200, "Action successfully completed"};
 static const code_t CODE_214 = {214, "Showing help message"};
 static const code_t CODE_400 = {400, "Bad Request"};
@@ -91,6 +93,7 @@ typedef struct server_packet {
     uuid_t send_uuid;
     char body[MAX_BODY_LENGTH];
     int nbr_messages;
+    int nbr;
 } __attribute__((packed)) server_packet;
 
 typedef struct client_packet {

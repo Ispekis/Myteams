@@ -7,17 +7,23 @@
 
 #include "client.h"
 
+static void clear_uuids(client_packet *packet)
+{
+    uuid_clear(packet->team_uuid);
+    uuid_clear(packet->channel_uuid);
+    uuid_clear(packet->thread_uuid);
+}
+
 int use_command(client_t *client, char **param)
 {
     client_packet packet;
 
     if (!client->data.is_logged) {
         printf("Not logged\n");
+        client_error_unauthorized();
         return 0;
     }
-    uuid_clear(packet.team_uuid);
-    uuid_clear(packet.channel_uuid);
-    uuid_clear(packet.thread_uuid);
+    clear_uuids(&packet);
     if (param != NULL) {
         if (param[0] != NULL)
             uuid_parse(param[0], packet.team_uuid);

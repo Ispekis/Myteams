@@ -13,7 +13,10 @@ int recv_unsubscribe(client_t *client, server_packet recv_data)
     char user_uuid[37];
 
     uuid_unparse(recv_data.team_uuid, team_uuid);
-    uuid_unparse(recv_data.user_uuid, user_uuid);
-    client_print_unsubscribed(team_uuid, user_uuid);
+    if (recv_data.code.code == CODE_200.code) {
+        uuid_unparse(recv_data.user_uuid, user_uuid);
+        client_print_unsubscribed(user_uuid, team_uuid);
+    } else
+        client_error_unknown_team(team_uuid);
     return 0;
 }
